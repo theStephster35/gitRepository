@@ -1,0 +1,142 @@
+body,
+h1,
+h3,
+p {
+	margin: 0;
+}
+
+body {
+	background-color: black;
+}
+
+.gameTitle {
+	text-align: center;
+	background-color: white;
+	border-bottom: 2px solid black;
+}
+
+.menuLink {
+	float:left;
+	color: black;
+	font-size: 26px;
+	margin-left: 5px;
+	text-decoration: none;
+}
+
+.menuLink:hover {
+	color: white;
+	background-color: black;
+}
+
+.gameContent {
+	display: flex;
+	border-bottom: 5px solid black;
+}
+
+.startMenu,
+.gameMenu {
+	width: 24ch;
+	float: left;
+	padding: 10px;
+	display: block;
+	text-align: center;
+	background-color: white;
+	border-right: 5px solid black;
+	border-bottom-right-radius: 15px;
+}
+
+.gameMenu {
+	display: none;
+}
+
+.userInput {
+	width: 150px;
+	height: 20px;
+}
+
+.menuButton {
+	width: 120px;
+	height: 40px;
+	border-radius: 10px;
+}
+
+.details {
+	text-align: left;
+}
+
+.detailsLink {
+	color: black;
+	text-decoration: none;
+}
+
+.detailsLink:hover {
+	text-decoration: underline;
+}
+
+.playerStats {
+	padding: 0;
+	text-align: left;
+	list-style: none;
+}
+
+.actionMenu {
+	width: 24ch;
+	height: 24ch;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.upLeft {
+	grid-column: 1/2;
+	grid-row: 1/2;
+}
+
+.up {
+	grid-column: 2/3;
+	grid-row: 1/2;
+}
+
+.upRight {
+	grid-column: 3/4;
+	grid-row: 1/2;
+}
+
+.left {
+	grid-column: 1/2;
+	grid-row: 2/3;
+}
+
+.center {
+	grid-column: 2/3;
+	grid-row: 2/3;
+}
+
+.right {
+	grid-column: 3/4;
+	grid-row: 2/3;
+}
+
+.downLeft {
+	grid-column: 1/2;
+	grid-row: 3/4;
+}
+
+.down {
+	grid-column: 2/3;
+	grid-row: 3/4;
+}
+
+.downRight {
+	grid-column: 3/4;
+	grid-row: 3/4;
+}
+
+.actionButton {
+	margin: 5px;
+	width: 40px;
+	height: 40px;
+	font-size: 24px;
+}
+
+.map {
+}

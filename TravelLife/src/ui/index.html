@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>Travel Life</title>
+		<link rel="stylesheet" href="main.css">
+	</head>
+	<body>
+		<div class="gameTitle">
+			<a class="menuLink" onclick="showHideMenu()" href="javascript:void(0);">&#9776;</a>
+			<h1>Travel Life</h1>
+		</div>
+		<div class="gameContent">
+			<div>
+				<div id="startMenu" class="startMenu">
+					<div>
+						<form id="userInput">
+							<h3>Name:</h3>
+							<input class="userInput" type="text">
+							<br>
+							<br>
+							<h3>Species:</h3>
+							<select id="species" class="userInput" onchange="getSpecies()">
+								<option disabled selected>-- Select Species --</option>
+								<option value="human">Human</option>
+								<option value="horse">Horse</option>
+								<option value="ape">Ape</option>
+								<option value="dog">Dog</option>
+								<option value="cat">Cat</option>
+							</select>
+							<br>
+							<br>
+							<input class="menuButton" type="submit" value="Start Traveling">
+						</form>
+					</div>
+					<hr>
+					<div class="details">
+						<a id="speciesLink" class="detailsLink" onclick="showHideInfo('species')" href="javascript:void(0);">&#9660; Hide Details</a>
+						<br>
+						<p id="speciesInfo"><br>Select a species to get information.</p>
+					</div>
+				</div>
+				<div id="gameMenu" class="gameMenu">
+					<div>
+						<div>
+							<h3>[Name]</h3>
+							<hr>
+							<ul class="playerStats">
+								<li>Endurance: </li>
+								<li>Recovery: </li>
+								<li>Strength: </li>
+								<li>Speed: </li>
+								<li><br></li>
+								<li>Dig: </li>
+								<li>Jump: </li>
+								<li>Swim: </li>
+								<li>Climb: </li>
+							</ul>
+						</div>
+						<hr>
+						<p>What will you do?</p>
+						<br>
+						<div class="actionMenu">
+							<div class="upLeft">
+								<button class="actionButton" onclick="getAction('upLeft')">&#8598;</button>
+							</div>
+							<div class="up">
+								<button class="actionButton" onclick="getAction('up')">&#8593;</button>
+							</div>
+							<div class="upRight">
+								<button class="actionButton" onclick="getAction('upRight')">&#8599;</button>
+							</div>
+							<div class="left">
+								<button class="actionButton" onclick="getAction('left')">&#8592;</button>
+							</div>
+							<div class="center">
+								<button class="actionButton" onclick="getAction('center')">&#8635;</button>
+							</div>
+							<div class="right">
+								<button class="actionButton" onclick="getAction('right')">&#8594;</button>
+							</div>
+							<div class="downLeft">
+								<button class="actionButton" onclick="getAction('downLeft')">&#8601;</button>
+							</div>
+							<div class="down">
+								<button class="actionButton" onclick="getAction('down')">&#8595;</button>
+							</div>
+							<div class="downRight">
+								<button class="actionButton" onclick="getAction('downRight')">&#8600;</button>
+							</div>
+						</div>
+						<br>
+						<button id="confirmAction" class="menuButton" onclick="takeAction()" disabled>Choose Action</button>
+					</div>
+					<hr>
+					<div class="details">
+						<a id="actionLink" class="detailsLink" onclick="showHideInfo('action')" href="javascript:void(0)">&#9660; Hide Details</a>
+						<br>
+						<p id="actionInfo"><br>Select an action to get information.</p>
+					</div>
+					<hr>
+					<button class="menuButton" onclick="startEndGame()">Give Up</button>
+				</div>
+			</div>
+			<div class="map">
+			</div>
+		</div>
+
+		<script src="commonMenuScript.js"></script>
+		<script src="startMenuScript.js"></script>
+		<script src="gameMenuScript.js"></script>
+		<script src="mapScript.js"></script>
+	</body>
+</html>
