@@ -48,7 +48,7 @@ function startEndGame(event)
 	}
 	else // End game
 	{
-		name.value = "";
+		document.getElementById("name").value = "";
 
 		resetSpecies();
 		resetAction();
