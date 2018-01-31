@@ -8,6 +8,8 @@ function setPlayerDetails()
 	document.getElementById("playerName").innerText = document.getElementById("name").value;
 
 	document.getElementById("playerTitle").style.display = "block";
+
+	document.getElementById("attributeTitle").style.display = "block";
 }
 
 function getAction(action)
