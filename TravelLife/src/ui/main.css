@@ -1,4 +1,5 @@
 body,
+img,
 h1,
 h3,
 p {
@@ -10,13 +11,14 @@ body {
 }
 
 .gameTitle {
+	height: 37px;
 	text-align: center;
 	background-color: white;
 	border-bottom: 2px solid black;
 }
 
 .menuLink {
-	float:left;
+	float: left;
 	color: black;
 	font-size: 26px;
 	margin-left: 5px;
@@ -30,19 +32,18 @@ body {
 
 .gameContent {
 	display: flex;
-	border-bottom: 5px solid black;
 }
 
-.startMenu,
-.gameMenu {
-	width: 24ch;
+.menu {
 	float: left;
-	padding: 10px;
+	padding: 5px;
 	display: block;
+	overflow: auto;
+	min-width: 180px;
+	max-width: 180px;
 	text-align: center;
 	background-color: white;
-	border-right: 5px solid black;
-	border-bottom-right-radius: 15px;
+	border-right: 2px solid black;
 }
 
 .gameMenu {
@@ -52,6 +53,10 @@ body {
 .userInput {
 	width: 150px;
 	height: 20px;
+}
+
+.forcedOption {
+	display: none;
 }
 
 .menuButton {
@@ -73,6 +78,23 @@ body {
 	text-decoration: underline;
 }
 
+.detailsTitle {
+	display: none;
+	line-height: 30px;
+	text-align: center;
+}
+
+.speciesImage {
+	width: 15px;
+	height: 16px;
+	display: inline;
+	margin-right: 3px;
+}
+
+.detailsLabel {
+	display: inline;
+}
+
 .playerStats {
 	padding: 0;
 	text-align: left;
@@ -80,10 +102,14 @@ body {
 }
 
 .actionMenu {
-	width: 24ch;
-	height: 24ch;
+	display: inline-flex;
+}
+
+.actionButtons {
+	margin: auto;
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 50px);
+	grid-template-columns: repeat(3, 50px);
 }
 
 .upLeft {
@@ -139,4 +165,19 @@ body {
 }
 
 .map {
+	overflow: auto;
+	display: inline-flex;
+}
+
+.mapTiles {
+	margin: auto;
+	display: grid;
+	grid-template-rows: repeat(var(--rowNum), 16px);
+	grid-template-columns: repeat(var(--colNum), 15px);
+}
+
+.tile {
+	width: 15px;
+	height: 16px;
+	display: block;
 }
