@@ -2,12 +2,6 @@ class Player
 {
 	constructor(name, speciesValue)
 	{
-		this.row = 0;
-		this.col = 0;
-
-		this.width = "15px";
-		this.height = "16px";
-
 		this.name = name;
 
 		switch (speciesValue)
@@ -18,5 +12,7 @@ class Player
 			default:
 				this.species = new Human();
 		}
+
+		this.position = {row: 0, col: 0};
 	}
 }

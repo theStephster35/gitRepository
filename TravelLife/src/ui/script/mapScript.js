@@ -1,3 +1,12 @@
+function adjustMapContents(height)
+{
+	var map = document.getElementById("map");
+	map.style.minHeight = (height - getHeightOffset(map)) + "px";
+	map.style.maxHeight = map.style.minHeight;
+	map.style.minWidth = (window.innerWidth- getWidthOffset(map)) + "px";
+	map.style.maxWidth = map.style.minWidth;
+}
+
 function initMapTiles()
 {
 	var mapTiles = document.getElementById("mapTiles");
@@ -7,6 +16,8 @@ function initMapTiles()
 
 	// Start Ground Tile
 	createMapTile(mapTiles, 1, 0, new Ground());
+
+	return mapTiles;
 }
 
 function createMapTile(mapTiles, row, col, tile)
@@ -22,7 +33,7 @@ function createMapTile(mapTiles, row, col, tile)
 		if (row < 0)
 		{
 			append = false;
-			player.row++;
+			player.position.row++;
 		}
 
 		if (append)
@@ -41,10 +52,11 @@ function createMapTile(mapTiles, row, col, tile)
 		if (col < 0)
 		{
 			append = false;
-			player.col++;
+			player.position.col++;
 		}
 	}
 
+	mapTile.style.display = "block";
 	mapTile.style.setProperty("background-color", tile.color);
 
 	if (append)

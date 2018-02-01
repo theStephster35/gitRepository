@@ -16,18 +16,30 @@ function adjustContents()
 		menu.style.maxHeight = menu.style.minHeight;
 	}
 
-	var map = document.getElementById("map");
-	map.style.maxHeight = (height - getHeightOffset(map)) + "px";
-	map.style.minWidth = (window.innerWidth-map.offsetLeft) + "px";
-	map.style.maxWidth = map.style.minWidth;
+	adjustMapContents(height);
+
+	if (document.getElementById("gameMenu").style.display === "block")
+		placePlayer();
 }
 
 function getHeightOffset(element)
 {
 	var computedStyle = window.getComputedStyle(element, null);
 	return element.offsetTop
-	+ (computedStyle.getPropertyValue("margin-top").replace("px", "")
-	 + computedStyle.getPropertyValue("padding-top").replace("px", ""))*2;
+		+ parseInt(computedStyle.getPropertyValue("margin-top").replace("px", ""))
+		+ parseInt(computedStyle.getPropertyValue("margin-bottom").replace("px", ""))
+		+ parseInt(computedStyle.getPropertyValue("padding-top").replace("px", ""))
+		+ parseInt(computedStyle.getPropertyValue("padding-bottom").replace("px", ""));
+}
+
+function getWidthOffset(element)
+{
+	var computedStyle = window.getComputedStyle(element, null);
+	return element.offsetLeft
+		+ parseInt(computedStyle.getPropertyValue("margin-left").replace("px", ""))
+		+ parseInt(computedStyle.getPropertyValue("margin-right").replace("px", ""))
+		+ parseInt(computedStyle.getPropertyValue("padding-left").replace("px", ""))
+		+ parseInt(computedStyle.getPropertyValue("padding-right").replace("px", ""));
 }
 
 function startEndGame(event)

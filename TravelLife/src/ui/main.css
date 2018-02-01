@@ -178,4 +178,10 @@ body {
 .mapTile {
 	width: 15px;
 	height: 16px;
+	display: none;
+	position: relative;
+}
+
+.mapTile.playerIcon {
+	z-index: 1;
 }
