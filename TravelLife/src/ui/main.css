@@ -95,10 +95,8 @@ body {
 	display: inline;
 }
 
-.playerAttributes {
-	padding: 0;
-	text-align: left;
-	list-style: none;
+.attributes {
+	margin: auto;
 }
 
 .actionMenu {
@@ -171,13 +169,13 @@ body {
 
 .mapTiles {
 	margin: auto;
-	display: grid;
-	grid-template-rows: repeat(var(--rowNum), 16px);
-	grid-template-columns: repeat(var(--colNum), 15px);
 }
 
-.tile {
+.mapRow {
+	display: flex;
+}
+
+.mapTile {
 	width: 15px;
 	height: 16px;
-	display: block;
 }

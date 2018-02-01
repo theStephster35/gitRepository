@@ -1,15 +1,17 @@
 function setPlayerDetails()
 {
-	var species = document.getElementById("species");
+	// Player
 	var playerSpecies = document.getElementById("playerSpecies");
-	playerSpecies.src = "images/" + species.options[species.selectedIndex].value + ".png";
-	playerSpecies.alt = species.options[species.selectedIndex].innerText;
-
-	document.getElementById("playerName").innerText = document.getElementById("name").value;
-
+	playerSpecies.src = player.species.image;
+	playerSpecies.alt = player.species.type;
+	document.getElementById("playerName").innerText = player.name;
 	document.getElementById("playerTitle").style.display = "block";
 
+	// Player Attributes
+	var playerAttributes = document.getElementById("playerAttributes");
 	document.getElementById("attributeTitle").style.display = "block";
+	getAttributes(document.getElementById("playerAttributes"), player.species.attributes);
+	
 }
 
 function getAction(action)

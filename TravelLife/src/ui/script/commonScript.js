@@ -39,20 +39,14 @@ function startEndGame(event)
 	if (startMenu.style.display === ""
 	 || startMenu.style.display === "block")
 	{
+		initGame();
+
 		startMenu.style.display = "none";
 		gameMenu.style.display = "block";
-
-		setPlayerDetails();
-
-		initMapTiles();
 	}
 	else // End game
 	{
-		document.getElementById("name").value = "";
-
-		resetSpecies();
-		resetAction();
-		resetMap();
+		endGame();
 
 		startMenu.style.display = "block";
 		gameMenu.style.display = "none";
@@ -94,4 +88,27 @@ function showHideDetails(value)
 			document.getElementById(value + "Details").style.display = "block";
 		}
 	}
+}
+
+function getAttributes(attributeTable, attributes)
+{
+	attributeTable.innerHTML = "";
+	attributeTable.appendChild(createAttribute(AttributeEnum.SIGHT, attributes.sight));
+}
+
+function createAttribute(label, data)
+{
+	var attribute = document.createElement("tr");
+
+	// Attribute Label
+	var attributeLabelData = document.createElement("td");
+	attributeLabelData.innerText = label + ":";
+	attribute.appendChild(attributeLabelData);
+
+	// Attribute Data
+	attributeLabelData = document.createElement("td");
+	attributeLabelData.innerText = data;
+	attribute.appendChild(attributeLabelData);
+
+	return attribute;
 }

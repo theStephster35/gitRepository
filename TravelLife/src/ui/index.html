@@ -23,7 +23,7 @@
 							<h3>Species:</h3>
 							<select id="species" class="userInput" onchange="getSpecies()" required>
 								<option class="forcedOption" value="">-- Select Species --</option>
-								<option value="human">Human</option>
+								<option value="Human">Human</option>
 							</select>
 							<br>
 							<br>
@@ -41,6 +41,7 @@
 								<h3 id="speciesLabel" class="detailsLabel">Species</h3>
 							</div>
 							<p id="speciesInfo">Select a species to get information.</p>
+							<table id="speciesAttributes" class="attributes"></table>
 						</div>
 					</div>
 				</div>
@@ -60,8 +61,7 @@
 									<div id="attributeTitle" class="detailsTitle">
 										<h3 id="attributeLabel" class="detailsLabel">Attributes</h3>
 									</div>
-									<ul class="playerAttributes">
-									</ul>
+									<table id="playerAttributes" class="attributes"></table>
 								</div>
 							</div>
 						</div>
@@ -125,9 +125,17 @@
 			</div>
 		</div>
 
+		<script src="enums/gameEnum.js"></script>
+
+		<script src="objects/species.js"></script>
+		<script src="objects/player.js"></script>
+		<script src="objects/mapTile.js"></script>
+
 		<script src="script/commonScript.js"></script>
 		<script src="script/startMenuScript.js"></script>
 		<script src="script/gameMenuScript.js"></script>
+		<script src="script/playerScript.js"></script>
 		<script src="script/mapScript.js"></script>
+		<script src="script/gameScript.js"></script>
 	</body>
 </html>

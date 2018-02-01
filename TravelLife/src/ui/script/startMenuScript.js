@@ -4,9 +4,8 @@ function getSpecies()
 
 	switch (species.options[species.selectedIndex].value)
 	{
-		case "human":
-			setSpeciesDetails(species);
-			document.getElementById("speciesInfo").innerText = "You selected " + species.options[species.selectedIndex].innerText + ".";
+		case SpeciesEnum.HUMAN:
+			setSpeciesDetails(new Human());
 			break;
 		default:
 			resetSpecies(species);
@@ -15,15 +14,17 @@ function getSpecies()
 
 function setSpeciesDetails(species)
 {
-	var speciesSelect = species.options[species.selectedIndex].innerText;
-
+	// Species
 	var speciesImage = document.getElementById("speciesImage");
-	speciesImage.src = "images/" + species.options[species.selectedIndex].value + ".png";
-	speciesImage.alt = speciesSelect;
-
-	document.getElementById("speciesLabel").innerText = speciesSelect;
-
+	speciesImage.src = species.image;
+	speciesImage.alt = species.type;
+	document.getElementById("speciesLabel").innerText = species.type;
 	document.getElementById("speciesTitle").style.display = "block";
+
+	// Species Attributes
+	document.getElementById("speciesInfo").innerText =
+		species.description + "\n\n" + "Starting Attributes:";
+	getAttributes(document.getElementById("speciesAttributes"), species.attributes);
 }
 
 function resetSpecies(species)
@@ -35,4 +36,6 @@ function resetSpecies(species)
 	document.getElementById("speciesTitle").style.display = "none";
 
 	document.getElementById("speciesInfo").innerText = "Select a species to get information.";
+
+	document.getElementById("speciesAttributes").innerHTML = "";
 }
