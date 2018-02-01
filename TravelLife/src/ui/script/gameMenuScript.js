@@ -1,5 +1,6 @@
 function setPlayerDetails()
 {
+<<<<<<< HEAD
 	// Player
 	var playerSpecies = document.getElementById("playerSpecies");
 	playerSpecies.src = player.species.image;
@@ -12,6 +13,16 @@ function setPlayerDetails()
 	document.getElementById("attributeTitle").style.display = "block";
 	getAttributes(document.getElementById("playerAttributes"), player.species.attributes);
 	
+=======
+	var species = document.getElementById("species");
+	var playerSpecies = document.getElementById("playerSpecies");
+	playerSpecies.src = "images/" + species.options[species.selectedIndex].value + ".png";
+	playerSpecies.alt = species.options[species.selectedIndex].innerText;
+
+	document.getElementById("playerName").innerText = document.getElementById("name").value;
+
+	document.getElementById("playerTitle").style.display = "block";
+>>>>>>> refs/remotes/origin/develop
 }
 
 function getAction(action)
