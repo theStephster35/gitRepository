@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function initMapTiles()
 {
 	var mapTiles = document.getElementById("mapTiles");
@@ -57,53 +56,9 @@ function createMapTile(mapTiles, row, col, tile)
 function resetMap()
 {
 	document.getElementById("mapTiles").innerHTML = "";
-=======
-var sight = 2;
-
-function resetMap()
-{
-	document.getElementById("mapTiles").innerHTML = "";
-}
-
-function initMapTiles()
-{
-	var mapTiles = document.getElementById("mapTiles");
-
-	mapTiles.style.setProperty("--rowNum", (sight*2)+1);
-	mapTiles.style.setProperty("--colNum", (sight*2)+1);
-
-	// Test
-	mapTiles.style.setProperty("--rowNum", 50);
-	mapTiles.style.setProperty("--colNum", 50);
-	for (var i = 1; i <= 1; i++)
-	{
-		for (var x = 1; x <= 50; x++)
-			mapTiles.appendChild(createTile(i, x, "rgb(" + i*10 + ", " + x*3 + ", " + i+x + ")"));
-	}
-
-	for (var i = 1; i <= 50; i++)
-	{
-		for (var x = 1; x <= 1; x++)
-			mapTiles.appendChild(createTile(i, x, "rgb(" + i*3 + ", " + x*10 + ", " + i+x + ")"));
-	}
-}
-
-function createTile(row, col, color, image)
-{
-	var tile = document.createElement("div");
-
-	tile.className = "tile";
-	if (image != null)
-		tile.style.setProperty("image", image);
-	tile.style.setProperty("background-color", color);
-	tile.style.setProperty("grid-row", row + "/" + row+1);
-	tile.style.setProperty("grid-column", col + "/" + col+1);
-
-	return tile;
 }
 
 function takeAction()
 {
 	resetAction();
->>>>>>> refs/remotes/origin/develop
 }

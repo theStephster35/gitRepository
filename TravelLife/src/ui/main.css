@@ -95,15 +95,8 @@ body {
 	display: inline;
 }
 
-<<<<<<< HEAD
 .attributes {
 	margin: auto;
-=======
-.playerStats {
-	padding: 0;
-	text-align: left;
-	list-style: none;
->>>>>>> refs/remotes/origin/develop
 }
 
 .actionMenu {
@@ -176,7 +169,6 @@ body {
 
 .mapTiles {
 	margin: auto;
-<<<<<<< HEAD
 }
 
 .mapRow {
@@ -187,15 +179,3 @@ body {
 	width: 15px;
 	height: 16px;
 }
-=======
-	display: grid;
-	grid-template-rows: repeat(var(--rowNum), 16px);
-	grid-template-columns: repeat(var(--colNum), 15px);
-}
-
-.tile {
-	width: 15px;
-	height: 16px;
-	display: block;
-}
->>>>>>> refs/remotes/origin/develop
