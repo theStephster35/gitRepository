@@ -15,21 +15,15 @@ class Barrier extends Tile
 {
 	constructor()
 	{
-		var upSide = new Map();
-		upSide.set(TileTypeEnum.BARRIER, 1);
-		upSide.set(TileTypeEnum.DIRT, 1);
-		upSide.set(TileTypeEnum.GROUND, 1);
-		upSide.set(TileTypeEnum.SKY, 1);
-		upSide.set(TileTypeEnum.WATER, 1);
-
-		var down = new Map();
-		down.set(TileTypeEnum.BARRIER, 1);
-		down.set(TileTypeEnum.DIRT, 1);
-		down.set(TileTypeEnum.GROUND, 1);
-		down.set(TileTypeEnum.WATER, 1);
+		var upSideDown = new Map();
+		upSideDown.set(TileTypeEnum.BARRIER, 1);
+		upSideDown.set(TileTypeEnum.DIRT, 1);
+		upSideDown.set(TileTypeEnum.GROUND, 1);
+		upSideDown.set(TileTypeEnum.SKY, 1);
+		upSideDown.set(TileTypeEnum.WATER, 1);
 
 		super(TileTypeEnum.BARRIER, "rgb(127, 127, 127)",
-				upSide, down, upSide);
+				upSideDown, upSideDown, upSideDown);
 	}
 }
 
@@ -85,6 +79,7 @@ class Sky extends Tile
 	constructor()
 	{
 		var up = new Map();
+		up.set(TileTypeEnum.BARRIER, 1);
 		up.set(TileTypeEnum.SKY, 1);
 
 		var down = new Map();

@@ -215,7 +215,7 @@ function getTileByTileType(tileType)
 			tile = new Water();
 			break;
 		default:
-			tile = new Sky();
+			tile = new Barrier();
 	}
 
 	return tile;
