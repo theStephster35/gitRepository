@@ -1,9 +1,11 @@
 var player;
+var mapTiles;
 
 function initGame()
 {
 	initPlayer();
-	placePlayer(initMapTiles());
+	initMapTiles();
+	placePlayer();
 }
 
 function takeAction()

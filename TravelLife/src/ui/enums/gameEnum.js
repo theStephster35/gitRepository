@@ -8,9 +8,11 @@ var AttributeEnum =
 	SIGHT: "Sight"
 };
 
-var MapTileEnum =
+var TileTypeEnum =
 {
-	UNSEEN: "U",
-	GROUND: "G",
-	SKY: "S"
+	BARRIER: "Barrier",
+	DIRT: "Dirt",
+	GROUND: "Ground",
+	SKY: "Sky",
+	WATER: "Water"
 };
