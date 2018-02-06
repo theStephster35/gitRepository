@@ -1,8 +1,15 @@
 var userInput = document.getElementById("userInput");
 userInput.addEventListener('submit', startEndGame);
 
-window.onload = adjustContents;
+window.onload = init;
 window.onresize = adjustContents;
+
+function init()
+{
+	endGame();
+	adjustContents();
+	updateAutoConfirm();
+}
 
 function adjustContents()
 {

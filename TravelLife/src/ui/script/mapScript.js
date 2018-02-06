@@ -16,15 +16,10 @@ function initMapTiles()
 
 	// Start Ground Tile
 	createMapTile(1, 0, new Ground());
-
-	exposeMapTiles();
 }
 
 function createMapTile(row, col, tile)
 {
-	if (tile == null)
-		tile = getRandomTile(row, col);
-
 	var mapRows = mapTiles.children;
 	var mapRow = mapRows[row];
 	if (mapRow == null)
@@ -42,9 +37,27 @@ function createMapTile(row, col, tile)
 			mapTiles.appendChild(mapRow);
 	}
 
+	// Shift columns right in row
+	for (var i = mapRow.children.length; i < col; i++)
+	{
+		var hiddenTile = getRandomTile(row, i);
+
+		mapTile = document.createElement("div");
+		mapTile.type = hiddenTile.type;
+		mapTile.style.display = "block";
+		mapTile.style.visibility = "hidden";
+		mapTile.className = "mapTile " + hiddenTile.type + " hidden";
+		mapTile.style.setProperty("background-color", hiddenTile.color);
+
+		mapRow.appendChild(mapTile);
+	}
+
 	var mapTile = mapRow.children[col];
 	if (mapTile == null)
 	{
+		if (tile == null)
+			tile = getRandomTile(row, col);
+
 		mapTile = document.createElement("div");
 		mapTile.type = tile.type;
 		mapTile.style.display = "block";

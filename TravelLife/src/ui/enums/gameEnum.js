@@ -16,3 +16,16 @@ var TileTypeEnum =
 	SKY: "Sky",
 	WATER: "Water"
 };
+
+var ActionEnum =
+{
+	UP_LEFT: "upLeft",
+	UP: "up",
+	UP_RIGHT: "upRight",
+	LEFT: "left",
+	CENTER: "center",
+	RIGHT: "right",
+	DOWN_LEFT: "downLeft",
+	DOWN: "down",
+	DOWN_RIGHT: "downRight"
+};

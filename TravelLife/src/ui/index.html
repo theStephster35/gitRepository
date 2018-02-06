@@ -27,10 +27,14 @@
 							</select>
 							<br>
 							<br>
+							<div>
+								<input id="rememberMe" type="checkbox">
+								<label>Remember Me</label>
+							</div>
 							<input class="menuButton" type="submit" value="Start Traveling">
 						</form>
+						<hr>
 					</div>
-					<hr>
 					<div class="details">
 						<a id="speciesLink" class="detailsLink" onclick="showHideDetails('species')" href="javascript:void(0);">&#9660; Hide Details</a>
 						<br>
@@ -64,8 +68,8 @@
 									<table id="playerAttributes" class="attributes"></table>
 								</div>
 							</div>
+							<hr>
 						</div>
-						<hr>
 						<p>What will you do?</p>
 						<br>
 						<div class="actionMenu">
@@ -101,10 +105,14 @@
 						</div>
 						<br>
 						<br>
-						<button id="confirmAction" class="menuButton" onclick="takeAction()" disabled>Choose Action</button>
+						<div>
+							<input id="autoConfirm" type="checkbox" onchange="updateAutoConfirm()">
+							<label>Auto-Confirm</label>
+						</div>
+						<button id="confirmAction" class="menuButton" onclick="confirmAction()" disabled>Choose Action</button>
+						<hr>
 					</div>
-					<hr>
-					<div class="details">
+					<div id="actionLinkDetails" class="details">
 						<a id="actionLink" class="detailsLink" onclick="showHideDetails('action')" href="javascript:void(0)">&#9660; Hide Details</a>
 						<br>
 						<div id="actionDetails">
@@ -114,8 +122,8 @@
 							</div>
 							<p id="actionInfo">Select an action to get information.</p>
 						</div>
+						<hr>
 					</div>
-					<hr>
 					<button class="menuButton" onclick="startEndGame()">Give Up</button>
 				</div>
 			</div>

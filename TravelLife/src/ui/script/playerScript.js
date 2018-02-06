@@ -9,10 +9,10 @@ function initPlayer()
 	setPlayerDetails();	
 }
 
-function placePlayer(mapTiles)
+function placePlayer()
 {
-	if (mapTiles == null)
-		mapTiles = document.getElementById("mapTiles");
+	exposeMapTiles();
+
 	var playerTile = mapTiles.children[player.position.row].children[player.position.col];
 
 	var map = document.getElementById("map");
@@ -22,10 +22,77 @@ function placePlayer(mapTiles)
 	playerIcon.style.left = (playerTile.offsetLeft - map.offsetLeft) + "px";
 }
 
+function moveUpLeft()
+{
+	player.position.row -= 1;
+	player.position.col -= 1;
+	exposeMapTiles();
+	placePlayer();
+}
+
+function moveUp()
+{
+	player.position.row -= 1;
+	exposeMapTiles();
+	placePlayer();
+}
+
+function moveUpRight()
+{
+	player.position.row -= 1;
+	player.position.col += 1;
+	exposeMapTiles();
+	placePlayer();
+}
+
+function moveLeft()
+{
+	player.position.col -= 1;
+	exposeMapTiles();
+	placePlayer();
+}
+
+function stayCenter()
+{
+}
+
+function moveRight()
+{
+	player.position.col += 1;
+	exposeMapTiles();
+	placePlayer();
+}
+
+function moveDownLeft()
+{
+	player.position.row += 1;
+	player.position.col -= 1;
+	exposeMapTiles();
+	placePlayer();
+}
+
+function moveDown()
+{
+	player.position.row += 1;
+	exposeMapTiles();
+	placePlayer();
+}
+
+function moveDownRight()
+{
+	player.position.row += 1;
+	player.position.col += 1;
+	exposeMapTiles();
+	placePlayer();
+}
+
 function resetPlayer()
 {
-	document.getElementById("name").value = "";
-	document.getElementById("playerIcon").style.display = "none";
+	if (document.getElementById("rememberMe").checked !== true)
+	{
+		document.getElementById("name").value = "";
+		document.getElementById("playerIcon").style.display = "none";
 
-	resetSpecies();
+		resetSpecies();
+	}
 }
