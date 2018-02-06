@@ -1,8 +1,9 @@
-var userInput = document.getElementById("userInput");
-userInput.addEventListener('submit', startEndGame);
-
 window.onload = init;
 window.onresize = adjustContents;
+window.addEventListener("keypress", handleKeypress)
+
+var userInput = document.getElementById("userInput");
+userInput.addEventListener('submit', startEndGame);
 
 function init()
 {
@@ -49,6 +50,89 @@ function getWidthOffset(element)
 		+ parseInt(computedStyle.getPropertyValue("padding-right").replace("px", ""));
 }
 
+function handleKeypress(event)
+{
+	if (event.key === "Escape")
+		showHideMenu();
+	else if (document.getElementById("gameMenu").style.display === "block")
+	{
+		switch (event.key)
+		{
+			case "q":
+			case "Q":
+			case "7":
+				getAction(ActionEnum.UP_LEFT);
+				break;
+			case "w":
+			case "W":
+			case "ArrowUp":
+			case "8":
+				getAction(ActionEnum.UP);
+				break;
+			case "e":
+			case "E":
+			case "9":
+				getAction(ActionEnum.UP_RIGHT);
+				break;
+			case "a":
+			case "A":
+			case "ArrowLeft":
+			case "4":
+				getAction(ActionEnum.LEFT);
+				break;
+			case "r":
+			case "R":
+			case "0":
+			case "5":
+				getAction(ActionEnum.CENTER);
+				break;
+			case "d":
+			case "D":
+			case "ArrowRight":
+			case "6":
+				getAction(ActionEnum.RIGHT);
+				break;
+			case "z":
+			case "Z":
+			case "1":
+				getAction(ActionEnum.DOWN_LEFT);
+				break;
+			case "s":
+			case "S":
+			case "ArrowDown":
+			case "2":
+				getAction(ActionEnum.DOWN);
+				break;
+			case "c":
+			case "C":
+			case "3":
+				getAction(ActionEnum.DOWN_RIGHT);
+				break;
+			case "Space":
+			case "Enter":
+				if (action !== "")
+					confirmAction();
+				break;
+			default:
+				resetAction();
+		}
+	}
+}
+
+function showHideMenu()
+{
+	var menu = document.getElementById("menu");
+
+	// Hide Menu
+	if (menu.style.display === ""
+	 || menu.style.display === "block")
+		menu.style.display = "none";
+	else // Show Menu
+		menu.style.display = "block";
+
+	adjustContents();
+}
+
 function startEndGame(event)
 {
 	var startMenu = document.getElementById("startMenu");
@@ -73,20 +157,6 @@ function startEndGame(event)
 
 	if (event != null)
 		event.preventDefault();
-}
-
-function showHideMenu()
-{
-	var menu = document.getElementById("menu");
-
-	// Hide Menu
-	if (menu.style.display === ""
-	 || menu.style.display === "block")
-		menu.style.display = "none";
-	else // Show Menu
-		menu.style.display = "block";
-
-	adjustContents();
 }
 
 function showHideDetails(value)
