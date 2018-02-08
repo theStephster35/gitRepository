@@ -61,54 +61,63 @@ function handleKeypress(event)
 			case "q":
 			case "Q":
 			case "7":
-				getAction(ActionEnum.UP_LEFT);
+				if (!document.getElementById(ActionEnum.UP_LEFT).disabled)
+					getAction(ActionEnum.UP_LEFT);
 				break;
 			case "w":
 			case "W":
 			case "ArrowUp":
 			case "8":
-				getAction(ActionEnum.UP);
+				if (!document.getElementById(ActionEnum.UP).disabled)
+					getAction(ActionEnum.UP);
 				break;
 			case "e":
 			case "E":
 			case "9":
-				getAction(ActionEnum.UP_RIGHT);
+				if (!document.getElementById(ActionEnum.UP_RIGHT).disabled)
+					getAction(ActionEnum.UP_RIGHT);
 				break;
 			case "a":
 			case "A":
 			case "ArrowLeft":
 			case "4":
-				getAction(ActionEnum.LEFT);
+				if (!document.getElementById(ActionEnum.LEFT).disabled)
+					getAction(ActionEnum.LEFT);
 				break;
 			case "r":
 			case "R":
 			case "0":
 			case "5":
-				getAction(ActionEnum.CENTER);
+				if (!document.getElementById(ActionEnum.CENTER).disabled)
+					getAction(ActionEnum.CENTER);
 				break;
 			case "d":
 			case "D":
 			case "ArrowRight":
 			case "6":
-				getAction(ActionEnum.RIGHT);
+				if (!document.getElementById(ActionEnum.RIGHT).disabled)
+					getAction(ActionEnum.RIGHT);
 				break;
 			case "z":
 			case "Z":
 			case "1":
-				getAction(ActionEnum.DOWN_LEFT);
+				if (!document.getElementById(ActionEnum.DOWN_LEFT).disabled)
+					getAction(ActionEnum.DOWN_LEFT);
 				break;
 			case "s":
 			case "S":
 			case "ArrowDown":
 			case "2":
-				getAction(ActionEnum.DOWN);
+				if (!document.getElementById(ActionEnum.DOWN).disabled)
+					getAction(ActionEnum.DOWN);
 				break;
 			case "c":
 			case "C":
 			case "3":
-				getAction(ActionEnum.DOWN_RIGHT);
+				if (!document.getElementById(ActionEnum.DOWN_RIGHT).disabled)
+					getAction(ActionEnum.DOWN_RIGHT);
 				break;
-			case "Space":
+			case " ":
 			case "Enter":
 				if (action !== "")
 					confirmAction();
@@ -179,13 +188,21 @@ function showHideDetails(value)
 	}
 }
 
-function getAttributes(attributeTable, attributes)
+function getAttributes(attributeTable, playerAttributeMap, speciesAttributeMap)
 {
 	attributeTable.innerHTML = "";
-	attributeTable.appendChild(createAttribute(AttributeEnum.SIGHT, attributes.sight));
+	for (var label of playerAttributeMap.keys())
+	{
+		var playerData = playerAttributeMap.get(label);
+		if (speciesAttributeMap != null && speciesAttributeMap.has(label))
+			attributeTable.appendChild(createAttribute(label,
+					playerData, speciesAttributeMap.get(label)));
+		else
+			attributeTable.appendChild(createAttribute(label, playerData));
+	}
 }
 
-function createAttribute(label, data)
+function createAttribute(label, playerData, speciesData)
 {
 	var attribute = document.createElement("tr");
 
@@ -196,8 +213,21 @@ function createAttribute(label, data)
 
 	// Attribute Data
 	attributeLabelData = document.createElement("td");
-	attributeLabelData.innerText = data;
+	attributeLabelData.style.textAlign = "right";
+	attributeLabelData.innerText = playerData;
 	attribute.appendChild(attributeLabelData);
+
+	if (speciesData != null)
+	{
+		attributeLabelData = document.createElement("td");
+		attributeLabelData.innerText = " / ";
+		attribute.appendChild(attributeLabelData);
+
+		attributeLabelData = document.createElement("td");
+		attributeLabelData.style.textAlign = "right";
+		attributeLabelData.innerText = speciesData;
+		attribute.appendChild(attributeLabelData);
+	}
 
 	return attribute;
 }

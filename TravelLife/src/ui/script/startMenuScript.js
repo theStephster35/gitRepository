@@ -24,7 +24,7 @@ function setSpeciesDetails(species)
 	// Species Attributes
 	document.getElementById("speciesInfo").innerText =
 		species.description + "\n\n" + "Starting Attributes:";
-	getAttributes(document.getElementById("speciesAttributes"), species.attributes);
+	getAttributes(document.getElementById("speciesAttributes"), species.attributeMap);
 }
 
 function resetSpecies(species)

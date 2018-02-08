@@ -12,7 +12,8 @@ function setPlayerDetails()
 	// Player Attributes
 	var playerAttributes = document.getElementById("playerAttributes");
 	document.getElementById("attributeTitle").style.display = "block";
-	getAttributes(document.getElementById("playerAttributes"), player.species.attributes);
+	getAttributes(document.getElementById("playerAttributes"),
+			player.attributeMap, player.species.attributeMap);
 }
 
 function updateAutoConfirm()
@@ -30,92 +31,151 @@ function updateAutoConfirm()
 	}
 }
 
-function getAction(selectedAction)
+function checkUpLeft(row, col)
 {
-	switch (selectedAction)
+	var upLeftButton = document.getElementById(ActionEnum.UP_LEFT);
+
+	//upLeftButton.innerText = "\u2196";
+
+	upLeftButton.disabled = true;
+	upLeftButton.innerText = "\u2BBE";
+}
+
+function checkUp(row, col)
+{
+	var upButton = document.getElementById(ActionEnum.UP);
+
+	//upButton.innerText = "\u2191";
+
+	upButton.disabled = true;
+	upButton.innerText = "\u2BBE";
+}
+
+function checkUpRight(row, col)
+{
+	var upRightButton = document.getElementById(ActionEnum.UP_RIGHT);
+
+	//upRightButton.innerText = "\u2197";
+
+	upRightButton.disabled = true;
+	upRightButton.innerText = "\u2BBE";
+}
+
+function checkLeft(row, col)
+{
+	var leftButton = document.getElementById(ActionEnum.LEFT);
+
+	// If player has health, endurance, and not moving right...
+	// ... and is on a tile right of a not solid tile and up-right a solid tile
+	if (player.momentum.right === 0
+	 && player.attributeMap.get(AttributeEnum.HEALTH) > 0
+	 && player.attributeMap.get(AttributeEnum.ENDURANCE) > 0
+	 && !getTileByTileType(mapTiles.children[row].children[col-1].type).solid
+	 && getTileByTileType(mapTiles.children[row+1].children[col-1].type).solid)
 	{
-		case ActionEnum.UP_LEFT:
-			action = ActionEnum.UP_LEFT;
-			var actionLabel = "Jump Left";
-			setActionDetails("\u2196", actionLabel);
-			document.getElementById("actionInfo").innerText = "You selected " + actionLabel + ".";
-			break;
-		case ActionEnum.UP:
-			action = ActionEnum.UP;
-			var actionLabel = "Move Up";
-			setActionDetails("\u2191", actionLabel);
-			document.getElementById("actionInfo").innerText = "You selected " + actionLabel + ".";
-			break;
-		case ActionEnum.UP_RIGHT:
-			action = ActionEnum.UP_RIGHT;
-			var actionLabel = "Jump Right";
-			setActionDetails("\u2197", actionLabel);
-			document.getElementById("actionInfo").innerText = "You selected " + actionLabel + ".";
-			break;
-		case ActionEnum.LEFT:
-			action = ActionEnum.LEFT;
-			var actionLabel = "Move Left";
-			setActionDetails("\u2190", actionLabel);
-			document.getElementById("actionInfo").innerText = "You selected " + actionLabel + ".";
-			break;
-		case ActionEnum.CENTER:
-			action = ActionEnum.CENTER;
-			var actionLabel = "Rest";
-			setActionDetails("\u21BB", actionLabel);
-			document.getElementById("actionInfo").innerText = "You selected " + actionLabel + ".";
-			break;
-		case ActionEnum.RIGHT:
-			action = ActionEnum.RIGHT;
-			var actionLabel = "Move Right";
-			setActionDetails("\u2192", actionLabel);
-			document.getElementById("actionInfo").innerText = "You selected " + actionLabel + ".";
-			break;
-		case ActionEnum.DOWN_LEFT:
-			action = ActionEnum.DOWN_LEFT;
-			var actionLabel = "Swim Left";
-			setActionDetails("\u2199", actionLabel);
-			document.getElementById("actionInfo").innerText = "You selected " + actionLabel + ".";
-			break;
-		case ActionEnum.DOWN:
-			action = ActionEnum.DOWN;
-			var actionLabel = "Move Down";
-			setActionDetails("\u2193", actionLabel);
-			document.getElementById("actionInfo").innerText = "You selected " + actionLabel + ".";
-			break;
-		case ActionEnum.DOWN_RIGHT:
-			action = ActionEnum.DOWN_RIGHT;
-			var actionLabel = "Swim Right";
-			setActionDetails("\u2198", actionLabel);
-			document.getElementById("actionInfo").innerText = "You selected " + actionLabel + ".";
-			break;
-		default:
-			resetAction();
+		leftButton.label = ActionEnum.RUN_LEFT;
+		leftButton.innerText = "\u2190";
+		leftButton.disabled = false;
 	}
-
-	if (autoConfirm.checked === true && action !== "")
-		confirmAction();
+	else
+	{
+		leftButton.label = "";
+		leftButton.disabled = true;
+		leftButton.innerText = "\u2BBE";
+	}
 }
 
-function setActionDetails(actionImage, actionLabel)
+function checkCenter(row, col)
 {
-	var confirmAction = document.getElementById("confirmAction");
-	confirmAction.disabled = false;
-	confirmAction.innerText = actionLabel;
+	var disableCenter = false;
+	var centerButton = document.getElementById(ActionEnum.CENTER);
 
-	document.getElementById("actionLabel").innerText = actionImage + " " + actionLabel;
+	// If player has health
+	// and is on a not water tile above a solid tile
+	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0
+	 && mapTiles.children[row].children[col].type !== TileTypeEnum.WATER
+	 && getTileByTileType(mapTiles.children[row+1].children[col].type).solid)
+	{
+		if (playerIsMoving())
+		{
+			centerButton.label = ActionEnum.STOP;
+			centerButton.innerText = "\u2BC3";
+			centerButton.disabled = false;
+		}
+		else if (player.attributeMap.get(AttributeEnum.RECOVERY) > 0
+			  && player.attributeMap.get(AttributeEnum.ENDURANCE)
+			   < player.species.attributeMap.get(AttributeEnum.ENDURANCE))
+		{
+			centerButton.label = ActionEnum.REST;
+			centerButton.innerText = "\u21BB";
+			centerButton.disabled = false;
+		}
+		else
+			disableCenter = true;
 
-	document.getElementById("actionTitle").style.display = "block";
+	}
+	else
+		disableCenter = true;
+
+	if (disableCenter)
+	{
+		centerButton.label = "";
+		centerButton.disabled = true;
+		centerButton.innerText = "\u2BBE";
+	}
 }
 
-function resetAction()
+function checkRight(row, col)
 {
-	action = "";
+	var disableRight = false;
+	var rightButton = document.getElementById(ActionEnum.RIGHT);
 
-	var confirmAction = document.getElementById("confirmAction");
-	confirmAction.innerText = "Choose Action";
-	confirmAction.disabled = true;
+	// If player has health, endurance, and not moving left...
+	// .. and is on a tile left of a not solid tile and up-left a solid tile
+	if (player.momentum.left === 0
+	 && player.attributeMap.get(AttributeEnum.HEALTH) > 0
+	 && player.attributeMap.get(AttributeEnum.ENDURANCE) > 0
+	 && !getTileByTileType(mapTiles.children[row].children[col+1].type).solid
+	 && getTileByTileType(mapTiles.children[row+1].children[col+1].type).solid)
+	{
+		rightButton.label = ActionEnum.RUN_RIGHT;
+		rightButton.innerText = "\u2192";
+		rightButton.disabled = false;
+	}
+	else
+	{
+		rightButton.label = "";
+		rightButton.disabled = true;
+		rightButton.innerText = "\u2BBE";
+	}
+}
 
-	document.getElementById("actionTitle").style.display = "none";
+function checkDownLeft(row, col)
+{
+	var downLeftButton = document.getElementById(ActionEnum.DOWN_LEFT);
 
-	document.getElementById("actionInfo").innerText = "Select an action to get information.";
+	//downLeftButton.innerText = "\u2199";
+
+	downLeftButton.disabled = true;
+	downLeftButton.innerText = "\u2BBE";
+}
+
+function checkDown(row, col)
+{
+	var downButton = document.getElementById(ActionEnum.DOWN);
+
+	//downLeftButton.innerText = "\u2193";
+
+	downButton.disabled = true;
+	downButton.innerText = "\u2BBE";
+}
+
+function checkDownRight(row, col)
+{
+	var downRightButton = document.getElementById(ActionEnum.DOWN_RIGHT);
+
+	//downLeftButton.innerText = "\u2198";
+
+	downRightButton.disabled = true;
+	downRightButton.innerText = "\u2BBE";
 }

@@ -125,7 +125,7 @@ function getRandomTile(row, col)
 		var mapTile = mapRow.children[compareCol];
 		if (mapTile != null)
 			addTileTypeProbabilities(tileTypeMap,
-					getTileByTileType(mapTile.type).down);
+					getTileByTileType(mapTile.type).downMap);
 	}
 
 	// Get down probabilities
@@ -140,7 +140,7 @@ function getRandomTile(row, col)
 		var mapTile = mapRow.children[compareCol];
 		if (mapTile != null)
 			addTileTypeProbabilities(tileTypeMap,
-					getTileByTileType(mapTile.type).up);
+					getTileByTileType(mapTile.type).upMap);
 	}
 
 	// Get side probabilities
@@ -151,13 +151,13 @@ function getRandomTile(row, col)
 		var mapTile = mapRow.children[col-1];
 		if (mapTile != null)
 			addTileTypeProbabilities(tileTypeMap,
-					getTileByTileType(mapTile.type).side);
+					getTileByTileType(mapTile.type).sideMap);
 
 		// Get right probabilities
 		mapTile = mapRow.children[col+1];
 		if (mapTile != null)
 			addTileTypeProbabilities(tileTypeMap,
-					getTileByTileType(mapTile.type).side);
+					getTileByTileType(mapTile.type).sideMap);
 	}
 
 	// Get tile based on probabilities
@@ -236,7 +236,7 @@ function getTileByTileType(tileType)
 
 function exposeMapTiles()
 {
-	var sight = player.species.attributes.sight;
+	var sight = player.attributeMap.get(AttributeEnum.SIGHT);
 
 	// Expose up column
 	for (var row = player.position.row-1, rowSight = 0;
