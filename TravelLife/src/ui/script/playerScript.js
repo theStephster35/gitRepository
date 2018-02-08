@@ -15,9 +15,15 @@ function initPlayer()
 	player = new Player(document.getElementById("name").value,
 						species.options[species.selectedIndex].value);
 
-	document.getElementById("playerIcon").src = player.species.image;
+	updatePlayerIcon(player.image);
 
 	setPlayerDetails();	
+}
+
+function updatePlayerIcon(playerIcon)
+{
+	player.image = playerIcon;
+	document.getElementById("playerIcon").src = playerIcon;
 }
 
 function placePlayer()
@@ -179,10 +185,11 @@ function gainSightRecovery()
 
 function resetPlayer()
 {
-	if (document.getElementById("rememberMe").checked !== true)
+	document.getElementById("playerIcon").style.display = "none";
+
+	if (!document.getElementById("rememberMe").checked)
 	{
 		document.getElementById("name").value = "";
-		document.getElementById("playerIcon").style.display = "none";
 
 		resetSpecies();
 	}

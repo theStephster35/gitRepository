@@ -31,8 +31,15 @@ function confirmAction()
 
 	// Check if player is alive
 	if (player.attributeMap.get(AttributeEnum.HEALTH) === 0)
+	{
+		var row = player.position.row;
+		var col = player.position.col;
+		if (getTileByTileType(mapTiles.children[row+1].children[col].type).solid)
+			updatePlayerIcon("images/" + player.species.type + "/SolidEnd.png");
+
 		alert("The travels of " + player.name + " the "
 			+ player.species.type + " have come to an end.");
+	}
 }
 
 function endGame()

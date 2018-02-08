@@ -80,7 +80,12 @@ function run(direction, doUpdate)
 	{
 		if (doUpdate)
 		{
-			(direction === ActionEnum.LEFT ? player.momentum.left = 0 : player.momentum.right = 0);
+			if (direction === ActionEnum.LEFT)
+				player.momentum.left = 0;
+			else
+				player.momentum.right = 0;
+			updatePlayerIcon("images/" + player.species.type + "/Species.png");
+
 			player.attributeMap.set(AttributeEnum.RUN, player.species.attributeMap.get(AttributeEnum.RUN));
 		}
 
@@ -91,7 +96,19 @@ function run(direction, doUpdate)
 	}
 	else if (doUpdate)
 	{
-		(direction === ActionEnum.LEFT ? player.momentum.left++ : player.momentum.right++);
+		if (direction === ActionEnum.LEFT)
+		{
+			player.momentum.left++;
+			updatePlayerIcon("images/" + player.species.type + "/"
+				+ ActionEnum.RUN_LEFT.replace(" ", "") + ".png");
+		}
+		else
+		{
+			player.momentum.right++;
+			updatePlayerIcon("images/" + player.species.type + "/"
+				+ ActionEnum.RUN_RIGHT.replace(" ", "") + ".png");
+		}
+
 		player.attributeMap.set(AttributeEnum.RUN, attributeValue);
 	}
 
@@ -146,6 +163,8 @@ function stop(doUpdate)
 		player.momentum.left = 0;
 		player.momentum.right = 0;
 		player.momentum.down = 0;
+
+		updatePlayerIcon("images/" + player.species.type + "/Species.png");
 	}
 
 	return loseEndurance(ActionEnum.STOP, actionInfo);

@@ -13,6 +13,8 @@ class Player
 				this.species = new Human();
 		}
 
+		this.image = this.species.image;
+
 		this.attributeMap = new Map();
 		for (var attribute of this.species.attributeMap.keys())
 			this.attributeMap.set(attribute, this.species.attributeMap.get(attribute));
