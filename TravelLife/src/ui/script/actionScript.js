@@ -26,7 +26,7 @@ function getAction(selectedAction)
 		if (actionFunction != null)
 			actionInfo = actionFunction(actionButton.label, false);
 
-		if (actionInfo === "")
+		if (actionInfo == null || actionInfo === "")
 			actionInfo = "You selected " + actionButton.label + ".";
 
 		setActionDetails(actionButton.innerText, actionButton.label, actionInfo);
@@ -51,14 +51,154 @@ function setActionDetails(actionImage, actionLabel, actionInfo)
 	document.getElementById("actionInfo").innerText = actionInfo;
 }
 
+function climbOverOff(climbOverOff, direction, doUpdate)
+{
+	var actionInfo = "";
+
+	if (doUpdate)
+	{
+		player.status = ActionEnum.STOP;
+
+		player.momentum.left = 0;
+		player.momentum.right = 0;
+
+		updatePlayerIcon("images/" + player.species.type + "/Species.png");
+
+		player.attributeMap.set(AttributeEnum.CLIMB, player.species.attributeMap.get(AttributeEnum.CLIMB));
+	}
+	else
+		actionInfo += climbOverOff + " resets spent attributes and you lose " + AttributeEnum.ENDURANCE + ".\n"
+					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
+					+ "\n";
+
+	actionInfo = loseEndurance(AttributeEnum.CLIMB, actionInfo);
+
+	if (doUpdate)
+	{
+		if (climbOverOff === ActionEnum.CLIMB_OVER)
+		{
+			player.position.row--;
+			(direction === ActionEnum.LEFT ? player.position.col-- : player.position.col++);
+		}
+
+		exposeMapTiles();
+		placePlayer();
+	}
+
+	return actionInfo;
+}
+
+function climb(direction, doUpdate)
+{
+	var actionInfo = "";
+
+	if (direction === ActionEnum.LEFT || direction === ActionEnum.RIGHT)
+		actionInfo = climbSide(direction, doUpdate);
+	else
+	{
+		var climbValue = player.attributeMap.get(AttributeEnum.CLIMB);
+
+		var min = 1
+		var max = climbValue;
+		var value = max;
+
+		if (doUpdate)
+			value = getRandomNumber(min, max);
+		else // Get info, don't do update
+			actionInfo += AttributeEnum.CLIMB + " decreases " + AttributeEnum.CLIMB + ".\n"
+						+ "When " + AttributeEnum.CLIMB + " reaches 0, "
+						+ AttributeEnum.CLIMB + " resets and you lose " + AttributeEnum.ENDURANCE + ".\n"
+						+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose "
+						+ AttributeEnum.HEALTH + " and " + ActionEnum.LET_GO + ".\n"
+						+ "\n"
+						+ AttributeEnum.CLIMB + ": " + climbValue + " - [" + min + "-" + max + "] "
+						+ "= [" + (climbValue - max) + "-" + (climbValue - min) + "]\n\n";
+
+		climbValue -= value;
+		if (climbValue === 0)
+		{
+			if (doUpdate)
+				player.attributeMap.set(AttributeEnum.CLIMB, player.species.attributeMap.get(AttributeEnum.CLIMB));
+
+			actionInfo = loseEndurance(AttributeEnum.CLIMB, actionInfo);
+
+			if (!doUpdate && !actionInfo.includes("If you " + AttributeEnum.CLIMB + ", you risk "))
+				actionInfo += "If you " + AttributeEnum.CLIMB + ", you risk losing " + AttributeEnum.ENDURANCE + ".";
+		}
+		else if (doUpdate)
+			player.attributeMap.set(AttributeEnum.CLIMB, climbValue);
+
+		if (doUpdate)
+		{
+			(direction === ActionEnum.UP ? player.position.row-- : player.position.row++);
+			exposeMapTiles();
+			placePlayer();
+		}
+
+		// Check if player let go
+		if (player.attributeMap.get(AttributeEnum.ENDURANCE) === 0)
+			letGo(true);
+	}
+
+	return actionInfo;
+}
+
+function climbSide(direction, doUpdate)
+{
+	var actionInfo = "";
+
+	if (doUpdate)
+	{
+		player.status = AttributeEnum.CLIMB;
+
+		if (direction === ActionEnum.LEFT)
+		{
+			player.momentum.left++;
+			updatePlayerIcon("images/" + player.species.type + "/"
+				+ ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png");
+		}
+		else if (direction === ActionEnum.RIGHT)
+		{
+			player.momentum.right++;
+			updatePlayerIcon("images/" + player.species.type + "/"
+				+ ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png");
+		}
+	}
+	else
+		actionInfo += AttributeEnum.CLIMB + " allows you to " + AttributeEnum.CLIMB + ".";
+
+	return actionInfo;
+}
+
+function letGo(doUpdate)
+{
+	var actionInfo = "";
+
+	if (doUpdate)
+	{
+		player.status = ActionEnum.FALL;
+
+		player.momentum.up = 0;
+		player.momentum.left = 0;
+		player.momentum.right = 0;
+		player.momentum.down = 0;
+
+		updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+	}
+	else
+		actionInfo += ActionEnum.LET_GO + " allows you to " + ActionEnum.FALL + ".";
+
+	return actionInfo;
+}
+
 function run(direction, doUpdate)
 {
 	var actionInfo = "";
 
-	var attributeValue = player.attributeMap.get(AttributeEnum.RUN);
+	var runValue = player.attributeMap.get(AttributeEnum.RUN);
 
 	var min = 1
-	var max = attributeValue;
+	var max = runValue;
 	var value = max;
 
 	if (doUpdate)
@@ -71,19 +211,20 @@ function run(direction, doUpdate)
 					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
 					+ "\n";
 
-		actionInfo += AttributeEnum.RUN + ": " + attributeValue + " - [" + min + "-" + max + "] "
-					+ "= [" + (attributeValue - max) + "-" + (attributeValue - min) + "]\n\n";
+		actionInfo += AttributeEnum.RUN + ": " + runValue + " - [" + min + "-" + max + "] "
+					+ "= [" + (runValue - max) + "-" + (runValue - min) + "]\n\n";
 	}
 
-	attributeValue -= value;
-	if (attributeValue === 0)
+	runValue -= value;
+	if (runValue === 0)
 	{
 		if (doUpdate)
 		{
-			if (direction === ActionEnum.LEFT)
-				player.momentum.left = 0;
-			else
-				player.momentum.right = 0;
+			player.status = ActionEnum.STOP;
+
+			player.momentum.left = 0;
+			player.momentum.right = 0;
+
 			updatePlayerIcon("images/" + player.species.type + "/Species.png");
 
 			player.attributeMap.set(AttributeEnum.RUN, player.species.attributeMap.get(AttributeEnum.RUN));
@@ -96,6 +237,8 @@ function run(direction, doUpdate)
 	}
 	else if (doUpdate)
 	{
+		player.status = AttributeEnum.RUN;
+
 		if (direction === ActionEnum.LEFT)
 		{
 			player.momentum.left++;
@@ -109,7 +252,7 @@ function run(direction, doUpdate)
 				+ ActionEnum.RUN_RIGHT.replace(" ", "") + ".png");
 		}
 
-		player.attributeMap.set(AttributeEnum.RUN, attributeValue);
+		player.attributeMap.set(AttributeEnum.RUN, runValue);
 	}
 
 	if (doUpdate)
@@ -122,11 +265,11 @@ function run(direction, doUpdate)
 		var row = player.position.row;
 		var col = player.position.col;
 		if ((player.momentum.left > 0
-		  && (getTileByTileType(mapTiles.children[row].children[col-1].type).solid
-		   || !getTileByTileType(mapTiles.children[row+1].children[col-1].type).solid))
+		  && (getTileByPosition(row, (col-1)).solid
+		   || !getTileByPosition((row+1), (col-1)).solid))
 		 || (player.momentum.right > 0
-		  && (getTileByTileType(mapTiles.children[row].children[col+1].type).solid
-		   || !getTileByTileType(mapTiles.children[row+1].children[col+1].type).solid)))
+		  && (getTileByPosition(row, (col+1)).solid
+		   || !getTileByPosition((row+1), (col+1)).solid)))
 			stop(true);
 	}
 
@@ -136,7 +279,7 @@ function run(direction, doUpdate)
 function stop(doUpdate)
 {
 	var actionInfo = "";
-	var attributes = [AttributeEnum.RUN];
+	var attributes = [AttributeEnum.CLIMB, AttributeEnum.RUN];
 
 	if (!doUpdate)
 		actionInfo += ActionEnum.STOP + " resets spent attributes and you lose " + AttributeEnum.ENDURANCE + ".\n"
@@ -159,6 +302,8 @@ function stop(doUpdate)
 
 	if (doUpdate)
 	{
+		player.status = ActionEnum.STOP;
+
 		player.momentum.up = 0;
 		player.momentum.left = 0;
 		player.momentum.right = 0;
@@ -174,14 +319,8 @@ function rest(doUpdate)
 {
 	actionInfo = "";
 
-	var min = 1
-	var max = (player.attributeMap.get(AttributeEnum.RECOVERY)
-			 ? player.attributeMap.get(AttributeEnum.RECOVERY) : min);
-
-	if (!doUpdate)
-		actionInfo += ActionEnum.REST + " increases your " + AttributeEnum.ENDURANCE
-					+ " based on your " + AttributeEnum.RECOVERY + ".\n"
-					+ "\n";
+	var min = 1;
+	var max = player.attributeMap.get(AttributeEnum.RECOVERY);
 
 	var playerAttributeValue = player.attributeMap.get(AttributeEnum.ENDURANCE);
 	var speciesAttributeValue = player.species.attributeMap.get(AttributeEnum.ENDURANCE);
@@ -201,7 +340,10 @@ function rest(doUpdate)
 		player.attributeMap.set(AttributeEnum.RECOVERY, playerAttributeValue);
 	}
 	else // Get info, don't do update
-		actionInfo += AttributeEnum.ENDURANCE + ": " + playerAttributeValue
+		actionInfo += ActionEnum.REST + " increases " + AttributeEnum.ENDURANCE
+					+ " based on " + AttributeEnum.RECOVERY + ".\n"
+					+ "\n";
+					+ AttributeEnum.ENDURANCE + ": " + playerAttributeValue
 					+ " + [" + min + "-" + max + "] "
 					+ "= [" + (playerAttributeValue + min) + "-"
 					+ ((playerAttributeValue + max) > speciesAttributeValue
@@ -209,6 +351,60 @@ function rest(doUpdate)
 					+ "\n"
 					+ "If you " + ActionEnum.REST + ", you risk losing "
 					+ AttributeEnum.SIGHT + " and " + AttributeEnum.RECOVERY + ".";
+
+	return actionInfo;
+}
+
+function fall(doUpdate)
+{
+	var actionInfo = "";
+
+	if (doUpdate)
+	{
+		player.status = ActionEnum.FALL;
+
+		playerAttributeValue = player.attributeMap.get(AttributeEnum.SIGHT);
+		playerAttributeValue -= getRandomNumber(0, playerAttributeValue-1);
+		player.attributeMap.set(AttributeEnum.SIGHT, playerAttributeValue);
+
+		player.momentum.up = 0;
+		player.momentum.left = 0;
+		player.momentum.right = 0;
+		player.momentum.down++;
+
+		updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+
+		if (!getTileByPosition((player.position.row+1), player.position.col).solid)
+			player.position.row++;
+		exposeMapTiles();
+		placePlayer();
+
+		// Check if player hit a solid tile
+		if (getTileByPosition((player.position.row+1), player.position.col).solid)
+		{
+			var playerAttributeValue = player.attributeMap.get(AttributeEnum.JUMP);
+			var maxDamage = player.momentum.down - getRandomNumber(0, playerAttributeValue);
+			if (maxDamage > 0)
+			{
+				playerAttributeValue = player.attributeMap.get(AttributeEnum.HEALTH);
+				playerAttributeValue -= getRandomNumber(1, maxDamage);
+				player.attributeMap.set(AttributeEnum.HEALTH,
+						(playerAttributeValue < 0 ? 0 : playerAttributeValue));
+			}
+
+			player.status = ActionEnum.STOP;
+
+			player.momentum.down = 0;
+
+			updatePlayerIcon("images/" + player.species.type + "/Species.png");
+		}
+	}
+	else
+		actionInfo += ActionEnum.FALL + " resets " + AttributeEnum.JUMP + ", increases downward momentum, "
+					+ "and risks losing " + AttributeEnum.SIGHT + ".\n"
+					+ "If you impact a solid block, you risk losing " + AttributeEnum.HEALTH + " "
+					+ "based on your downward momentum reduced by " + AttributeEnum.JUMP + ".\n"
+					+ "\n";
 
 	return actionInfo;
 }

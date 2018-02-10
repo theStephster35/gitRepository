@@ -234,6 +234,11 @@ function getTileByTileType(tileType)
 	return tile;
 }
 
+function getTileByPosition(row, col)
+{
+	return getTileByTileType(mapTiles.children[row].children[col].type);
+}
+
 function exposeMapTiles()
 {
 	var sight = player.attributeMap.get(AttributeEnum.SIGHT);

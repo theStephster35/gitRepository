@@ -7,7 +7,7 @@ actionFunctionMap.set(ActionEnum.CENTER,     stayCenter);
 actionFunctionMap.set(ActionEnum.RIGHT,      moveRight);
 actionFunctionMap.set(ActionEnum.DOWN_LEFT,  moveDownLeft);
 actionFunctionMap.set(ActionEnum.DOWN,       moveDown);
-actionFunctionMap.set(ActionEnum.DOWN_RIGHT, downRight);
+actionFunctionMap.set(ActionEnum.DOWN_RIGHT, moveDownRight);
 
 function initPlayer()
 {
@@ -39,45 +39,81 @@ function placePlayer()
 	playerIcon.style.left = (playerTile.offsetLeft - map.offsetLeft) + "px";
 }
 
-function playerIsMoving()
+function playerIsInStatus(status, direction)
 {
-	if (player.momentum.up === 0
-	 && player.momentum.left === 0
-	 && player.momentum.right === 0
-	 && player.momentum.down === 0)
-		return false;
+	var playerIsInStatus = true;
 
-	return true;
+	if (status != null && player.status !== status)
+		playerIsInStatus = false;
+	else if (direction != null)
+	{
+		switch (direction)
+		{
+			case ActionEnum.UP:
+				if (player.momentum.up === 0)
+					playerIsInStatus = false;
+				break;
+			case ActionEnum.LEFT:
+				if (player.momentum.left === 0)
+					playerIsInStatus = false;
+				break;
+			case ActionEnum.RIGHT:
+				if (player.momentum.right === 0)
+					playerIsInStatus = false;
+				break;
+			case ActionEnum.DOWN:
+				if (player.momentum.down === 0)
+					playerIsInStatus = false;
+				break;
+			default:
+				playerIsInStatus = false
+		}
+	}
+
+	return playerIsInStatus;
 }
 
-function moveUpLeft()
+function moveUpLeft(actionLabel, doUpdate)
 {
-	player.position.row--;
-	player.position.col--;
-	exposeMapTiles();
-	placePlayer();
+	var actionInfo = "";
+
+	if (actionLabel === ActionEnum.CLIMB_LEFT)
+		actionInfo = climb(ActionEnum.LEFT, doUpdate);
+	else if (actionLabel === ActionEnum.CLIMB_OVER)
+		actionInfo = climbOverOff(ActionEnum.CLIMB_OVER, ActionEnum.LEFT, doUpdate);
+
+	return actionInfo;
 }
 
-function moveUp()
+function moveUp(actionLabel, doUpdate)
 {
-	player.position.row--;
-	exposeMapTiles();
-	placePlayer();
+	var actionInfo = "";
+
+	if (actionLabel === ActionEnum.CLIMB_UP)
+		actionInfo = climb(ActionEnum.UP, doUpdate);
+
+	return actionInfo;
 }
 
-function moveUpRight()
+function moveUpRight(actionLabel, doUpdate)
 {
-	player.position.row--;
-	player.position.col++;
-	exposeMapTiles();
-	placePlayer();
+	var actionInfo = "";
+
+	if (actionLabel === ActionEnum.CLIMB_RIGHT)
+		actionInfo = climb(ActionEnum.RIGHT, doUpdate);
+	else if (actionLabel === ActionEnum.CLIMB_OVER)
+		actionInfo = climbOverOff(ActionEnum.CLIMB_OVER, ActionEnum.RIGHT, doUpdate);
+
+	return actionInfo;
 }
 
 function moveLeft(actionLabel, doUpdate)
 {
 	var actionInfo = "";
 
-	if (actionLabel === ActionEnum.RUN_LEFT)
+	if (actionLabel === ActionEnum.LET_GO)
+		actionInfo = letGo(doUpdate);
+	else if (actionLabel === ActionEnum.RUN_LEFT)
 		actionInfo = run(ActionEnum.LEFT, doUpdate);
 
 	return actionInfo;
@@ -99,33 +135,46 @@ function moveRight(actionLabel, doUpdate)
 {
 	var actionInfo = "";
 
-	if (actionLabel === ActionEnum.RUN_RIGHT)
+	if (actionLabel === ActionEnum.LET_GO)
+		actionInfo = letGo(doUpdate);
+	else if (actionLabel === ActionEnum.RUN_RIGHT)
 		actionInfo = run(ActionEnum.RIGHT, doUpdate);
 
 	return actionInfo;
 }
 
-function moveDownLeft()
+function moveDownLeft(actionLabel, doUpdate)
 {
-	player.position.row++;
-	player.position.col--;
-	exposeMapTiles();
-	placePlayer();
+	var actionInfo = "";
+
+	if (actionLabel === ActionEnum.CLIMB_OFF)
+		actionInfo = climbOverOff(ActionEnum.CLIMB_OFF, ActionEnum.LEFT, doUpdate);
+
+	return actionInfo;
 }
 
-function moveDown()
+function moveDown(actionLabel, doUpdate)
 {
-	player.position.row++;
-	exposeMapTiles();
-	placePlayer();
+	var actionInfo = "";
+
+	if (actionLabel === ActionEnum.FALL)
+		actionInfo = fall(doUpdate);
+	else if (actionLabel === ActionEnum.CLIMB_DOWN)
+		actionInfo = climb(ActionEnum.DOWN, doUpdate);
+
+	return actionInfo;
 }
 
-function moveDownRight()
+function moveDownRight(actionLabel, doUpdate)
 {
-	player.position.row++;
-	player.position.col--;
-	exposeMapTiles();
-	placePlayer();
+	var actionInfo = "";
+
+	if (actionLabel === ActionEnum.CLIMB_OFF)
+		actionInfo = climbOverOff(ActionEnum.CLIMB_OFF, ActionEnum.RIGHT, doUpdate);
+	else if (actionLabel === ActionEnum.FALL)
+		actionInfo = fall(doUpdate);
+
+	return actionInfo;
 }
 
 function loseEndurance(actionName, actionInfo)
@@ -181,7 +230,6 @@ function gainSightRecovery()
 		player.attributeMap.set(AttributeEnum.RECOVERY, playerAttributeValue);
 	}
 }
-
 
 function resetPlayer()
 {
