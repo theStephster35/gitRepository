@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Symbola;
+    src: url("fonts/Symbola_hint.ttf");
+}
+
 body,
 img,
 h1,
@@ -105,7 +110,6 @@ body {
 }
 
 .actionButtons {
-	margin: auto;
 	display: grid;
 	grid-template-rows: repeat(3, 50px);
 	grid-template-columns: repeat(3, 50px);
@@ -114,52 +118,66 @@ body {
 .upLeft {
 	grid-column: 1/2;
 	grid-row: 1/2;
+	margin: auto;
 }
 
 .up {
 	grid-column: 2/3;
 	grid-row: 1/2;
+	margin: auto;
 }
 
 .upRight {
 	grid-column: 3/4;
 	grid-row: 1/2;
+	margin: auto;
 }
 
 .left {
 	grid-column: 1/2;
 	grid-row: 2/3;
+	margin: auto;
 }
 
 .center {
 	grid-column: 2/3;
 	grid-row: 2/3;
+	margin: auto;
 }
 
 .right {
 	grid-column: 3/4;
 	grid-row: 2/3;
+	margin: auto;
 }
 
 .downLeft {
 	grid-column: 1/2;
 	grid-row: 3/4;
+	margin: auto;
 }
 
 .down {
 	grid-column: 2/3;
 	grid-row: 3/4;
+	margin: auto;
 }
 
 .downRight {
 	grid-column: 3/4;
 	grid-row: 3/4;
+	margin: auto;
 }
 
 .actionButton {
 	width: 45px;
 	height: 45px;
-	font-size: 20px;
+	font: 20px Symbola;
+}
+
+.actionSymbol {
+	display: inline-flex;
+	font-family: Symbola;
 }
 
 .map {

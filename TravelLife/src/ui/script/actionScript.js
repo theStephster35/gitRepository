@@ -38,13 +38,15 @@ function getAction(selectedAction)
 		confirmAction();
 }
 
-function setActionDetails(actionImage, actionLabel, actionInfo)
+function setActionDetails(actionSymbol, actionLabel, actionInfo)
 {
 	var confirmAction = document.getElementById("confirmAction");
 	confirmAction.disabled = false;
 	confirmAction.innerText = actionLabel;
 
-	document.getElementById("actionLabel").innerText = actionImage + " " + actionLabel;
+	document.getElementById("actionSymbol").innerText = actionSymbol;
+
+	document.getElementById("actionLabel").innerText = actionLabel;
 
 	document.getElementById("actionTitle").style.display = "block";
 

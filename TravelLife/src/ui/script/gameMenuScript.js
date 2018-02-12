@@ -47,7 +47,7 @@ function checkUpLeft(row, col)
 		 && getTileByPosition((row+1), col).solid)
 		{
 			upLeftButton.label = ActionEnum.CLIMB_LEFT;
-			upLeftButton.innerText = "\u2BA4";
+			upLeftButton.innerText = "\u2B11";
 			upLeftButton.disabled = false;
 		}
 		else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
@@ -124,7 +124,7 @@ function checkUpRight(row, col)
 		 && getTileByPosition((row+1), col).solid)
 		{
 			upRightButton.label = ActionEnum.CLIMB_RIGHT;
-			upRightButton.innerText = "\u2BA5";
+			upRightButton.innerText = "\u2B0F";
 			upRightButton.disabled = false;
 		}
 		else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
@@ -162,7 +162,7 @@ function checkLeft(row, col)
 		if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT))
 		{
 			leftButton.label = ActionEnum.LET_GO;
-			leftButton.innerText = "\u21AB";
+			leftButton.innerText = "\u21E0";
 			leftButton.disabled = false;
 		}
 		else if ((playerIsInStatus(ActionEnum.STOP)
@@ -244,7 +244,7 @@ function checkRight(row, col)
 		if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT))
 		{
 			rightButton.label = ActionEnum.LET_GO;
-			rightButton.innerText = "\u21AC";
+			rightButton.innerText = "\u21E2";
 			rightButton.disabled = false;
 		}
 		else if ((playerIsInStatus(ActionEnum.STOP)
@@ -354,7 +354,7 @@ function checkDownRight(row, col)
 		disableButton(downRightButton);
 
 	//downRightButton.innerText = "\u2198"; // Swim?
-	//downRightButton.innerText = "\u2BA7"; // Climb Over?
+	//downRightButton.innerText = "\u2B0E"; // Climb Over?
 }
 
 function disableButton(button)
