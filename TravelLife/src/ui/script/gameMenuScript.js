@@ -219,7 +219,7 @@ function checkCenter(row, col)
 		else if (playerIsInStatus(AttributeEnum.RUN))
 		{
 			centerButton.label = ActionEnum.STOP;
-			centerButton.innerText = "\u2BC3";
+			centerButton.innerText = "\u233E";
 			centerButton.disabled = false;
 		}
 		else
