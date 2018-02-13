@@ -159,6 +159,8 @@ function moveDown(actionLabel, doUpdate)
 
 	if (actionLabel === ActionEnum.FALL)
 		actionInfo = fall(doUpdate);
+	else if (actionLabel === ActionEnum.LAND)
+		actionInfo = land(doUpdate);
 	else if (actionLabel === ActionEnum.CLIMB_DOWN)
 		actionInfo = climb(ActionEnum.DOWN, doUpdate);
 

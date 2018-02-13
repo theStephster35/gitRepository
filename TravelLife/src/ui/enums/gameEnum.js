@@ -53,6 +53,7 @@ var ActionEnum =
 	DOWN: "down",
 	CLIMB_DOWN: AttributeEnum.CLIMB + " Down",
 	FALL: "Fall",
+	LAND: "Land",
 
 	DOWN_RIGHT: "downRight"
 };

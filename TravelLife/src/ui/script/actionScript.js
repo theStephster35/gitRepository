@@ -281,26 +281,13 @@ function run(direction, doUpdate)
 function stop(doUpdate)
 {
 	var actionInfo = "";
-	var attributes = [AttributeEnum.CLIMB, AttributeEnum.RUN];
 
 	if (!doUpdate)
 		actionInfo += ActionEnum.STOP + " resets spent attributes and you lose " + AttributeEnum.ENDURANCE + ".\n"
 					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
 					+ "\n";
 
-	for (var attribute of attributes)
-	{
-		var playerAttributeValue = player.attributeMap.get(attribute);
-		var speciesAttributeValue = player.species.attributeMap.get(attribute);
-		if (playerAttributeValue < speciesAttributeValue)
-		{
-			if (doUpdate)
-				player.attributeMap.set(attribute, speciesAttributeValue);
-			else // Get info, don't do update
-				actionInfo += attribute + ": " + playerAttributeValue
-					+ " => " + speciesAttributeValue + "\n";
-		}
-	}
+	resetAttributes([AttributeEnum.CLIMB, AttributeEnum.JUMP, AttributeEnum.RUN], actionInfo);
 
 	if (doUpdate)
 	{
@@ -315,6 +302,23 @@ function stop(doUpdate)
 	}
 
 	return loseEndurance(ActionEnum.STOP, actionInfo);
+}
+
+function resetAttributes(attributes, actionInfo)
+{
+	for (var attribute of attributes)
+	{
+		var playerAttributeValue = player.attributeMap.get(attribute);
+		var speciesAttributeValue = player.species.attributeMap.get(attribute);
+		if (playerAttributeValue < speciesAttributeValue)
+		{
+			if (actionInfo == null || actionInfo === "")
+				player.attributeMap.set(attribute, speciesAttributeValue);
+			else // Get info, don't do update
+				actionInfo += attribute + ": " + playerAttributeValue
+					+ " => " + speciesAttributeValue + "\n";
+		}
+	}
 }
 
 function rest(doUpdate)
@@ -361,13 +365,17 @@ function fall(doUpdate)
 {
 	var actionInfo = "";
 
+	var speciesJumpValue = player.attributeMap.get(AttributeEnum.JUMP);
+
 	if (doUpdate)
 	{
 		player.status = ActionEnum.FALL;
 
-		playerAttributeValue = player.attributeMap.get(AttributeEnum.SIGHT);
-		playerAttributeValue -= getRandomNumber(0, playerAttributeValue-1);
-		player.attributeMap.set(AttributeEnum.SIGHT, playerAttributeValue);
+		player.attributeMap.set(AttributeEnum.JUMP, speciesJumpValue);
+
+		var playerSightValue = player.attributeMap.get(AttributeEnum.SIGHT);
+		playerSightValue -= getRandomNumber(0, playerSightValue-1);
+		player.attributeMap.set(AttributeEnum.SIGHT, playerSightValue);
 
 		player.momentum.up = 0;
 		player.momentum.left = 0;
@@ -380,33 +388,75 @@ function fall(doUpdate)
 			player.position.row++;
 		exposeMapTiles();
 		placePlayer();
-
-		// Check if player hit a solid tile
-		if (getTileByPosition((player.position.row+1), player.position.col).solid)
-		{
-			var playerAttributeValue = player.attributeMap.get(AttributeEnum.JUMP);
-			var maxDamage = player.momentum.down - getRandomNumber(0, playerAttributeValue);
-			if (maxDamage > 0)
-			{
-				playerAttributeValue = player.attributeMap.get(AttributeEnum.HEALTH);
-				playerAttributeValue -= getRandomNumber(1, maxDamage);
-				player.attributeMap.set(AttributeEnum.HEALTH,
-						(playerAttributeValue < 0 ? 0 : playerAttributeValue));
-			}
-
-			player.status = ActionEnum.STOP;
-
-			player.momentum.down = 0;
-
-			updatePlayerIcon("images/" + player.species.type + "/Species.png");
-		}
 	}
-	else
-		actionInfo += ActionEnum.FALL + " resets " + AttributeEnum.JUMP + ", increases downward momentum, "
-					+ "and risks losing " + AttributeEnum.SIGHT + ".\n"
-					+ "If you impact a solid block, you risk losing " + AttributeEnum.HEALTH + " "
-					+ "based on your downward momentum reduced by " + AttributeEnum.JUMP + ".\n"
+	else // Get info, don't do update
+	{
+		actionInfo += ActionEnum.FALL + " increases downward momentum and resets " + AttributeEnum.JUMP + ".\n"
 					+ "\n";
+
+		resetAttributes([AttributeEnum.JUMP], actionInfo);
+		if (actionInfo.includes(" => "))
+			actionInfo += "\n";
+
+		actionInfo += "If you " + ActionEnum.FALL + ", you risk losing " + AttributeEnum.SIGHT + ".";
+	}
+
+	return actionInfo;
+}
+
+function land(doUpdate)
+{
+	var actionInfo = "";
+
+	if (!doUpdate)
+		actionInfo += ActionEnum.LAND + " resets spent attributes and you lose " + AttributeEnum.HEALTH + " "
+					+ "based on downward momentum reduced by " + AttributeEnum.JUMP + ".\n"
+					+ "\n";
+
+	resetAttributes([AttributeEnum.CLIMB, AttributeEnum.JUMP, AttributeEnum.RUN], doUpdate);
+
+	var max = player.momentum.down;
+	var playerJumpValue = player.attributeMap.get(AttributeEnum.JUMP);
+	var playerHealthValue = player.attributeMap.get(AttributeEnum.HEALTH);
+
+	if (doUpdate)
+	{
+		max -= getRandomNumber(0, playerJumpValue);
+		if (max > 0)
+		{
+			playerHealthValue -= getRandomNumber(1, max);
+			player.attributeMap.set(AttributeEnum.HEALTH,
+				(playerHealthValue < 0 ? 0 : playerHealthValue));
+		}
+
+		player.status = ActionEnum.STOP;
+
+		player.momentum.up = 0;
+		player.momentum.left = 0;
+		player.momentum.right = 0;
+		player.momentum.down = 0;
+
+		updatePlayerIcon("images/" + player.species.type + "/Species.png");
+	}
+	else // Get info, don't do update
+	{
+		var min = max - playerJumpValue;
+		if (min < 0)
+			min = 0;
+
+		var minHealth = (playerHealthValue - max);
+		if (minHealth < 0)
+			minHealth = 0;
+
+		actionInfo += AttributeEnum.HEALTH + ": " + playerHealthValue + " "
+					+ "- (" + max + " - " + "[0-" + playerJumpValue + "]) "
+					+ "= [" + minHealth + "-"
+					+ ((playerHealthValue - min) < 0 ? 0 : (playerHealthValue - min)) + "]\n";
+
+		if (minHealth === 0)
+			actionInfo += "\n"
+						+ "If you " + ActionEnum.LAND + ", you risk death.";
+	}
 
 	return actionInfo;
 }

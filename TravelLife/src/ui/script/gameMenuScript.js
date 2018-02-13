@@ -1,3 +1,13 @@
+var upLeftButton = document.getElementById(ActionEnum.UP_LEFT);
+var upButton = document.getElementById(ActionEnum.UP);
+var upRightButton = document.getElementById(ActionEnum.UP_RIGHT);
+var leftButton = document.getElementById(ActionEnum.LEFT);
+var centerButton = document.getElementById(ActionEnum.CENTER);
+var rightButton = document.getElementById(ActionEnum.RIGHT);
+var downLeftButton = document.getElementById(ActionEnum.DOWN_LEFT);
+var downButton = document.getElementById(ActionEnum.DOWN);
+var downRightButton	= document.getElementById(ActionEnum.DOWN_RIGHT);
+
 var autoConfirm = document.getElementById("autoConfirm");
 
 function setPlayerDetails()
@@ -34,7 +44,6 @@ function updateAutoConfirm()
 function checkUpLeft(row, col)
 {
 	var disableUpLeft = false;
-	var upLeftButton = document.getElementById(ActionEnum.UP_LEFT);
 
 	// If player has health and endurance
 	// ... and is on a tile right of a solid tile
@@ -76,7 +85,6 @@ function checkUpLeft(row, col)
 function checkUp(row, col)
 {
 	var disableUp = false;
-	var upButton = document.getElementById(ActionEnum.UP);
 
 	// If player has health, endurance, and is climbing
 	// ... and is on a tile below a not a solid tile
@@ -111,7 +119,6 @@ function checkUp(row, col)
 function checkUpRight(row, col)
 {
 	var disableUpRight = false;
-	var upRightButton = document.getElementById(ActionEnum.UP_RIGHT);
 
 	// If player has health and endurance
 	// ... and is on a tile left of a solid tile
@@ -153,7 +160,6 @@ function checkUpRight(row, col)
 function checkLeft(row, col)
 {
 	var disableLeft = false;
-	var leftButton = document.getElementById(ActionEnum.LEFT);
 
 	// If player has health
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
@@ -194,7 +200,6 @@ function checkLeft(row, col)
 function checkCenter(row, col)
 {
 	var disableCenter = false;
-	var centerButton = document.getElementById(ActionEnum.CENTER);
 
 	// If player has health and is on a not water tile above a solid tile
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0
@@ -235,7 +240,6 @@ function checkCenter(row, col)
 function checkRight(row, col)
 {
 	var disableRight = false;
-	var rightButton = document.getElementById(ActionEnum.RIGHT);
 
 	// If player has health
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
@@ -275,8 +279,6 @@ function checkRight(row, col)
 
 function checkDownLeft(row, col)
 {
-	var downLeftButton = document.getElementById(ActionEnum.DOWN_LEFT);
-
 	// If player has health, endurance, and climbing right...
 	// .. and is above a solid tile
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0
@@ -298,7 +300,6 @@ function checkDownLeft(row, col)
 function checkDown(row, col)
 {
 	var disableDown = false;
-	var downButton = document.getElementById(ActionEnum.DOWN);
 
 	// If player has health
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
@@ -306,8 +307,18 @@ function checkDown(row, col)
 		// If player is falling
 		if (playerIsInStatus(ActionEnum.FALL))
 		{
-			downButton.label = ActionEnum.FALL;
-			downButton.innerText = "\u21E3";
+			// If player is on a tile above a solid tile...
+			if (getTileByPosition((row+1), col).solid)
+			{
+				downButton.label = ActionEnum.LAND;
+				downButton.innerText = "\u2913";
+			}
+			else
+			{
+				downButton.label = ActionEnum.FALL;
+				downButton.innerText = "\u21E3";
+			}
+
 			downButton.disabled = false;
 		}
 		else if (!getTileByPosition((row+1), col).solid
@@ -316,7 +327,7 @@ function checkDown(row, col)
 			   || (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
 				&& getTileByPosition((row+1), (col+1)).solid)))
 		{
-			// If player is on a tile above a not a solid tile...
+			// If player is on a tile above a not solid tile...
 			// and is climbing left/right and is on a tile up right/left of a solid tile
 			downButton.label = ActionEnum.CLIMB_DOWN;
 			downButton.innerText = "\u21A7";
@@ -337,8 +348,6 @@ function checkDown(row, col)
 
 function checkDownRight(row, col)
 {
-	var downRightButton = document.getElementById(ActionEnum.DOWN_RIGHT);
-
 	// If player has health, endurance, and climbing left...
 	// .. and is above a solid tile
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0
