@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<title>Test Suite</title>
+
+		<link rel="stylesheet" href="testSuite.css"></link>
+	</head>
+
+	<body>
+		<div id="startMenu">
+			<div>
+				<form id="userInput">
+					<select id="test" required>
+						<option value="clearResults">Clear Results</option>
+						<option value="initAction">Init Action</option>
+					</select>
+					<input type="submit" value="Start Test">
+				</form>
+			</div>
+		</div>
+
+		<ul id="results"></ul>
+
+		<script src="testSuite.js"></script>
+		<script src="initActionTest.js"></script>
+
+		<script src="../src/ui/enums/gameEnum.js"></script>
+	
+		<script src="../src/ui/objects/species.js"></script>
+		<script src="../src/ui/objects/player.js"></script>
+		<script src="../src/ui/objects/mapTile.js"></script>
+
+		<script src="../src/ui/script/gameMenuScript.js"></script>
+		<script src="../src/ui/script/playerScript.js"></script>
+		<script src="../src/ui/script/mapScript.js"></script>
+		<script src="../src/ui/script/actionScript.js"></script>
+		<script src="../src/ui/script/gameScript.js"></script>
+	</body>
+</html>
