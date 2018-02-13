@@ -348,7 +348,7 @@ function rest(doUpdate)
 	else // Get info, don't do update
 		actionInfo += ActionEnum.REST + " increases " + AttributeEnum.ENDURANCE
 					+ " based on " + AttributeEnum.RECOVERY + ".\n"
-					+ "\n";
+					+ "\n"
 					+ AttributeEnum.ENDURANCE + ": " + playerAttributeValue
 					+ " + [" + min + "-" + max + "] "
 					+ "= [" + (playerAttributeValue + min) + "-"
