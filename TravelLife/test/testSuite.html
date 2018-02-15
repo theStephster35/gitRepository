@@ -15,16 +15,27 @@
 					<select id="test" required>
 						<option value="clearResults">Clear Results</option>
 						<option value="initAction">Init Action</option>
+						<option value="takeAction">Take Action</option>
+						<option value="moveUpLeftRight">Move Up/Left/Right</option>
+						<option value="moveCenterLeftRight">Move Center/Left/Right</option>
+						<option value="moveDownLeftRight">Move Down/Left/Right</option>
 					</select>
 					<input type="submit" value="Start Test">
 				</form>
 			</div>
 		</div>
 
+
+		<h4 id="passFail">Test Results</h4>
+
 		<ul id="results"></ul>
 
 		<script src="testSuite.js"></script>
 		<script src="initActionTest.js"></script>
+		<script src="takeActionTest.js"></script>
+		<script src="moveUpLeftRightTest.js"></script>
+		<script src="moveCenterLeftRightTest.js"></script>
+		<script src="moveDownLeftRightTest.js"></script>
 
 		<script src="../src/ui/enums/gameEnum.js"></script>
 	
@@ -32,10 +43,9 @@
 		<script src="../src/ui/objects/player.js"></script>
 		<script src="../src/ui/objects/mapTile.js"></script>
 
-		<script src="../src/ui/script/gameMenuScript.js"></script>
+		<script src="../src/ui/script/menuScript.js"></script>
 		<script src="../src/ui/script/playerScript.js"></script>
 		<script src="../src/ui/script/mapScript.js"></script>
 		<script src="../src/ui/script/actionScript.js"></script>
-		<script src="../src/ui/script/gameScript.js"></script>
 	</body>
 </html>

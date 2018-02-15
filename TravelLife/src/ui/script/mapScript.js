@@ -1,3 +1,6 @@
+var map = document.getElementById("map");
+var mapTiles;
+
 function adjustMapContents(height)
 {
 	var map = document.getElementById("map");

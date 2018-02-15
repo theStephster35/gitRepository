@@ -10,20 +10,150 @@ var downRightButton	= document.getElementById(ActionEnum.DOWN_RIGHT);
 
 var autoConfirm = document.getElementById("autoConfirm");
 
-function setPlayerDetails()
+function showHideMenu()
 {
-	// Player
-	var playerSpecies = document.getElementById("playerSpecies");
-	playerSpecies.src = player.species.image;
-	playerSpecies.alt = player.species.type;
-	document.getElementById("playerName").innerText = player.name;
-	document.getElementById("playerTitle").style.display = "block";
+	var menu = document.getElementById("menu");
 
-	// Player Attributes
-	var playerAttributes = document.getElementById("playerAttributes");
-	document.getElementById("attributeTitle").style.display = "block";
-	getAttributes(document.getElementById("playerAttributes"),
-			player.attributeMap, player.species.attributeMap);
+	// Hide Menu
+	if (menu.style.display === ""
+	 || menu.style.display === "block")
+		menu.style.display = "none";
+	else // Show Menu
+		menu.style.display = "block";
+
+	adjustContents();
+}
+
+function startEndGame(event)
+{
+	var startMenu = document.getElementById("startMenu");
+	var gameMenu = document.getElementById("gameMenu");
+
+	// Start game
+	if (startMenu.style.display === ""
+	 || startMenu.style.display === "block")
+	{
+		initGame();
+
+		startMenu.style.display = "none";
+		gameMenu.style.display = "block";
+	}
+	else // End game
+	{
+		endGame();
+
+		startMenu.style.display = "block";
+		gameMenu.style.display = "none";
+	}
+
+	if (event != null)
+		event.preventDefault();
+}
+
+function showHideDetails(value)
+{
+	var infoLink = document.getElementById(value + "Link");
+
+	if (infoLink != null)
+	{
+		// Hide Details
+		if (infoLink.innerText === "\u25BC Hide Details")
+		{
+			infoLink.innerText = "\u25BA Show Details";
+			document.getElementById(value + "Details").style.display = "none";
+		}
+		else // Show Details
+		{
+			infoLink.innerText = "\u25BC Hide Details";
+			document.getElementById(value + "Details").style.display = "block";
+		}
+	}
+}
+
+function getSpecies()
+{
+	var species = document.getElementById("species");
+
+	switch (species.options[species.selectedIndex].value)
+	{
+		case SpeciesEnum.HUMAN:
+			setSpeciesDetails(new Human());
+			break;
+		default:
+			resetSpecies(species);
+	}
+}
+
+function setSpeciesDetails(species)
+{
+	// Species
+	var speciesImage = document.getElementById("speciesImage");
+	speciesImage.src = species.image;
+	speciesImage.alt = species.type;
+	document.getElementById("speciesLabel").innerText = species.type;
+	document.getElementById("speciesTitle").style.display = "block";
+
+	// Species Attributes
+	document.getElementById("speciesInfo").innerText =
+		species.description + "\n\n" + "Starting Attributes:";
+	getAttributes(document.getElementById("speciesAttributes"), species.attributeMap);
+}
+
+function resetSpecies(species)
+{
+	if (species == null)
+		species = document.getElementById("species");
+	species.selectedIndex = 0;
+
+	document.getElementById("speciesTitle").style.display = "none";
+
+	document.getElementById("speciesInfo").innerText = "Select a species to get information.";
+
+	document.getElementById("speciesAttributes").innerHTML = "";
+}
+
+function getAttributes(attributeTable, playerAttributeMap, speciesAttributeMap)
+{
+	attributeTable.innerHTML = "";
+	for (var label of playerAttributeMap.keys())
+	{
+		var playerData = playerAttributeMap.get(label);
+		if (speciesAttributeMap != null && speciesAttributeMap.has(label))
+			attributeTable.appendChild(createAttribute(label,
+					playerData, speciesAttributeMap.get(label)));
+		else
+			attributeTable.appendChild(createAttribute(label, playerData));
+	}
+}
+
+function createAttribute(label, playerData, speciesData)
+{
+	var attribute = document.createElement("tr");
+
+	// Attribute Label
+	var attributeLabelData = document.createElement("td");
+	attributeLabelData.innerText = label + ":";
+	attribute.appendChild(attributeLabelData);
+
+	// Attribute Data
+	attributeLabelData = document.createElement("td");
+	attributeLabelData.style.textAlign = "right";
+	attributeLabelData.innerText = playerData;
+	attribute.appendChild(attributeLabelData);
+
+	if (speciesData != null)
+	{
+		attributeLabelData = document.createElement("td");
+		attributeLabelData.innerText = " / ";
+		attribute.appendChild(attributeLabelData);
+
+		attributeLabelData = document.createElement("td");
+		attributeLabelData.style.textAlign = "right";
+		attributeLabelData.innerText = speciesData;
+		attribute.appendChild(attributeLabelData);
+	}
+
+	return attribute;
 }
 
 function updateAutoConfirm()

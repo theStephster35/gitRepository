@@ -1,98 +1,29 @@
 function testInitAction()
 {
-	upLeftButton	= document.createElement("button");
-	upButton		= document.createElement("button");
-	upRightButton	= document.createElement("button");
-	leftButton		= document.createElement("button");
-	centerButton	= document.createElement("button");
-	rightButton		= document.createElement("button");
-	downLeftButton	= document.createElement("button");
-	downButton		= document.createElement("button");
-	downRightButton	= document.createElement("button");
-
-	mapTiles = document.createElement("div");
-
 	runTest("BBB BSB BGB", test_BBB_BSB_BGB);
-	runTest("BBB BSB BGB No Endurance", test_BBB_BSB_BGB_NoEndurance);
+	runTest("BBB BSB BGB - No Endurance", test_BBB_BSB_BGB_NoEndurance);
 
-	runTest("SBS BSB BGB Climb Left", test_SBS_BSB_BGB_ClimbLeft);
-	runTest("SBS BSB BGB Climb Right", test_SBS_BSB_BGB_ClimbRight);
+	runTest("SBS BSB BGB - Climb Left", test_SBS_BSB_BGB_ClimbLeft);
+	runTest("SBS BSB BGB - Climb Right", test_SBS_BSB_BGB_ClimbRight);
 
-	runTest("BSB BSB BGB Climb Left", test_BSB_BSB_BGB_ClimbLeft);
-	runTest("BSB BSB BGB Fall", test_BSB_BSB_BGB_Fall);
+	runTest("BSB BSB BGB - Climb Left", test_BSB_BSB_BGB_ClimbLeft);
+	runTest("BSB BSB BGB - Fall", test_BSB_BSB_BGB_Fall);
 
-	runTest("BSB BSB BSB Climb Left", test_BSB_BSB_BSB_ClimbLeft);
-	runTest("BSB BSB BSB Fall", test_BSB_BSB_BSB_Fall);
+	runTest("BSB BSB BSB - Climb Left", test_BSB_BSB_BSB_ClimbLeft);
+	runTest("BSB BSB BSB - Fall", test_BSB_BSB_BSB_Fall);
 
-	runTest("SSS BSB BSB Climb Left", test_SSS_BSB_BSB_ClimbLeft);
-	runTest("SSS BSB BSB Climb Right", test_SSS_BSB_BSB_ClimbRight);
+	runTest("SSS BSB BSB - Climb Left", test_SSS_BSB_BSB_ClimbLeft);
+	runTest("SSS BSB BSB - Climb Right", test_SSS_BSB_BSB_ClimbRight);
 
 	runTest("SSS SSS BGB", test_SSS_SSS_BGB);
-	runTest("SSS SSS BGB Run Left", test_SSS_SSS_BGB_RunLeft);
-	runTest("SSS SSS BGB Run Right", test_SSS_SSS_BGB_RunRight);
-	runTest("SSS SSS BGB No Endurance", test_SSS_SSS_BGB_NoEndurance);
+	runTest("SSS SSS BGB - Run Left", test_SSS_SSS_BGB_RunLeft);
+	runTest("SSS SSS BGB - Run Right", test_SSS_SSS_BGB_RunRight);
+	runTest("SSS SSS BGB - No Recovery", test_SSS_SSS_BGB_NoRecovery);
+	runTest("SSS SSS BGB - No Endurance", test_SSS_SSS_BGB_NoEndurance);
 
 	runTest("SSS SSS SGS", test_SSS_SSS_SGS);
 
 	runTest("SSS SSS WGW", test_SSS_SSS_WGW);
-};
-
-function initData(tileTypes, playerData)
-{
-	mapTiles.innerHTML = "";
-
-	for (var i = 0; i < tileTypes.length; i++)
-	{
-		for (var j = 0; j < tileTypes[i].length; j++)
-			createMapTile(i, j, getTileByCode(tileTypes[i][j]));
-	}
-
-	player = new Player("Player", (playerData.species == null ? new Human() : playerData.species));
-
-	if (playerData.row != null)
-		player.position.row = playerData.row;
-	if (playerData.col != null)
-		player.position.col = playerData.col;
-	if (playerData.status != null)
-		player.status = playerData.status;
-	if (playerData.up != null)
-		player.momentum.up = playerData.up;
-	if (playerData.left != null)
-		player.momentum.left = playerData.left;
-	if (playerData.right != null)
-		player.momentum.right = playerData.right;
-	if (playerData.down != null)
-		player.momentum.down = playerData.down;
-	if (playerData.endurance != null)
-		player.attributeMap.set(AttributeEnum.ENDURANCE, playerData.endurance);
-}
-
-function getTileByCode(code)
-{
-	var tile;
-
-	switch (code)
-	{
-		case "B":
-			tile = new Barrier();
-			break;
-		case "D":
-			tile = new Dirt();
-			break;
-		case "G":
-			tile = new Ground();
-			break;
-		case "S":
-			tile = new Sky();
-			break;
-		case "W":
-			tile = new Water();
-			break;
-		default:
-			tile = new Barrier();
-	}
-
-	return tile;
 }
 
 function test_BBB_BSB_BGB()
@@ -315,7 +246,8 @@ function test_SSS_SSS_BGB()
 	initData([["S", "S", "S"],
 			  ["S", "S", "S"],
 			  ["B", "G", "B"]],
-			 {row: 1, col: 1});
+			 {row: 1, col: 1,
+			  endurance: 1});
 
 	initAction();
 
@@ -323,7 +255,7 @@ function test_SSS_SSS_BGB()
 	assert(upButton.disabled, "upButton: " + upButton.label);
 	assert(upRightButton.disabled, "upRightButton: " + upRightButton.label);
 	assert((leftButton.label === ActionEnum.RUN_LEFT), "leftButton: " + leftButton.label);
-	assert(centerButton.disabled, "centerButton: " + centerButton.label);
+	assert((centerButton.label === ActionEnum.REST), "centerButton: " + centerButton.label);
 	assert((rightButton.label === ActionEnum.RUN_RIGHT), "rightButton: " + rightButton.label);
 	assert(downLeftButton.disabled, "downLeftButton: " + downLeftButton.label);
 	assert(downButton.disabled, "downButton: " + downButton.label);
@@ -368,6 +300,27 @@ function test_SSS_SSS_BGB_RunRight()
 	assert(upRightButton.disabled, "upRightButton: " + upRightButton.label);
 	assert(leftButton.disabled, "leftButton: " + leftButton.label);
 	assert((centerButton.label === ActionEnum.STOP), "centerButton: " + centerButton.label);
+	assert((rightButton.label === ActionEnum.RUN_RIGHT), "rightButton: " + rightButton.label);
+	assert(downLeftButton.disabled, "downLeftButton: " + downLeftButton.label);
+	assert(downButton.disabled, "downButton: " + downButton.label);
+	assert(downRightButton.disabled, "downRightButton: " + downRightButton.label);
+}
+
+function test_SSS_SSS_BGB_NoRecovery()
+{
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["B", "G", "B"]],
+			 {row: 1, col: 1,
+			  recovery: 0, endurance: 1});
+
+	initAction();
+
+	assert(upLeftButton.disabled, "upLeftButton: " + upLeftButton.label);
+	assert(upButton.disabled, "upButton: " + upButton.label);
+	assert(upRightButton.disabled, "upRightButton: " + upRightButton.label);
+	assert((leftButton.label === ActionEnum.RUN_LEFT), "leftButton: " + leftButton.label);
+	assert(centerButton.disabled, "centerButton: " + centerButton.label);
 	assert((rightButton.label === ActionEnum.RUN_RIGHT), "rightButton: " + rightButton.label);
 	assert(downLeftButton.disabled, "downLeftButton: " + downLeftButton.label);
 	assert(downButton.disabled, "downButton: " + downButton.label);

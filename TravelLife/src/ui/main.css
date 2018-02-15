@@ -44,8 +44,8 @@ body {
 	padding: 5px;
 	display: block;
 	overflow: auto;
-	min-width: 180px;
-	max-width: 180px;
+	min-width: 200px;
+	max-width: 200px;
 	text-align: center;
 	background-color: white;
 	border-right: 2px solid black;

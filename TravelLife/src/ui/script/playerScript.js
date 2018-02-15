@@ -1,3 +1,6 @@
+var player;
+var playerIcon = document.getElementById("playerIcon");
+
 var actionFunctionMap = new Map();
 actionFunctionMap.set(ActionEnum.UP_LEFT,    moveUpLeft);
 actionFunctionMap.set(ActionEnum.UP,         moveUp);
@@ -17,13 +20,24 @@ function initPlayer()
 
 	updatePlayerIcon(player.image);
 
-	setPlayerDetails();	
+	// Player
+	var playerSpecies = document.getElementById("playerSpecies");
+	playerSpecies.src = player.species.image;
+	playerSpecies.alt = player.species.type;
+	document.getElementById("playerName").innerText = player.name;
+	document.getElementById("playerTitle").style.display = "block";
+
+	// Player Attributes
+	var playerAttributes = document.getElementById("playerAttributes");
+	document.getElementById("attributeTitle").style.display = "block";
+	getAttributes(document.getElementById("playerAttributes"),
+			player.attributeMap, player.species.attributeMap);
 }
 
-function updatePlayerIcon(playerIcon)
+function updatePlayerIcon(playerImage)
 {
-	player.image = playerIcon;
-	document.getElementById("playerIcon").src = playerIcon;
+	player.image = playerImage;
+	playerIcon.src = playerImage;
 }
 
 function placePlayer()
@@ -32,8 +46,6 @@ function placePlayer()
 
 	var playerTile = mapTiles.children[player.position.row].children[player.position.col];
 
-	var map = document.getElementById("map");
-	var playerIcon = document.getElementById("playerIcon");
 	playerIcon.style.display = "block";
 	playerIcon.style.top = (playerTile.offsetTop - map.offsetTop) + "px";
 	playerIcon.style.left = (playerTile.offsetLeft - map.offsetLeft) + "px";
@@ -66,115 +78,172 @@ function playerIsInStatus(status, direction)
 					playerIsInStatus = false;
 				break;
 			default:
-				playerIsInStatus = false
+				playerIsInStatus = false;
 		}
 	}
 
 	return playerIsInStatus;
 }
 
-function moveUpLeft(actionLabel, doUpdate)
+function moveUpLeft(doUpdate)
 {
 	var actionInfo = "";
 
-	if (actionLabel === ActionEnum.CLIMB_LEFT)
-		actionInfo = climb(ActionEnum.LEFT, doUpdate);
-	else if (actionLabel === ActionEnum.CLIMB_OVER)
-		actionInfo = climbOverOff(ActionEnum.CLIMB_OVER, ActionEnum.LEFT, doUpdate);
+	switch (confirmAction.innerText)
+	{
+		case ActionEnum.CLIMB_LEFT:
+			actionInfo = climb(doUpdate);
+			break;
+		case ActionEnum.CLIMB_OVER:
+			actionInfo = climbOverOff(doUpdate);
+			break;
+		default:
+			actionInfo = "";
+	}
 
 	return actionInfo;
 }
 
-function moveUp(actionLabel, doUpdate)
+function moveUp(doUpdate)
 {
-	var actionInfo = "";
-
-	if (actionLabel === ActionEnum.CLIMB_UP)
-		actionInfo = climb(ActionEnum.UP, doUpdate);
+	switch (confirmAction.innerText)
+	{
+		case ActionEnum.CLIMB_UP:
+			actionInfo = climb(doUpdate);
+			break;
+		default:
+			actionInfo = "";
+	}
 
 	return actionInfo;
 }
 
-function moveUpRight(actionLabel, doUpdate)
+function moveUpRight(doUpdate)
 {
 	var actionInfo = "";
 
-	if (actionLabel === ActionEnum.CLIMB_RIGHT)
-		actionInfo = climb(ActionEnum.RIGHT, doUpdate);
-	else if (actionLabel === ActionEnum.CLIMB_OVER)
-		actionInfo = climbOverOff(ActionEnum.CLIMB_OVER, ActionEnum.RIGHT, doUpdate);
+	switch (confirmAction.innerText)
+	{
+		case ActionEnum.CLIMB_RIGHT:
+			actionInfo = climb(doUpdate);
+			break;
+		case ActionEnum.CLIMB_OVER:
+			actionInfo = climbOverOff(doUpdate);
+			break;
+		default:
+			actionInfo = "";
+	}
 
 	return actionInfo;
 }
 
-function moveLeft(actionLabel, doUpdate)
+function moveLeft(doUpdate)
 {
 	var actionInfo = "";
 
-	if (actionLabel === ActionEnum.LET_GO)
-		actionInfo = letGo(doUpdate);
-	else if (actionLabel === ActionEnum.RUN_LEFT)
-		actionInfo = run(ActionEnum.LEFT, doUpdate);
+	switch (confirmAction.innerText)
+	{
+		case ActionEnum.LET_GO:
+			actionInfo = letGo(doUpdate);
+			break;
+		case ActionEnum.RUN_LEFT:
+			actionInfo = run(doUpdate);
+			break;
+		default:
+			actionInfo = "";
+	}
 
 	return actionInfo;
 }
 
-function stayCenter(actionLabel, doUpdate)
+function stayCenter(doUpdate)
 {
 	var actionInfo = "";
 
-	if (actionLabel === ActionEnum.STOP)
-		actionInfo = stop(doUpdate);
-	else if (actionLabel === ActionEnum.REST)
-		actionInfo = rest(doUpdate);
+	switch (confirmAction.innerText)
+	{
+		case ActionEnum.STOP:
+			actionInfo = stop(doUpdate);
+			break;
+		case ActionEnum.REST:
+			actionInfo = rest(doUpdate);
+			break;
+		default:
+			actionInfo = "";
+	}
 
 	return actionInfo;
 }
 
-function moveRight(actionLabel, doUpdate)
+function moveRight(doUpdate)
 {
 	var actionInfo = "";
 
-	if (actionLabel === ActionEnum.LET_GO)
-		actionInfo = letGo(doUpdate);
-	else if (actionLabel === ActionEnum.RUN_RIGHT)
-		actionInfo = run(ActionEnum.RIGHT, doUpdate);
+	switch (confirmAction.innerText)
+	{
+		case ActionEnum.LET_GO:
+			actionInfo = letGo(doUpdate);
+			break;
+		case ActionEnum.RUN_RIGHT:
+			actionInfo = run(doUpdate);
+			break;
+		default:
+			actionInfo = "";
+	}
 
 	return actionInfo;
 }
 
-function moveDownLeft(actionLabel, doUpdate)
+function moveDownLeft(doUpdate)
 {
 	var actionInfo = "";
 
-	if (actionLabel === ActionEnum.CLIMB_OFF)
-		actionInfo = climbOverOff(ActionEnum.CLIMB_OFF, ActionEnum.LEFT, doUpdate);
+	switch (confirmAction.innerText)
+	{
+		case ActionEnum.CLIMB_OFF:
+			actionInfo = climbOverOff(doUpdate);
+			break;
+		default:
+			actionInfo = "";
+	}
 
 	return actionInfo;
 }
 
-function moveDown(actionLabel, doUpdate)
+function moveDown(doUpdate)
 {
 	var actionInfo = "";
 
-	if (actionLabel === ActionEnum.FALL)
-		actionInfo = fall(doUpdate);
-	else if (actionLabel === ActionEnum.LAND)
-		actionInfo = land(doUpdate);
-	else if (actionLabel === ActionEnum.CLIMB_DOWN)
-		actionInfo = climb(ActionEnum.DOWN, doUpdate);
+	switch (confirmAction.innerText)
+	{
+		case ActionEnum.CLIMB_DOWN:
+			actionInfo = climb(doUpdate);
+			break;
+		case ActionEnum.FALL:
+			actionInfo = fall(doUpdate);
+			break;
+		case ActionEnum.LAND:
+			actionInfo = land(doUpdate);
+			break;
+		default:
+			actionInfo = "";
+	}
 
 	return actionInfo;
 }
 
-function moveDownRight(actionLabel, doUpdate)
+function moveDownRight(doUpdate)
 {
 	var actionInfo = "";
 
-	if (actionLabel === ActionEnum.CLIMB_OFF)
-		actionInfo = climbOverOff(ActionEnum.CLIMB_OFF, ActionEnum.RIGHT, doUpdate);
-	else if (actionLabel === ActionEnum.FALL)
-		actionInfo = fall(doUpdate);
+	switch (confirmAction.innerText)
+	{
+		case ActionEnum.CLIMB_OFF:
+			actionInfo = climbOverOff(doUpdate);
+			break;
+		default:
+			actionInfo = "";
+	}
 
 	return actionInfo;
 }
@@ -201,7 +270,11 @@ function loseEndurance(actionName, actionInfo)
 				actionInfo += "losing " + AttributeEnum.HEALTH + ".";
 		}
 	}
-	else if (!doUpdate && actionName === ActionEnum.STOP)
+	else if (!doUpdate
+		  && (actionName === ActionEnum.CLIMB_OVER
+		   || actionName === ActionEnum.CLIMB_OFF
+		   || actionName === ActionEnum.STOP
+		   || actionName === ActionEnum.LET_GO))
 		actionInfo += AttributeEnum.ENDURANCE + ": " + (attributeValue+1)
 					+ " - 1 = " + attributeValue + "\n";
 
@@ -235,7 +308,7 @@ function gainSightRecovery()
 
 function resetPlayer()
 {
-	document.getElementById("playerIcon").style.display = "none";
+	playerIcon.style.display = "none";
 
 	if (!document.getElementById("rememberMe").checked)
 	{
