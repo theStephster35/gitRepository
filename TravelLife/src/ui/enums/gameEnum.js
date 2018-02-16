@@ -34,6 +34,8 @@ var ActionEnum =
 
 	UP: "up",
 	CLIMB_UP: AttributeEnum.CLIMB + " Up",
+	JUMP_UP: AttributeEnum.JUMP + " Up",
+	RISE_UP: "Rise Up",
 
 	UP_RIGHT: "upRight",
 	CLIMB_RIGHT: AttributeEnum.CLIMB + " Right",

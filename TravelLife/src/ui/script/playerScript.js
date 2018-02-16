@@ -111,6 +111,10 @@ function moveUp(doUpdate)
 		case ActionEnum.CLIMB_UP:
 			actionInfo = climb(doUpdate);
 			break;
+		case ActionEnum.JUMP_UP:
+		case ActionEnum.RISE_UP:
+			actionInfo = jumpRise(doUpdate);
+			break;
 		default:
 			actionInfo = "";
 	}

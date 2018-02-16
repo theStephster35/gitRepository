@@ -35,7 +35,7 @@ function testClimbOverOff_OffLeft()
 			  sight: testSight, endurance: testEndurance},
 			 {innerText: ActionEnum.CLIMB_OFF});
 
-	climbOverOff(true);
+	moveDownLeft(true);
 
 	validateResults({rows: tileTypes.length,
 					 cols: tileTypes[0].length,
@@ -68,7 +68,7 @@ function testClimbOverOff_OffLeft_NoEndurance()
 			  health: testHealth, sight: testSight, endurance: 1},
 			 {innerText: ActionEnum.CLIMB_OFF});
 
-	climbOverOff(true);
+	moveDownLeft(true);
 
 	validateResults({rows: tileTypes.length,
 					 cols: tileTypes[0].length,
@@ -104,7 +104,7 @@ function testClimb_DownLeft()
 			  sight: testSight, endurance: testEndurance},
 			 {innerText: ActionEnum.CLIMB_DOWN});
 
-	climb(true);
+	moveDown(true);
 
 	var speciesClimb = player.species.attributeMap.get(AttributeEnum.CLIMB);
 
@@ -137,7 +137,7 @@ function testClimb_DownLeft_NoEnduranceClimb()
 			  health: testHealth, sight: testSight, endurance: 1, climb: 1},
 			 {innerText: ActionEnum.CLIMB_DOWN});
 
-	climb(true);
+	moveDown(true);
 
 	validateResults({rows: (tileTypes.length+1),
 					 cols: tileTypes[0].length,
@@ -173,7 +173,7 @@ function testClimb_DownRight()
 			  sight: testSight, endurance: testEndurance},
 			 {innerText: ActionEnum.CLIMB_DOWN});
 
-	climb(true);
+	moveDown(true);
 
 	var speciesClimb = player.species.attributeMap.get(AttributeEnum.CLIMB);
 
@@ -206,7 +206,7 @@ function testClimb_DownRight_NoEnduranceClimb()
 			  health: testHealth, sight: testSight, endurance: 1, climb: 1},
 			 {innerText: ActionEnum.CLIMB_DOWN});
 
-	climb(true);
+	moveDown(true);
 
 	validateResults({rows: (tileTypes.length+1),
 					 cols: tileTypes[0].length,
@@ -237,9 +237,10 @@ function testFall()
 	initData(tileTypes,
 			 {row: testRow, col: testCol,
 			  down: testDown,
-			  sight: testSight, jump: 0});
+			  sight: testSight, jump: 0},
+			 {innerText: ActionEnum.FALL});
 
-	fall(true);
+	moveDown(true);
 
 	validateResults({rows: (tileTypes.length
 						  + (player.attributeMap.get(AttributeEnum.SIGHT) === testSight ? 1 : 0)),
@@ -269,13 +270,21 @@ function testLand()
 			  row: testRow, col: testCol,
 			  status: ActionEnum.FALL,
 			  left: 1, right: 1, down: testDown,
-			  sight: testSight});
+			  sight: testSight},
+			 {innerText: ActionEnum.LAND});
 
-	land(true);
+	moveDown(true);
 
 	var speciesJump = player.attributeMap.get(AttributeEnum.JUMP);
-	var minHealth = ((testHealth - testDown) < 0 ? 0 : (testHealth - testDown));
-	var maxHealth = (testHealth - ((testDown - speciesJump) < 0 ? 0 : (testDown - speciesJump)));
+	var minHealth = (testHealth - ((testDown - Math.floor(speciesJump/2)) < 0 
+								   ? 0 : (testDown - Math.floor(speciesJump/2))));
+	if (minHealth < 0)
+		minHealth = 0;
+
+	var maxHealth = (testHealth - ((testDown - speciesJump) < 0
+								   ? 0 : (testDown - speciesJump)));
+	if (maxHealth < 0)
+		maxHealth = 0;
 
 	validateResults({rows: tileTypes.length,
 					 cols: tileTypes[0].length,
@@ -309,7 +318,7 @@ function testClimbOverOff_OffRight()
 			  sight: testSight, endurance: testEndurance},
 			 {innerText: ActionEnum.CLIMB_OFF});
 
-	climbOverOff(true);
+	moveDownRight(true);
 
 	validateResults({rows: tileTypes.length,
 					 cols: tileTypes[0].length,
@@ -342,7 +351,7 @@ function testClimbOverOff_OffRight_NoEndurance()
 			  health: testHealth, sight: testSight, endurance: 1},
 			 {innerText: ActionEnum.CLIMB_OFF});
 
-	climbOverOff(true);
+	moveDownRight(true);
 
 	validateResults({rows: tileTypes.length,
 					 cols: tileTypes[0].length,
