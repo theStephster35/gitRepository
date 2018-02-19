@@ -31,6 +31,7 @@ var ActionEnum =
 
 	UP_LEFT: "upLeft",
 	CLIMB_LEFT: AttributeEnum.CLIMB + " Left",
+	GRAB_LEFT: "Grab Left",
 
 	UP: "up",
 	CLIMB_UP: AttributeEnum.CLIMB + " Up",
@@ -39,6 +40,7 @@ var ActionEnum =
 
 	UP_RIGHT: "upRight",
 	CLIMB_RIGHT: AttributeEnum.CLIMB + " Right",
+	GRAB_RIGHT: "Grab Right",
 
 	LEFT: "left",
 	RUN_LEFT: AttributeEnum.RUN + " Left",

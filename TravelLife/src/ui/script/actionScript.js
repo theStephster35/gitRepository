@@ -145,8 +145,10 @@ function climbOverOff(doUpdate)
 	var climbOverOffLeftRight = confirmAction.innerText;
 
 	if (!doUpdate)
-		actionInfo += climbOverOffLeftRight + " resets " + AttributeEnum.CLIMB + " and you lose " + AttributeEnum.ENDURANCE + ".\n"
-					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
+		actionInfo += climbOverOffLeftRight + " resets " + AttributeEnum.CLIMB + " "
+					+ "and you lose " + AttributeEnum.ENDURANCE + ".\n"
+					+ "When " + AttributeEnum.ENDURANCE + " "
+					+ "reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
 					+ "\n";
 
 	actionInfo = resetAttribute(AttributeEnum.CLIMB, actionInfo);
@@ -198,7 +200,8 @@ function letGo(doUpdate)
 	var letGoLeftRight = confirmAction.innerText;
 
 	if (!doUpdate)
-		actionInfo += letGoLeftRight + " resets " + AttributeEnum.CLIMB + " and you lose " + AttributeEnum.ENDURANCE + ".\n"
+		actionInfo += letGoLeftRight + " resets " + AttributeEnum.CLIMB + " "
+					+ "and you lose " + AttributeEnum.ENDURANCE + ".\n"
 					+ "\n";
 
 	actionInfo = resetAttribute(AttributeEnum.CLIMB, actionInfo);
@@ -302,6 +305,97 @@ function jumpRiseSide(doUpdate)
 	return actionInfo;
 }
 
+function grab(doUpdate)
+{
+	var actionInfo = "";
+	var grabLeftRight = confirmAction.innerText;
+
+	if (!doUpdate)
+	{
+		actionInfo += grabLeftRight + " resets " + AttributeEnum.CLIMB + ", "
+					+ "reduces downward momentum based on " + AttributeEnum.CLIMB + ", "
+					+ "and loses you " + AttributeEnum.HEALTH + " if you have no "
+					+ AttributeEnum.ENDURANCE + " to lose.\n"
+					+ "When downward momentum reaches 0, " + AttributeEnum.ENDURANCE + " resets if "
+					+ AttributeEnum.ENDURANCE + " reaches 0, and you " + AttributeEnum.CLIMB + ".\n"
+					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, "
+					+ "you lose " + AttributeEnum.HEALTH + ".\n"
+					+ "When " + AttributeEnum.HEALTH + " reaches 0, your travels end.\n"
+					+ "\n";
+	}
+
+	actionInfo = resetAttribute(AttributeEnum.CLIMB, actionInfo);
+
+	var playerEnduranceValue = player.attributeMap.get(AttributeEnum.ENDURANCE);
+	var playerHealthValue = player.attributeMap.get(AttributeEnum.HEALTH);
+	var playerClimbValue = player.attributeMap.get(AttributeEnum.CLIMB);
+	var downValue = player.momentum.down;
+
+	if (playerEnduranceValue > 0)
+		actionInfo = loseEndurance(grabLeftRight, actionInfo);
+	else // Player has no endurance
+	{
+		playerHealthValue--;
+
+		if (doUpdate)
+			player.attributeMap.set(AttributeEnum.HEALTH, playerHealthValue);
+		else // Get info, don't do update
+			actionInfo += AttributeEnum.HEALTH + ": " + (playerHealthValue+1)
+						+ " - 1 = " + playerHealthValue + "\n";
+	}
+
+	var value = downValue;
+	if (doUpdate)
+		value = getRandomNumber(Math.ceil(playerClimbValue/2), playerClimbValue);
+
+	downValue -= value;
+	if (downValue <= 0)
+	{
+		downValue = 0;
+
+		if (doUpdate)
+		{
+			if (playerEnduranceValue <= 1)
+				actionInfo = resetAttribute(AttributeEnum.ENDURANCE, actionInfo);
+
+			player.status = AttributeEnum.CLIMB;
+
+			player.momentum.down = downValue;
+
+			if (grabLeftRight === ActionEnum.GRAB_LEFT)
+			{
+				player.momentum.left = 1;
+				player.momentum.right = 0;
+
+				updatePlayerIcon("images/" + player.species.type + "/"
+						+ ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png");
+			}
+			else
+			{
+				player.momentum.left = 0;
+				player.momentum.right = 1;
+
+				updatePlayerIcon("images/" + player.species.type + "/"
+						+ ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png");
+			}
+		}
+		else if ((playerEnduranceValue === 1 && playerHealthValue > 1)
+			  || (playerEnduranceValue === 0 && playerHealthValue > 0))
+		{
+			if (actionInfo.includes("If you " + grabLeftRight + ", you risk "))
+				actionInfo = actionInfo.slice(0, -2) + ", and ";
+			else
+				actionInfo += "\n"
+							+ "If you " + grabLeftRight + ", ";
+			actionInfo += "you stand to gain " + AttributeEnum.ENDURANCE + ".";
+		}
+	}
+	else if (doUpdate)
+		player.momentum.down = downValue;
+
+	return actionInfo;
+}
+
 function run(doUpdate)
 {
 	var actionInfo = "";
@@ -393,12 +487,10 @@ function stop(doUpdate)
 
 	if (!doUpdate)
 	{
-		actionInfo += stopAction + " allows you to ";
-		if (player.status === AttributeEnum.RUN)
-			actionInfo += (player.momentum.left > 0 ? ActionEnum.RUN_RIGHT : ActionEnum.RUN_LEFT) + ", ";
-		else // Player is jumping
-			actionInfo += ActionEnum.FALL + ", ";
-		actionInfo +=  "resets " + player.status + ", and you lose " + AttributeEnum.ENDURANCE + ".\n"
+		actionInfo += stopAction + " ";
+		if (player.status === AttributeEnum.JUMP)
+			actionInfo += "allows you to " + ActionEnum.FALL + ", ";
+		actionInfo += "resets " + player.status + ", and you lose " + AttributeEnum.ENDURANCE + ".\n"
 					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
 					+ "\n";
 	}
@@ -517,6 +609,7 @@ function land(doUpdate)
 	if (!doUpdate)
 		actionInfo += landAction + " loses you " + AttributeEnum.HEALTH + " "
 					+ "based on downward momentum reduced by " + AttributeEnum.JUMP + ".\n"
+					+ "When " + AttributeEnum.HEALTH + " reaches 0, your travels end.\n"
 					+ "\n";
 
 	var playerHealthValue = player.attributeMap.get(AttributeEnum.HEALTH);

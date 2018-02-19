@@ -19,6 +19,7 @@ function testInitAction()
 	runTest("SSS BSB BSB - Climb Right", test_SSS_BSB_BSB_ClimbRight);
 
 	runTest("SSS SSS BGB", test_SSS_SSS_BGB);
+	runTest("SSS SSS BGB - Fall", test_SSS_SSS_BGB_Fall);
 	runTest("SSS SSS BGB - Run Left", test_SSS_SSS_BGB_RunLeft);
 	runTest("SSS SSS BGB - Run Right", test_SSS_SSS_BGB_RunRight);
 	runTest("SSS SSS BGB - No Recovery", test_SSS_SSS_BGB_NoRecovery);
@@ -188,16 +189,17 @@ function test_BSB_BSB_BGB_Fall()
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
-			  status: ActionEnum.FALL});
+			  status: ActionEnum.FALL,
+			  endurance: 0});
 
 	initAction();
 
 	assert(upLeftButton.disabled, "upLeftButton: " + upLeftButton.label);
 	assert(upButton.disabled, "upButton: " + upButton.label);
 	assert(upRightButton.disabled, "upRightButton: " + upRightButton.label);
-	assert(leftButton.disabled, "leftButton: " + leftButton.label);
+	assert((leftButton.label === ActionEnum.GRAB_LEFT), "leftButton: " + leftButton.label);
 	assert(centerButton.disabled, "centerButton: " + centerButton.label);
-	assert(rightButton.disabled, "rightButton: " + rightButton.label);
+	assert((rightButton.label === ActionEnum.GRAB_RIGHT), "rightButton: " + rightButton.label);
 	assert(downLeftButton.disabled, "downLeftButton: " + downLeftButton.label);
 	assert((downButton.label === ActionEnum.LAND), "downButton: " + downButton.label);
 	assert(downRightButton.disabled, "downRightButton: " + downRightButton.label);
@@ -253,16 +255,17 @@ function test_BSB_BSB_BSB_Fall()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: ActionEnum.FALL});
+			  status: ActionEnum.FALL,
+			  endurance: 0});
 
 	initAction();
 
 	assert(upLeftButton.disabled, "upLeftButton: " + upLeftButton.label);
 	assert(upButton.disabled, "upButton: " + upButton.label);
 	assert(upRightButton.disabled, "upRightButton: " + upRightButton.label);
-	assert(leftButton.disabled, "leftButton: " + leftButton.label);
+	assert((leftButton.label === ActionEnum.GRAB_LEFT), "leftButton: " + leftButton.label);
 	assert(centerButton.disabled, "centerButton: " + centerButton.label);
-	assert(rightButton.disabled, "rightButton: " + rightButton.label);
+	assert((rightButton.label === ActionEnum.GRAB_RIGHT), "rightButton: " + rightButton.label);
 	assert(downLeftButton.disabled, "downLeftButton: " + downLeftButton.label);
 	assert((downButton.label === ActionEnum.FALL), "downButton: " + downButton.label);
 	assert(downRightButton.disabled, "downRightButton: " + downRightButton.label);
@@ -330,6 +333,28 @@ function test_SSS_SSS_BGB()
 	assert((rightButton.label === ActionEnum.RUN_RIGHT), "rightButton: " + rightButton.label);
 	assert(downLeftButton.disabled, "downLeftButton: " + downLeftButton.label);
 	assert(downButton.disabled, "downButton: " + downButton.label);
+	assert(downRightButton.disabled, "downRightButton: " + downRightButton.label);
+}
+
+function test_SSS_SSS_BGB_Fall()
+{
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["B", "G", "B"]],
+			 {row: 1, col: 1,
+			  status: ActionEnum.FALL,
+			  endurance: 0});
+
+	initAction();
+
+	assert(upLeftButton.disabled, "upLeftButton: " + upLeftButton.label);
+	assert(upButton.disabled, "upButton: " + upButton.label);
+	assert(upRightButton.disabled, "upRightButton: " + upRightButton.label);
+	assert(leftButton.disabled, "leftButton: " + leftButton.label);
+	assert(centerButton.disabled, "centerButton: " + centerButton.label);
+	assert(rightButton.disabled, "rightButton: " + rightButton.label);
+	assert(downLeftButton.disabled, "downLeftButton: " + downLeftButton.label);
+	assert((downButton.label === ActionEnum.LAND), "downButton: " + downButton.label);
 	assert(downRightButton.disabled, "downRightButton: " + downRightButton.label);
 }
 

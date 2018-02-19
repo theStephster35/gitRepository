@@ -150,6 +150,9 @@ function moveLeft(doUpdate)
 		case ActionEnum.LET_GO:
 			actionInfo = letGo(doUpdate);
 			break;
+		case ActionEnum.GRAB_LEFT:
+			actionInfo = grab(doUpdate);
+			break;
 		case ActionEnum.RUN_LEFT:
 			actionInfo = run(doUpdate);
 			break;
@@ -187,6 +190,9 @@ function moveRight(doUpdate)
 	{
 		case ActionEnum.LET_GO:
 			actionInfo = letGo(doUpdate);
+			break;
+		case ActionEnum.GRAB_RIGHT:
+			actionInfo = grab(doUpdate);
 			break;
 		case ActionEnum.RUN_RIGHT:
 			actionInfo = run(doUpdate);
@@ -269,15 +275,17 @@ function loseEndurance(actionName, actionInfo)
 			actionInfo += "If you " + actionName + ", you risk ";
 		
 			if (attributeValue === 0)
-				actionInfo += "death.";
+				actionInfo += "death.\n";
 			else
-				actionInfo += "losing " + AttributeEnum.HEALTH + ".";
+				actionInfo += "losing " + AttributeEnum.HEALTH + ".\n";
 		}
 	}
 	else if (!doUpdate
 		  && (actionName === ActionEnum.CLIMB_OVER
 		   || actionName === ActionEnum.CLIMB_OFF
+		   || actionName === ActionEnum.GRAB_LEFT
 		   || actionName === ActionEnum.STOP
+		   || actionName === ActionEnum.GRAB_RIGHT
 		   || actionName === ActionEnum.LET_GO))
 		actionInfo += AttributeEnum.ENDURANCE + ": " + (attributeValue+1)
 					+ " - 1 = " + attributeValue + "\n";

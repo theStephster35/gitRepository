@@ -297,9 +297,20 @@ function checkLeft(row, col)
 	// If player has health
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
-		// If player is climbing right
-		if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT))
+		// If player is falling
+		if (playerIsInStatus(ActionEnum.FALL))
 		{
+			// If player is on a tile right of a solid tile
+			if (getTileByPosition(row, (col-1)).solid)
+			{
+				leftButton.label = ActionEnum.GRAB_LEFT;
+				leftButton.innerText = "\u21E4";
+				leftButton.disabled = false;
+			}
+		}
+		else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT))
+		{
+			// If player is climbing right
 			leftButton.label = ActionEnum.LET_GO;
 			leftButton.innerText = "\u21A9";
 			leftButton.disabled = false;
@@ -318,7 +329,6 @@ function checkLeft(row, col)
 		}
 	}
 
-	//leftButton.innerText = "\u21E4"; // Grab?
 	//leftButton.innerText = "\u2345"; // Dig?
 	//leftButton.innerText = "\u2190"; // Swim?
 }
@@ -369,9 +379,20 @@ function checkRight(row, col)
 	// If player has health
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
-		// If player is climbing left
-		if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT))
+		// If player is falling
+		if (playerIsInStatus(ActionEnum.FALL))
 		{
+			// If player is on a tile left of a solid tile
+			if (getTileByPosition(row, (col+1)).solid)
+			{
+				rightButton.label = ActionEnum.GRAB_RIGHT;
+				rightButton.innerText = "\u21E5";
+				rightButton.disabled = false;
+			}
+		}
+		else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT))
+		{
+			// If player is climbing left
 			rightButton.label = ActionEnum.LET_GO;
 			rightButton.innerText = "\u21AA";
 			rightButton.disabled = false;
@@ -390,7 +411,6 @@ function checkRight(row, col)
 		}
 	}
 
-	//rightButton.innerText = "\u21E5"; // Grab?
 	//rightButton.innerText = "\u2346"; // Dig?
 	//rightButton.innerText = "\u2192"; // Swim?
 }
