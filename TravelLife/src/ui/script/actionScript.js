@@ -317,7 +317,9 @@ function grab(doUpdate)
 					+ "and loses you " + AttributeEnum.HEALTH + " if you have no "
 					+ AttributeEnum.ENDURANCE + " to lose.\n"
 					+ "When downward momentum reaches 0, " + AttributeEnum.ENDURANCE + " resets if "
-					+ AttributeEnum.ENDURANCE + " reaches 0, and you " + AttributeEnum.CLIMB + ".\n"
+					+ AttributeEnum.ENDURANCE + " reaches 0, and you " + AttributeEnum.CLIMB + "; otherwise, you "
+					+ (getTileByPosition((player.position.row+1), player.position.col).solid
+					   ? ActionEnum.LAND : ActionEnum.FALL) + ".\n"
 					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, "
 					+ "you lose " + AttributeEnum.HEALTH + ".\n"
 					+ "When " + AttributeEnum.HEALTH + " reaches 0, your travels end.\n"
@@ -344,7 +346,7 @@ function grab(doUpdate)
 						+ " - 1 = " + playerHealthValue + "\n";
 	}
 
-	var value = downValue;
+	var value = playerClimbValue;
 	if (doUpdate)
 		value = getRandomNumber(Math.ceil(playerClimbValue/2), playerClimbValue);
 
@@ -391,7 +393,15 @@ function grab(doUpdate)
 		}
 	}
 	else if (doUpdate)
+	{
 		player.momentum.down = downValue;
+
+		// Check if player must land/fall
+		if (getTileByPosition((player.position.row+1), player.position.col).solid)
+			land(true);
+		else
+			fall(true);
+	}
 
 	return actionInfo;
 }
@@ -555,7 +565,7 @@ function rest(doUpdate)
 					+ " + [" + min + "-" + max + "] "
 					+ "= [" + (playerAttributeValue + min) + "-"
 					+ ((playerAttributeValue + max) > speciesAttributeValue
-					 ? speciesAttributeValue : (playerAttributeValue + max)) + "]\n"
+					   ? speciesAttributeValue : (playerAttributeValue + max)) + "]\n"
 					+ "\n"
 					+ "If you " + restAction + ", you risk losing "
 					+ AttributeEnum.SIGHT + " and " + AttributeEnum.RECOVERY + ".";
