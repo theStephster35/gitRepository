@@ -42,16 +42,16 @@ function testLetGo_Left()
 
 	moveLeft(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: "images/" + player.species.type + "/Suspended.png",
-					 row: testRow,
-					 col: testCol,
-					 status: ActionEnum.FALL,
-					 left: 0,
-					 right: 0,
-					 sight: testSight,
-					 endurance: (testEndurance-1)});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: testRow,
+						col: testCol,
+						status: ActionEnum.FALL,
+						left: 0,
+						right: 0,
+						sight: testSight,
+						endurance: (testEndurance-1)});
 }
 
 function testLetGo_Left_NoEndurance()
@@ -72,17 +72,17 @@ function testLetGo_Left_NoEndurance()
 
 	moveLeft(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: "images/" + player.species.type + "/Suspended.png",
-					 row: testRow,
-					 col: testCol,
-					 status: ActionEnum.FALL,
-					 left: 0,
-					 right: 0,
-					 health: (testHealth-1),
-					 sight: testSight,
-					 endurance: 0});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: testRow,
+						col: testCol,
+						status: ActionEnum.FALL,
+						left: 0,
+						right: 0,
+						health: (testHealth-1),
+						sight: testSight,
+						endurance: 0});
 }
 
 function testGrab_Left()
@@ -110,19 +110,20 @@ function testGrab_Left()
 	var playerDown = player.momentum.down;
 	var climbing = (playerDown === 0);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: (climbing ? "images/" + player.species.type + "/" + ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png"
-							 		  : testImage),
-					 row: testRow,
-					 col: testCol,
-					 status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL),
-					 left: (climbing ? 1 : 0),
-					 right: (climbing ? 0 : 1),
-					 down: playerDown,
-					 sight: testSight,
-					 endurance: (testEndurance-1),
-					 climb: (player.species.attributeMap.get(AttributeEnum.CLIMB))});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: (climbing
+								? "images/" + player.species.type + "/" + ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png"
+								: testImage),
+						row: testRow,
+						col: testCol,
+						status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL),
+						left: (climbing ? 1 : 0),
+						right: (climbing ? 0 : 1),
+						down: playerDown,
+						sight: testSight,
+						endurance: (testEndurance-1),
+						climb: (player.species.attributeMap.get(AttributeEnum.CLIMB))});
 }
 
 function testGrab_Left_NoEndurance()
@@ -150,20 +151,21 @@ function testGrab_Left_NoEndurance()
 	var playerDown = player.momentum.down;
 	var climbing = (playerDown === 0);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: (climbing ? "images/" + player.species.type + "/" + ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png"
-							 		  : testImage),
-					 row: testRow,
-					 col: testCol,
-					 status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL),
-					 left: (climbing ? 1 : 0),
-					 right: (climbing ? 0 : 1),
-					 down: playerDown,
-					 sight: testSight,
-					 health: (testHealth-1),
-					 endurance: (climbing ? player.species.attributeMap.get(AttributeEnum.ENDURANCE) : 0),
-					 climb: (player.species.attributeMap.get(AttributeEnum.CLIMB))});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: (climbing
+								? "images/" + player.species.type + "/" + ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png"
+								: testImage),
+						row: testRow,
+						col: testCol,
+						status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL),
+						left: (climbing ? 1 : 0),
+						right: (climbing ? 0 : 1),
+						down: playerDown,
+						sight: testSight,
+						health: (testHealth-1),
+						endurance: (climbing ? player.species.attributeMap.get(AttributeEnum.ENDURANCE) : 0),
+						climb: (player.species.attributeMap.get(AttributeEnum.CLIMB))});
 }
 
 function testRun_Left()
@@ -188,18 +190,19 @@ function testRun_Left()
 	var speciesRun = player.species.attributeMap.get(AttributeEnum.RUN);
 	var stopped = (player.attributeMap.get(AttributeEnum.RUN) === speciesRun);
 
-	validateResults({rows: tileTypes.length,
-					 cols: (tileTypes[0].length+1),
-					 image: (stopped ? "images/" + player.species.type + "/Species.png"
-							 		 : "images/" + player.species.type + "/" + ActionEnum.RUN_LEFT.replace(" ", "") + ".png"),
-					 row: testRow,
-					 col: testCol,
-					 status: (stopped ? ActionEnum.STOP : AttributeEnum.RUN),
-					 left: (stopped ? 0 : 1),
-					 right: 0,
-					 sight: testSight,
-					 endurance: (stopped ? (testEndurance-1) : testEndurance),
-					 run: {min: 0, max: speciesRun}});
+	validateTakeAction({rows: tileTypes.length,
+						cols: (tileTypes[0].length+1),
+						image: (stopped
+								? "images/" + player.species.type + "/Species.png"
+								: "images/" + player.species.type + "/" + ActionEnum.RUN_LEFT.replace(" ", "") + ".png"),
+						row: testRow,
+						col: testCol,
+						status: (stopped ? ActionEnum.STOP : AttributeEnum.RUN),
+						left: (stopped ? 0 : 1),
+						right: 0,
+						sight: testSight,
+						endurance: (stopped ? (testEndurance-1) : testEndurance),
+						run: {min: 0, max: speciesRun}});
 }
 
 function testRun_Left_NoEnduranceRun()
@@ -221,18 +224,18 @@ function testRun_Left_NoEnduranceRun()
 
 	moveLeft(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: (tileTypes[0].length+1),
-					 image: "images/" + player.species.type + "/Species.png",
-					 row: testRow,
-					 col: testCol,
-					 status: ActionEnum.STOP,
-					 left: 0,
-					 right: 0,
-					 health: (testHealth-1),
-					 sight: testSight,
-					 endurance: 0,
-					 run: player.species.attributeMap.get(AttributeEnum.RUN)});
+	validateTakeAction({rows: tileTypes.length,
+						cols: (tileTypes[0].length+1),
+						image: "images/" + player.species.type + "/Species.png",
+						row: testRow,
+						col: testCol,
+						status: ActionEnum.STOP,
+						left: 0,
+						right: 0,
+						health: (testHealth-1),
+						sight: testSight,
+						endurance: 0,
+						run: player.species.attributeMap.get(AttributeEnum.RUN)});
 }
 
 function testStop_Jump()
@@ -254,16 +257,16 @@ function testStop_Jump()
 
 	stayCenter(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: "images/" + player.species.type + "/Suspended.png",
-					 row: testRow,
-					 col: testCol,
-					 status: ActionEnum.FALL,
-					 up: 0,
-					 down: 0,
-					 endurance: (testEndurance-1),
-					 jump: player.species.attributeMap.get(AttributeEnum.JUMP)});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: testRow,
+						col: testCol,
+						status: ActionEnum.FALL,
+						up: 0,
+						down: 0,
+						endurance: (testEndurance-1),
+						jump: player.species.attributeMap.get(AttributeEnum.JUMP)});
 }
 
 function testStop_Jump_NoEnduranceJump()
@@ -285,17 +288,17 @@ function testStop_Jump_NoEnduranceJump()
 
 	stayCenter(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: "images/" + player.species.type + "/Suspended.png",
-					 row: testRow,
-					 col: testCol,
-					 status: ActionEnum.FALL,
-					 up: 0,
-					 down: 0,
-					 health: (testHealth-1),
-					 endurance: 0,
-					 jump: player.species.attributeMap.get(AttributeEnum.JUMP)});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: testRow,
+						col: testCol,
+						status: ActionEnum.FALL,
+						up: 0,
+						down: 0,
+						health: (testHealth-1),
+						endurance: 0,
+						jump: player.species.attributeMap.get(AttributeEnum.JUMP)});
 }
 
 function testStop_Run()
@@ -317,16 +320,16 @@ function testStop_Run()
 
 	stayCenter(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: "images/" + player.species.type + "/Species.png",
-					 row: testRow,
-					 col: testCol,
-					 status: ActionEnum.STOP,
-					 left: 0,
-					 right: 0,
-					 endurance: (testEndurance-1),
-					 run: player.species.attributeMap.get(AttributeEnum.RUN)});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Species.png",
+						row: testRow,
+						col: testCol,
+						status: ActionEnum.STOP,
+						left: 0,
+						right: 0,
+						endurance: (testEndurance-1),
+						run: player.species.attributeMap.get(AttributeEnum.RUN)});
 }
 
 function testStop_Run_NoEnduranceRun()
@@ -348,17 +351,17 @@ function testStop_Run_NoEnduranceRun()
 
 	stayCenter(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: "images/" + player.species.type + "/Species.png",
-					 row: testRow,
-					 col: testCol,
-					 status: ActionEnum.STOP,
-					 left: 0,
-					 right: 0,
-					 health: (testHealth-1),
-					 endurance: 0,
-					 run: player.species.attributeMap.get(AttributeEnum.RUN)});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Species.png",
+						row: testRow,
+						col: testCol,
+						status: ActionEnum.STOP,
+						left: 0,
+						right: 0,
+						health: (testHealth-1),
+						endurance: 0,
+						run: player.species.attributeMap.get(AttributeEnum.RUN)});
 }
 
 function testRest()
@@ -377,13 +380,13 @@ function testRest()
 
 	stayCenter(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 row: testRow,
-					 col: testCol,
-					 sight: {min: 1, max: player.species.attributeMap.get(AttributeEnum.SIGHT)},
-					 recovery: {min: 0, max: testRecovery},
-					 endurance: {min: 1, max: testRecovery}});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						row: testRow,
+						col: testCol,
+						sight: {min: 1, max: player.species.attributeMap.get(AttributeEnum.SIGHT)},
+						recovery: {min: 0, max: testRecovery},
+						endurance: {min: 1, max: testRecovery}});
 }
 
 function testLetGo_Right()
@@ -404,16 +407,16 @@ function testLetGo_Right()
 
 	moveRight(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: "images/" + player.species.type + "/Suspended.png",
-					 row: testRow,
-					 col: testCol,
-					 status: ActionEnum.FALL,
-					 left: 0,
-					 right: 0,
-					 sight: testSight,
-					 endurance: (testEndurance-1)});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: testRow,
+						col: testCol,
+						status: ActionEnum.FALL,
+						left: 0,
+						right: 0,
+						sight: testSight,
+						endurance: (testEndurance-1)});
 }
 
 function testLetGo_Right_NoEndurance()
@@ -434,17 +437,17 @@ function testLetGo_Right_NoEndurance()
 
 	moveRight(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: "images/" + player.species.type + "/Suspended.png",
-					 row: testRow,
-					 col: testCol,
-					 status: ActionEnum.FALL,
-					 left: 0,
-					 right: 0,
-					 health: (testHealth-1),
-					 sight: testSight,
-					 endurance: 0});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: testRow,
+						col: testCol,
+						status: ActionEnum.FALL,
+						left: 0,
+						right: 0,
+						health: (testHealth-1),
+						sight: testSight,
+						endurance: 0});
 }
 
 function testGrab_Right()
@@ -472,19 +475,20 @@ function testGrab_Right()
 	var playerDown = player.momentum.down;
 	var climbing = (playerDown === 0);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: (climbing ? "images/" + player.species.type + "/" + ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png"
-							 		  : testImage),
-					 row: testRow,
-					 col: testCol,
-					 status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL),
-					 left: (climbing ? 0 : 1),
-					 right: (climbing ? 1 : 0),
-					 down: playerDown,
-					 sight: testSight,
-					 endurance: (testEndurance-1),
-					 climb: (player.species.attributeMap.get(AttributeEnum.CLIMB))});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: (climbing
+								? "images/" + player.species.type + "/" + ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png"
+								: testImage),
+						row: testRow,
+						col: testCol,
+						status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL),
+						left: (climbing ? 0 : 1),
+						right: (climbing ? 1 : 0),
+						down: playerDown,
+						sight: testSight,
+						endurance: (testEndurance-1),
+						climb: (player.species.attributeMap.get(AttributeEnum.CLIMB))});
 }
 
 function testGrab_Right_NoEndurance()
@@ -512,20 +516,21 @@ function testGrab_Right_NoEndurance()
 	var playerDown = player.momentum.down;
 	var climbing = (playerDown === 0);
 
-	validateResults({rows: tileTypes.length,
-					 cols: tileTypes[0].length,
-					 image: (climbing ? "images/" + player.species.type + "/" + ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png"
-							 		  : testImage),
-					 row: testRow,
-					 col: testCol,
-					 status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL),
-					 left: (climbing ? 0 : 1),
-					 right: (climbing ? 1 : 0),
-					 down: playerDown,
-					 sight: testSight,
-					 health: (testHealth-1),
-					 endurance: (climbing ? player.species.attributeMap.get(AttributeEnum.ENDURANCE) : 0),
-					 climb: (player.species.attributeMap.get(AttributeEnum.CLIMB))});
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: (climbing
+								? "images/" + player.species.type + "/" + ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png"
+								: testImage),
+						row: testRow,
+						col: testCol,
+						status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL),
+						left: (climbing ? 0 : 1),
+						right: (climbing ? 1 : 0),
+						down: playerDown,
+						sight: testSight,
+						health: (testHealth-1),
+						endurance: (climbing ? player.species.attributeMap.get(AttributeEnum.ENDURANCE) : 0),
+						climb: (player.species.attributeMap.get(AttributeEnum.CLIMB))});
 }
 
 function testRun_Right()
@@ -549,18 +554,19 @@ function testRun_Right()
 	var speciesRun = player.species.attributeMap.get(AttributeEnum.RUN);
 	var stopped = (player.attributeMap.get(AttributeEnum.RUN) === speciesRun);
 
-	validateResults({rows: tileTypes.length,
-					 cols: (tileTypes[0].length+1),
-					 image: (stopped ? "images/" + player.species.type + "/Species.png"
-							 		 : "images/" + player.species.type + "/" + ActionEnum.RUN_RIGHT.replace(" ", "") + ".png"),
-					 row: testRow,
-					 col: (testCol+1),
-					 status: (stopped ? ActionEnum.STOP : AttributeEnum.RUN),
-					 left: 0,
-					 right: (stopped ? 0 : 1),
-					 sight: testSight,
-					 endurance: (stopped ? (testEndurance-1) : testEndurance),
-					 run: {min: 0, max: speciesRun}});
+	validateTakeAction({rows: tileTypes.length,
+						cols: (tileTypes[0].length+1),
+						image: (stopped
+								? "images/" + player.species.type + "/Species.png"
+								: "images/" + player.species.type + "/" + ActionEnum.RUN_RIGHT.replace(" ", "") + ".png"),
+						row: testRow,
+						col: (testCol+1),
+						status: (stopped ? ActionEnum.STOP : AttributeEnum.RUN),
+						left: 0,
+						right: (stopped ? 0 : 1),
+						sight: testSight,
+						endurance: (stopped ? (testEndurance-1) : testEndurance),
+						run: {min: 0, max: speciesRun}});
 }
 
 function testRun_Right_NoEnduranceRun()
@@ -582,16 +588,16 @@ function testRun_Right_NoEnduranceRun()
 
 	moveRight(true);
 
-	validateResults({rows: tileTypes.length,
-					 cols: (tileTypes[0].length+1),
-					 image: "images/" + player.species.type + "/Species.png",
-					 row: testRow,
-					 col: (testCol+1),
-					 status: ActionEnum.STOP,
-					 left: 0,
-					 right: 0,
-					 health: (testHealth-1),
-					 sight: testSight,
-					 endurance: 0,
-					 run: player.species.attributeMap.get(AttributeEnum.RUN)});
+	validateTakeAction({rows: tileTypes.length,
+						cols: (tileTypes[0].length+1),
+						image: "images/" + player.species.type + "/Species.png",
+						row: testRow,
+						col: (testCol+1),
+						status: ActionEnum.STOP,
+						left: 0,
+						right: 0,
+						health: (testHealth-1),
+						sight: testSight,
+						endurance: 0,
+						run: player.species.attributeMap.get(AttributeEnum.RUN)});
 }

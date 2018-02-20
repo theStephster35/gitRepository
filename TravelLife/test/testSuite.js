@@ -19,6 +19,21 @@ function startTest(event)
 		case "initAction":
 			testInitAction();
 			break;
+		case "checkActionsStop":
+			testCheckActionsStop();
+			break;
+		case "checkActionsClimb":
+			testCheckActionsClimb();
+			break;
+		case "checkActionsJump":
+			testCheckActionsJump();
+			break;
+		case "checkActionsRun":
+			testCheckActionsRun();
+			break;
+		case "checkActionsFall":
+			testCheckActionsFall();
+			break;
 		case "takeAction":
 			testTakeAction();
 			break;

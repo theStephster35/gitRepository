@@ -15,6 +15,11 @@
 					<select id="test" required>
 						<option value="clearResults">Clear Results</option>
 						<option value="initAction">Init Action</option>
+						<option value="checkActionsStop">Check Actions - Stop</option>
+						<option value="checkActionsClimb">Check Actions - Climb</option>
+						<option value="checkActionsJump">Check Actions - Jump</option>
+						<option value="checkActionsRun">Check Actions - Run</option>
+						<option value="checkActionsFall">Check Actions - Fall</option>
 						<option value="takeAction">Take Action</option>
 						<option value="moveUpLeftRight">Move Up/Left/Right</option>
 						<option value="moveCenterLeftRight">Move Center/Left/Right</option>
@@ -31,11 +36,16 @@
 		<ul id="results"></ul>
 
 		<script src="testSuite.js"></script>
-		<script src="initActionTest.js"></script>
-		<script src="takeActionTest.js"></script>
-		<script src="moveUpLeftRightTest.js"></script>
-		<script src="moveCenterLeftRightTest.js"></script>
-		<script src="moveDownLeftRightTest.js"></script>
+		<script src="initAction/initActionTest.js"></script>
+		<script src="initAction/checkActionsStopTest.js"></script>
+		<script src="initAction/checkActionsClimbTest.js"></script>
+		<script src="initAction/checkActionsJumpTest.js"></script>
+		<script src="initAction/checkActionsRunTest.js"></script>
+		<script src="initAction/checkActionsFallTest.js"></script>
+		<script src="takeAction/takeActionTest.js"></script>
+		<script src="takeAction/moveUpLeftRightTest.js"></script>
+		<script src="takeAction/moveCenterLeftRightTest.js"></script>
+		<script src="takeAction/moveDownLeftRightTest.js"></script>
 
 		<script src="../src/ui/enums/gameEnum.js"></script>
 	
