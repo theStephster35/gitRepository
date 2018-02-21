@@ -7,6 +7,8 @@ function getRandomNumber(min, max)
 
 function initAction()
 {
+	placePlayer();
+
 	var row = player.position.row;
 	var col = player.position.col;
 
@@ -104,8 +106,8 @@ function climb(doUpdate)
 		if (doUpdate)
 		{
 			(climbUpDown === ActionEnum.CLIMB_UP ? player.position.row-- : player.position.row++);
+
 			exposeMapTiles();
-			placePlayer();
 
 			// Check if player must let go
 			if (player.attributeMap.get(AttributeEnum.ENDURANCE) === 0)
@@ -121,20 +123,80 @@ function climbSide(doUpdate)
 	var actionInfo = "";
 	var climbLeftRight = confirmAction.innerText;
 
-	if (doUpdate)
+	if (!doUpdate)
+		actionInfo += climbLeftRight + " allows you to ";
+
+	// Check if player is climbing up
+	if ((climbLeftRight === ActionEnum.CLIMB_LEFT
+	  && getTileByPosition(player.position.row, (player.position.col-1)).solid)
+	 || (climbLeftRight === ActionEnum.CLIMB_RIGHT
+	  && getTileByPosition(player.position.row, (player.position.col+1)).solid))
 	{
-		player.status = AttributeEnum.CLIMB;
+		if (doUpdate)
+		{
+			player.status = AttributeEnum.CLIMB;
 
-		if (climbLeftRight === ActionEnum.CLIMB_LEFT)
-			player.momentum.left++;
-		else
-			player.momentum.right++;
+			if (climbLeftRight === ActionEnum.CLIMB_LEFT)
+				player.momentum.left = 1;
+			else
+				player.momentum.right = 1;
 
-		updatePlayerIcon("images/" + player.species.type + "/"
-					   + climbLeftRight.replace(" ", "") + ".png");
+			updatePlayerIcon("images/" + player.species.type + "/"
+					+ climbLeftRight.replace(" ", "") + ".png");
+		}
+		else // Get info, don't do update
+			actionInfo += AttributeEnum.CLIMB + ".\n";
 	}
-	else
-		actionInfo += climbLeftRight + " allows you to " + AttributeEnum.CLIMB + ".";
+	else // Player is climbing down
+	{
+		// Check if player is climbing
+		if ((climbLeftRight === ActionEnum.CLIMB_LEFT
+		  && getTileByPosition((player.position.row+1), (player.position.col-1)).type !== TileTypeEnum.WATER)
+		 || (climbLeftRight === ActionEnum.CLIMB_RIGHT
+		  && getTileByPosition((player.position.row+1), (player.position.col+1)).type !== TileTypeEnum.WATER))
+		{
+			if (doUpdate)
+			{
+				player.status = AttributeEnum.CLIMB;
+	
+				if (climbLeftRight === ActionEnum.CLIMB_LEFT)
+				{
+					player.momentum.right = 1;
+
+					updatePlayerIcon("images/" + player.species.type + "/"
+							+ ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png");
+				}
+				else
+				{
+					player.momentum.left = 1;
+
+					updatePlayerIcon("images/" + player.species.type + "/"
+							+ ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png");
+				}
+			}
+			else // Get info, don't do update
+				actionInfo += AttributeEnum.CLIMB + ".\n";
+		}
+		else // Player is swimming
+		{
+			if (doUpdate)
+			{
+				player.status = AttributeEnum.SWIM;
+
+				updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+			}
+			else // Get info, don't do update
+				actionInfo += AttributeEnum.SWIM + ".\n";
+		}
+
+		if (doUpdate)
+		{
+			player.position.row++;
+			climbLeftRight === ActionEnum.CLIMB_LEFT ? player.position.col-- : player.position.col++;
+
+			exposeMapTiles();
+		}
+	}
 
 	return actionInfo;
 }
@@ -172,7 +234,6 @@ function climbOverOff(doUpdate)
 		}
 
 		exposeMapTiles();
-		placePlayer();
 	}
 
 	return actionInfo;
@@ -283,8 +344,8 @@ function jumpRise(doUpdate)
 			updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
 	
 			player.position.row--;
+
 			exposeMapTiles();
-			placePlayer();
 
 			// Check if player must stop
 			if (player.momentum.up > 0
@@ -473,17 +534,14 @@ function run(doUpdate)
 			player.position.col++;
 
 		exposeMapTiles();
-		placePlayer();
 
 		// Check if player must stop
-		var row = player.position.row;
-		var col = player.position.col;
 		if ((player.momentum.left > 0
-		  && (getTileByPosition(row, (col-1)).solid
-		   || !getTileByPosition((row+1), (col-1)).solid))
+		  && (getTileByPosition(player.position.row, (player.position.col-1)).solid
+		   || !getTileByPosition((player.position.row+1), (player.position.col-1)).solid))
 		 || (player.momentum.right > 0
-		  && (getTileByPosition(row, (col+1)).solid
-		   || !getTileByPosition((row+1), (col+1)).solid)))
+		  && (getTileByPosition(player.position.row, (player.position.col+1)).solid
+		   || !getTileByPosition((player.position.row+1), (player.position.col+1)).solid)))
 			stop(true);
 	}
 
@@ -597,8 +655,8 @@ function fall(doUpdate)
 		updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
 
 		player.position.row++;
+
 		exposeMapTiles();
-		placePlayer();
 	}
 	else // Get info, don't do update
 	{
@@ -666,6 +724,31 @@ function land(doUpdate)
 			actionInfo += "\n"
 						+ "If you " + landAction + ", you risk death.";
 	}
+
+	return actionInfo;
+}
+
+function splash(doUpdate)
+{
+	var actionInfo = "";
+	var splashAction = confirmAction.innerText;
+
+	if (doUpdate)
+	{
+		player.status = AttributeEnum.SWIM;
+
+		player.momentum.left = 0;
+		player.momentum.right = 0;
+		player.momentum.down = 0;
+
+		updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+
+		player.position.row++;
+
+		exposeMapTiles();
+	}
+	else // Get info, don't do update
+		actionInfo += splashAction + " allows you to " + AttributeEnum.SWIM + ".\n";
 
 	return actionInfo;
 }

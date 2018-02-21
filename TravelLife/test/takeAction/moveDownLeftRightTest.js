@@ -3,6 +3,8 @@ function testMoveDownLeftRight()
 	// Move Down Left
 	runTest("Test Climb Off Left", testClimbOverOff_OffLeft);
 	runTest("Test Climb Off Left - No Endurance", testClimbOverOff_OffLeft_NoEndurance);
+	runTest("Test Climb Left - Climb", testClimb_Left_Climb);
+	runTest("Test Climb Left - Swim", testClimb_Left_Swim);
 
 	// Move Down
 	runTest("Test Climb Down Left", testClimb_DownLeft);
@@ -11,10 +13,13 @@ function testMoveDownLeftRight()
 	runTest("Test Climb Down Right - No Endurance/Climb", testClimb_DownRight_NoEnduranceClimb);
 	runTest("Test Fall", testFall);
 	runTest("Test Land", testLand);
+	runTest("Test Splash", testSplash);
 
 	// Move Down Right
 	runTest("Test Climb Off Right", testClimbOverOff_OffRight);
 	runTest("Test Climb Off Right - No Endurance", testClimbOverOff_OffRight_NoEndurance);
+	runTest("Test Climb Right - Climb", testClimb_Right_Climb);
+	runTest("Test Climb Right - Swim", testClimb_Right_Swim);
 }
 
 function testClimbOverOff_OffLeft()
@@ -82,6 +87,57 @@ function testClimbOverOff_OffLeft_NoEndurance()
 						sight: testSight,
 						endurance: 0,
 						climb: player.species.attributeMap.get(AttributeEnum.CLIMB)});
+}
+
+function testClimb_Left_Climb()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testSight = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["S", "G", "S"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  sight: testSight},
+			 {innerText: ActionEnum.CLIMB_LEFT});
+
+	moveDownLeft(true);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: (tileTypes[0].length+1),
+						image: "images/" + player.species.type + "/" + ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png",
+						row: (testRow+1),
+						col: testCol,
+						status: AttributeEnum.CLIMB,
+						right: 1,
+						sight: testSight});
+}
+
+function testClimb_Left_Swim()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testSight = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["W", "G", "W"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  sight: testSight},
+			 {innerText: ActionEnum.CLIMB_LEFT});
+
+	moveDownLeft(true);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: (tileTypes[0].length+1),
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: (testRow+1),
+						col: testCol,
+						status: AttributeEnum.SWIM,
+						sight: testSight});
 }
 
 function testClimb_DownLeft()
@@ -263,14 +319,14 @@ function testLand()
 	var testSight = 1;
 	var tileTypes = [["B", "S", "B"],
 					 ["B", "S", "B"],
-					 ["B", "S", "B"]];
+					 ["B", "G", "B"]];
 
 	initData(tileTypes,
 			 {image: "",
 			  row: testRow, col: testCol,
 			  status: ActionEnum.FALL,
 			  left: 1, right: 1, down: testDown,
-			  sight: testSight},
+			  sight: testSight, health: testHealth},
 			 {innerText: ActionEnum.LAND});
 
 	moveDown(true);
@@ -298,6 +354,37 @@ function testLand()
 						health: {min: minHealth, max: maxHealth},
 						sight: testSight,
 						jump: player.species.attributeMap.get(AttributeEnum.JUMP)});
+}
+
+function testSplash()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testDown = 2;
+	var testSight = 1;
+	var tileTypes = [["B", "S", "B"],
+					 ["B", "S", "B"],
+					 ["B", "W", "B"]];
+
+	initData(tileTypes,
+			 {image: "",
+			  row: testRow, col: testCol,
+			  left: 1, right: 1, down: testDown,
+			  sight: testSight},
+			 {innerText: ActionEnum.SPLASH});
+
+	moveDown(true);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: (testRow+1),
+						col: testCol,
+						status: AttributeEnum.SWIM,
+						left: 0,
+						right: 0,
+						down: 0,
+						sight: testSight});
 }
 
 function testClimbOverOff_OffRight()
@@ -365,4 +452,55 @@ function testClimbOverOff_OffRight_NoEndurance()
 						sight: testSight,
 						endurance: 0,
 						climb: player.species.attributeMap.get(AttributeEnum.CLIMB)});
+}
+
+function testClimb_Right_Climb()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testSight = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["S", "G", "S"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  sight: testSight},
+			 {innerText: ActionEnum.CLIMB_RIGHT});
+
+	moveDownRight(true);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: (tileTypes[0].length+1),
+						image: "images/" + player.species.type + "/" + ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png",
+						row: (testRow+1),
+						col: (testCol+1),
+						status: AttributeEnum.CLIMB,
+						left: 1,
+						sight: testSight});
+}
+
+function testClimb_Right_Swim()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testSight = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["W", "G", "W"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  sight: testSight},
+			 {innerText: ActionEnum.CLIMB_RIGHT});
+
+	moveDownRight(true);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: (tileTypes[0].length+1),
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: (testRow+1),
+						col: (testCol+1),
+						status: AttributeEnum.SWIM,
+						sight: testSight});
 }

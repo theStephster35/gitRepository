@@ -370,6 +370,8 @@ function checkCenter(row, col)
 			}
 		}
 	}
+
+	//centerButton.innerText = "\u23D4"; // Float?
 }
 
 function checkRight(row, col)
@@ -419,20 +421,33 @@ function checkDownLeft(row, col)
 {
 	disableButton(downLeftButton);
 
-	// If player has health, endurance, and climbing right...
-	// .. and is above a solid tile
+	// If player has health and endurance
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0
-	 && player.attributeMap.get(AttributeEnum.ENDURANCE) > 0
-	 && playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
-	 && getTileByPosition((row+1), col).solid)
+	 && player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
 	{
-		downLeftButton.label = ActionEnum.CLIMB_OFF;
-		downLeftButton.innerText = "\u21B2";
-		downLeftButton.disabled = false;
+		// If player is not moving
+		if (playerIsInStatus(ActionEnum.STOP))
+		{
+			// If player is on a tile right of a not solid tile and up right of not a solid tile
+			if (!getTileByPosition(row, (col-1)).solid
+			 && !getTileByPosition((row+1), (col-1)).solid)
+			{
+				downLeftButton.label = ActionEnum.CLIMB_LEFT;
+				downLeftButton.innerText = "\u2B10";
+				downLeftButton.disabled = false;
+			}
+		}
+		else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
+			  && getTileByPosition((row+1), col).solid)
+		{
+			// If player is climbing right and is above a solid tile
+			downLeftButton.label = ActionEnum.CLIMB_OFF;
+			downLeftButton.innerText = "\u21B2";
+			downLeftButton.disabled = false;
+		}
 	}
 
 	//downLeftButton.innerText = "\u2199"; // Swim?
-	//downLeftButton.innerText = "\u2BA6"; // Climb Over?
 }
 
 function checkDown(row, col)
@@ -451,6 +466,12 @@ function checkDown(row, col)
 				downButton.label = ActionEnum.LAND;
 				downButton.innerText = "\u2913";
 			}
+			else if (getTileByPosition((row+1), col).type === TileTypeEnum.WATER)
+			{
+				// If player is on a tile above a water tile...
+				downButton.label = ActionEnum.SPLASH;
+				downButton.innerText = "\u297F";
+			}
 			else // Player is on a tile above a not solid tile
 			{
 				downButton.label = ActionEnum.FALL;
@@ -459,9 +480,10 @@ function checkDown(row, col)
 
 			downButton.disabled = false;
 		}
-		else if (!getTileByPosition((row+1), col).solid)
+		else if (!getTileByPosition((row+1), col).solid
+			  && getTileByPosition((row+1), col).type !== TileTypeEnum.WATER)
 		{
-			// If player is on a tile above a not solid tile...
+			// If player is on a tile above a not solid/water tile...
 			// ... and is climbing left and is on a tile up right of a solid tile
 			if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
 			 && getTileByPosition((row+1), (col-1)).solid)
@@ -489,20 +511,33 @@ function checkDownRight(row, col)
 {
 	disableButton(downRightButton);
 
-	// If player has health, endurance, and climbing left...
-	// .. and is above a solid tile
+	// If player has health and endurance
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0
-	 && player.attributeMap.get(AttributeEnum.ENDURANCE) > 0
-	 && playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
-	 && getTileByPosition((row+1), col).solid)
+	 && player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
 	{
-		downRightButton.label = ActionEnum.CLIMB_OFF;
-		downRightButton.innerText = "\u21B3";
-		downRightButton.disabled = false;
+		// If player is not moving
+		if (playerIsInStatus(ActionEnum.STOP))
+		{
+			// If player is on a tile left of a not solid tile and up left of not a solid tile
+			if (!getTileByPosition(row, (col+1)).solid
+			 && !getTileByPosition((row+1), (col+1)).solid)
+			{
+				downRightButton.label = ActionEnum.CLIMB_RIGHT;
+				downRightButton.innerText = "\u2B0E";
+				downRightButton.disabled = false;
+			}
+		}
+		else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
+			  && getTileByPosition((row+1), col).solid)
+		{
+			// If player is climbing left and is above a solid tile
+			downRightButton.label = ActionEnum.CLIMB_OFF;
+			downRightButton.innerText = "\u21B3";
+			downRightButton.disabled = false;
+		}
 	}
 
 	//downRightButton.innerText = "\u2198"; // Swim?
-	//downRightButton.innerText = "\u2B0E"; // Climb Over?
 }
 
 function disableButton(button)

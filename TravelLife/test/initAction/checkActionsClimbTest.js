@@ -224,8 +224,7 @@ function test_SSS_BSB_BWB_ClimbLeft()
 	initAction();
 
 	validateInitAction({upLeft: ActionEnum.CLIMB_OVER,
-						right: ActionEnum.LET_GO,
-						down: ActionEnum.CLIMB_DOWN});
+						right: ActionEnum.LET_GO});
 }
 
 function test_SSS_BSB_BWB_ClimbLeft_NoHealth()
@@ -256,8 +255,7 @@ function test_SSS_BSB_BWB_ClimbRight()
 	initAction();
 
 	validateInitAction({upRight: ActionEnum.CLIMB_OVER,
-						left: ActionEnum.LET_GO,
-						down: ActionEnum.CLIMB_DOWN});
+						left: ActionEnum.LET_GO});
 }
 
 function test_SSS_BSB_BWB_ClimbRight_NoHealth()

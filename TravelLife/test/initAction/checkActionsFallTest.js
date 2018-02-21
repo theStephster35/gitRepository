@@ -86,7 +86,7 @@ function test_SSS_SSS_BWB_FallDown_NoEndurance()
 
 	initAction();
 
-	validateInitAction({down: ActionEnum.FALL});
+	validateInitAction({down: ActionEnum.SPLASH});
 }
 
 function test_SSS_SSS_BWB_FallDown_NoHealth()

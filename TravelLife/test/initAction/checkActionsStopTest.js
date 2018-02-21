@@ -1,5 +1,9 @@
 function testCheckActionsStop()
 {
+	runTest("BBB BSB SGS", test_BBB_BSB_SGS);
+
+	runTest("BBB BSB WGW", test_BBB_BSB_WGW);
+
 	runTest("BBB BSB BGB", test_BBB_BSB_BGB);
 	runTest("BBB BSB BGB - No Endurance", test_BBB_BSB_BGB_NoEndurance);
 	runTest("BBB BSB BGB - No Recovery", test_SSS_SSS_BGB_NoRecovery);
@@ -11,12 +15,44 @@ function testCheckActionsStop()
 	runTest("SSS SSS BGB - No Health", test_SSS_SSS_BGB_NoHealth);
 
 	runTest("SSS SSS SGS", test_SSS_SSS_SGS);
+	runTest("SSS SSS SGS - No Endurance", test_SSS_SSS_SGS_NoEndurance);
 	runTest("SSS SSS SGS - No Recovery", test_SSS_SSS_SGS_NoRecovery);
 	runTest("SSS SSS SGS - No Health", test_SSS_SSS_SGS_NoHealth);
 
 	runTest("SSS SSS WGW", test_SSS_SSS_WGW);
+	runTest("SSS SSS WGW - No Endurance", test_SSS_SSS_WGW_NoEndurance);
 	runTest("SSS SSS WGW - No Recovery", test_SSS_SSS_WGW_NoRecovery);
 	runTest("SSS SSS WGW - No Health", test_SSS_SSS_WGW_NoHealth);
+}
+
+function test_BBB_BSB_SGS()
+{
+	initData([["B", "B", "B"],
+			  ["B", "S", "B"],
+			  ["S", "G", "S"]],
+			 {row: 1, col: 1,
+			  endurance: 1});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.CLIMB_LEFT,
+					 	upRight: ActionEnum.CLIMB_RIGHT,
+					 	center: ActionEnum.REST});
+}
+
+function test_BBB_BSB_WGW()
+{
+	initData([["B", "B", "B"],
+			  ["B", "S", "B"],
+			  ["W", "G", "W"]],
+			 {row: 1, col: 1,
+			  endurance: 1});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.CLIMB_LEFT,
+					 	upRight: ActionEnum.CLIMB_RIGHT,
+					 	center: ActionEnum.REST});
 }
 
 function test_BBB_BSB_BGB()
@@ -142,7 +178,22 @@ function test_SSS_SSS_SGS()
 	initAction();
 
 	validateInitAction({up: ActionEnum.JUMP_UP,
-						center: ActionEnum.REST});
+						center: ActionEnum.REST,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_SSS_SSS_SGS_NoEndurance()
+{
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["S", "G", "S"]],
+			 {row: 1, col: 1,
+			  endurance: 0});
+
+	initAction();
+
+	validateInitAction({center: ActionEnum.REST});
 }
 
 function test_SSS_SSS_SGS_NoRecovery()
@@ -155,7 +206,9 @@ function test_SSS_SSS_SGS_NoRecovery()
 
 	initAction();
 
-	validateInitAction({up: ActionEnum.JUMP_UP});
+	validateInitAction({up: ActionEnum.JUMP_UP,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
 }
 
 function test_SSS_SSS_SGS_NoHealth()
@@ -182,7 +235,22 @@ function test_SSS_SSS_WGW()
 	initAction();
 
 	validateInitAction({up: ActionEnum.JUMP_UP,
-						center: ActionEnum.REST});
+						center: ActionEnum.REST,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_SSS_SSS_WGW_NoEndurance()
+{
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["W", "G", "W"]],
+			 {row: 1, col: 1,
+			  endurance: 0});
+
+	initAction();
+
+	validateInitAction({center: ActionEnum.REST});
 }
 
 function test_SSS_SSS_WGW_NoRecovery()
@@ -195,7 +263,9 @@ function test_SSS_SSS_WGW_NoRecovery()
 
 	initAction();
 
-	validateInitAction({up: ActionEnum.JUMP_UP});
+	validateInitAction({up: ActionEnum.JUMP_UP,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
 }
 
 function test_SSS_SSS_WGW_NoHealth()

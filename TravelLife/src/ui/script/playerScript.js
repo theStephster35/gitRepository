@@ -42,8 +42,6 @@ function updatePlayerIcon(playerImage)
 
 function placePlayer()
 {
-	exposeMapTiles();
-
 	var playerTile = mapTiles.children[player.position.row].children[player.position.col];
 
 	playerIcon.style.display = "block";
@@ -213,6 +211,9 @@ function moveDownLeft(doUpdate)
 		case ActionEnum.CLIMB_OFF:
 			actionInfo = climbOverOff(doUpdate);
 			break;
+		case ActionEnum.CLIMB_LEFT:
+			actionInfo = climb(doUpdate);
+			break;
 		default:
 			actionInfo = "";
 	}
@@ -235,6 +236,9 @@ function moveDown(doUpdate)
 		case ActionEnum.LAND:
 			actionInfo = land(doUpdate);
 			break;
+		case ActionEnum.SPLASH:
+			actionInfo = splash(doUpdate);
+			break;
 		default:
 			actionInfo = "";
 	}
@@ -250,6 +254,9 @@ function moveDownRight(doUpdate)
 	{
 		case ActionEnum.CLIMB_OFF:
 			actionInfo = climbOverOff(doUpdate);
+			break;
+		case ActionEnum.CLIMB_RIGHT:
+			actionInfo = climb(doUpdate);
 			break;
 		default:
 			actionInfo = "";

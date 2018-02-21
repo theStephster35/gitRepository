@@ -19,6 +19,8 @@ function initMapTiles()
 
 	// Start Ground Tile
 	createMapTile(1, 0, new Ground());
+
+	exposeMapTiles();
 }
 
 function createMapTile(row, col, tile)

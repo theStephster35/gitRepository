@@ -132,7 +132,6 @@ function initGame()
 {
 	initPlayer();
 	initMapTiles();
-	placePlayer();
 	initAction();
 }
 

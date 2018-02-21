@@ -11,7 +11,8 @@ var AttributeEnum =
 	ENDURANCE: "Endurance",
 	CLIMB: "Climb",
 	JUMP: "Jump",
-	RUN: "Run"
+	RUN: "Run",
+	SWIM: "Swim"
 };
 
 var TileTypeEnum =
@@ -58,6 +59,7 @@ var ActionEnum =
 	CLIMB_DOWN: AttributeEnum.CLIMB + " Down",
 	FALL: "Fall",
 	LAND: "Land",
+	SPLASH: "Splash",
 
 	DOWN_RIGHT: "downRight"
 };
