@@ -34,6 +34,9 @@ function startTest(event)
 		case "checkActionsFall":
 			testCheckActionsFall();
 			break;
+		case "checkActionsSwim":
+			testCheckActionsSwim();
+			break;
 		case "takeAction":
 			testTakeAction();
 			break;
@@ -130,6 +133,8 @@ function initData(tileTypes, playerData, actionData)
 		player.attributeMap.set(AttributeEnum.JUMP, playerData.jump);
 	if (playerData.run != null)
 		player.attributeMap.set(AttributeEnum.RUN, playerData.run);
+	if (playerData.swim != null)
+		player.attributeMap.set(AttributeEnum.SWIM, playerData.swim);
 
 	confirmAction = document.createElement("button");
 	if (actionData != null && actionData.innerText != null)

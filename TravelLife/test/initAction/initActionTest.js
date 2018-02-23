@@ -5,6 +5,7 @@ function testInitAction()
 	testCheckActionsJump();
 	testCheckActionsRun();
 	testCheckActionsFall();
+	testCheckActionsSwim();
 }
 
 function validateInitAction(results)

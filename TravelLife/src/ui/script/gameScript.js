@@ -168,7 +168,7 @@ function takeAction()
 
 function endGame()
 {
-	resetPlayer();
 	resetAction();
+	resetPlayer();
 	resetMap();
 }

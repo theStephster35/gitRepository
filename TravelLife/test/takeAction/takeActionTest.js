@@ -31,6 +31,8 @@ function validateTakeAction(results)
 			player.species.attributeMap.get(AttributeEnum.JUMP), results.jump);
 	validateTakeActionData("run", player.attributeMap.get(AttributeEnum.RUN),
 			player.species.attributeMap.get(AttributeEnum.RUN), results.run);
+	validateTakeActionData("swim", player.attributeMap.get(AttributeEnum.SWIM),
+			player.species.attributeMap.get(AttributeEnum.SWIM), results.swim);
 }
 
 function validateTakeActionData(dataType, actualData, defaultData, resultData)

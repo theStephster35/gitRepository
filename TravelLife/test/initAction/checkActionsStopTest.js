@@ -6,7 +6,7 @@ function testCheckActionsStop()
 
 	runTest("BBB BSB BGB", test_BBB_BSB_BGB);
 	runTest("BBB BSB BGB - No Endurance", test_BBB_BSB_BGB_NoEndurance);
-	runTest("BBB BSB BGB - No Recovery", test_SSS_SSS_BGB_NoRecovery);
+	runTest("BBB BSB BGB - No Recovery", test_BBB_BSB_BGB_NoRecovery);
 	runTest("BBB BSB BGB - No Health", test_BBB_BSB_BGB_NoHealth);
 
 	runTest("SSS SSS BGB", test_SSS_SSS_BGB);

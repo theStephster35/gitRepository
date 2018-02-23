@@ -93,7 +93,15 @@ function moveUpLeft(doUpdate)
 			actionInfo = climb(doUpdate);
 			break;
 		case ActionEnum.CLIMB_OVER:
+			if (player.status === AttributeEnum.SWIM)
+				player.momentum.left = 1;
 			actionInfo = climbOverOff(doUpdate);
+			break;
+		case ActionEnum.CLIMB_OUT_LEFT:
+			actionInfo = climbOut(doUpdate);
+			break;
+		case ActionEnum.SWIM_UP_LEFT:
+			actionInfo = swim(doUpdate);
 			break;
 		default:
 			actionInfo = "";
@@ -113,6 +121,9 @@ function moveUp(doUpdate)
 		case ActionEnum.RISE_UP:
 			actionInfo = jumpRise(doUpdate);
 			break;
+		case ActionEnum.SWIM_UP:
+			actionInfo = swim(doUpdate);
+			break;
 		default:
 			actionInfo = "";
 	}
@@ -130,7 +141,15 @@ function moveUpRight(doUpdate)
 			actionInfo = climb(doUpdate);
 			break;
 		case ActionEnum.CLIMB_OVER:
+			if (player.status === AttributeEnum.SWIM)
+				player.momentum.right = 1;
 			actionInfo = climbOverOff(doUpdate);
+			break;
+		case ActionEnum.CLIMB_OUT_RIGHT:
+			actionInfo = climbOut(doUpdate);
+			break;
+		case ActionEnum.SWIM_UP_RIGHT:
+			actionInfo = swim(doUpdate);
 			break;
 		default:
 			actionInfo = "";
@@ -154,6 +173,9 @@ function moveLeft(doUpdate)
 		case ActionEnum.RUN_LEFT:
 			actionInfo = run(doUpdate);
 			break;
+		case ActionEnum.SWIM_LEFT:
+			actionInfo = swim(doUpdate);
+			break;
 		default:
 			actionInfo = "";
 	}
@@ -171,7 +193,8 @@ function stayCenter(doUpdate)
 			actionInfo = stop(doUpdate);
 			break;
 		case ActionEnum.REST:
-			actionInfo = rest(doUpdate);
+		case ActionEnum.FLOAT:
+			actionInfo = restFloat(doUpdate);
 			break;
 		default:
 			actionInfo = "";
@@ -195,6 +218,9 @@ function moveRight(doUpdate)
 		case ActionEnum.RUN_RIGHT:
 			actionInfo = run(doUpdate);
 			break;
+		case ActionEnum.SWIM_RIGHT:
+			actionInfo = swim(doUpdate);
+			break;
 		default:
 			actionInfo = "";
 	}
@@ -213,6 +239,9 @@ function moveDownLeft(doUpdate)
 			break;
 		case ActionEnum.CLIMB_LEFT:
 			actionInfo = climb(doUpdate);
+			break;
+		case ActionEnum.SWIM_DOWN_LEFT:
+			actionInfo = swim(doUpdate);
 			break;
 		default:
 			actionInfo = "";
@@ -239,6 +268,9 @@ function moveDown(doUpdate)
 		case ActionEnum.SPLASH:
 			actionInfo = splash(doUpdate);
 			break;
+		case ActionEnum.SWIM_DOWN:
+			actionInfo = swim(doUpdate);
+			break;
 		default:
 			actionInfo = "";
 	}
@@ -257,6 +289,9 @@ function moveDownRight(doUpdate)
 			break;
 		case ActionEnum.CLIMB_RIGHT:
 			actionInfo = climb(doUpdate);
+			break;
+		case ActionEnum.SWIM_DOWN_RIGHT:
+			actionInfo = swim(doUpdate);
 			break;
 		default:
 			actionInfo = "";
@@ -290,10 +325,12 @@ function loseEndurance(actionName, actionInfo)
 	else if (!doUpdate
 		  && (actionName === ActionEnum.CLIMB_OVER
 		   || actionName === ActionEnum.CLIMB_OFF
+		   || actionName === ActionEnum.CLIMB_OUT_LEFT
+		   || actionName === ActionEnum.CLIMB_OUT_RIGHT
+		   || actionName === ActionEnum.LET_GO
 		   || actionName === ActionEnum.GRAB_LEFT
 		   || actionName === ActionEnum.STOP
-		   || actionName === ActionEnum.GRAB_RIGHT
-		   || actionName === ActionEnum.LET_GO))
+		   || actionName === ActionEnum.GRAB_RIGHT))
 		actionInfo += AttributeEnum.ENDURANCE + ": " + (attributeValue+1)
 					+ " - 1 = " + attributeValue + "\n";
 
