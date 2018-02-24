@@ -312,6 +312,117 @@ function climbOut(doUpdate)
 	return actionInfo;
 }
 
+function jumpRise(doUpdate)
+{
+	var actionInfo = "";
+	var jumpRiseDriftDirection = confirmAction.innerText;
+
+	var jumpValue = player.attributeMap.get(AttributeEnum.JUMP);
+	
+	var min = 1
+	var max = jumpValue;
+	var value = max;
+	
+	if (doUpdate)
+		value = getRandomNumber(min, max);
+	else // Get info, don't do update
+		actionInfo += jumpRiseDriftDirection + " decreases sideways momentum and " + AttributeEnum.JUMP + ".\n"
+					+ "When " + AttributeEnum.JUMP + " reaches 0, " + AttributeEnum.JUMP + " resets, "
+					+ "you " + ActionEnum.FALL_DOWN + " and lose " + AttributeEnum.ENDURANCE + ".\n"
+					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
+					+ "\n"
+					+ AttributeEnum.JUMP + ": " + jumpValue + " - [" + min + "-" + max + "] "
+					+ "= [" + (jumpValue - max) + "-" + (jumpValue - min) + "]\n"
+					+ "\n";
+
+	jumpValue -= value;
+	if (jumpValue === 0)
+	{
+		actionInfo = loseEndurance(jumpRiseDriftDirection, actionInfo);
+
+		if (doUpdate)
+		{
+			resetAttribute(AttributeEnum.JUMP, actionInfo);
+
+			player.status = ActionEnum.FALL_DOWN;
+
+			player.momentum.up = 0;
+		}
+		else if (!actionInfo.includes("If you " + jumpRiseDriftDirection + ", you risk "))
+			actionInfo += "If you " + jumpRiseDriftDirection + ", "
+						+ "you risk losing " + AttributeEnum.ENDURANCE + ".\n";
+	}
+	else if (doUpdate)
+	{
+		player.status = AttributeEnum.JUMP;
+
+		player.attributeMap.set(AttributeEnum.JUMP, jumpValue);
+
+		player.momentum.up = 1;
+	}
+
+	if (doUpdate)
+	{
+		switch(jumpRiseDriftDirection)
+		{
+			case ActionEnum.JUMP_LEFT:
+				player.momentum.left += max;
+				updatePlayerIcon("images/" + player.species.type + "/"
+						   + jumpRiseDriftDirection.replace(" ", "") + ".png");
+			case ActionEnum.RISE_LEFT:
+				player.position.row--;
+				player.position.col--;
+				break;
+			case ActionEnum.JUMP_UP:
+				if (player.momentum.left > 0)
+					updatePlayerIcon("images/" + player.species.type + "/"
+							   + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png");
+				else if (player.momentum.right > 0)
+					updatePlayerIcon("images/" + player.species.type + "/"
+							   + ActionEnum.JUMP_RIGHT.replace(" ", "") + ".png");
+			case ActionEnum.RISE_UP:
+				player.position.row--;
+				break
+			case ActionEnum.JUMP_RIGHT:
+				player.momentum.right += max;
+				updatePlayerIcon("images/" + player.species.type + "/"
+							   + jumpRiseDriftDirection.replace(" ", "") + ".png");
+			case ActionEnum.RISE_RIGHT:
+				player.position.row--;
+				player.position.col++;
+				break;
+		}
+
+		if (player.momentum.left > 0)
+		{
+			player.momentum.left--;
+
+			if (jumpRiseDriftDirection === ActionEnum.DRIFT)
+				player.position.col--;
+		}
+		else if (player.momentum.right > 0)
+		{
+			player.momentum.right--;
+
+			if (jumpRiseDriftDirection === ActionEnum.DRIFT)
+				player.position.col++;
+		}
+
+		if (player.momentum.left === 0
+		 && player.momentum.right === 0)
+			updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+			
+		exposeMapTiles();
+
+		// Check if player must stop
+		if (player.momentum.up > 0
+		 && getTileByPosition((player.position.row-1), player.position.col).solid)
+			stop(true);
+	}
+
+	return actionInfo;
+}
+
 function swim(doUpdate)
 {
 	var actionInfo = "";
@@ -340,7 +451,8 @@ function swim(doUpdate)
 			value = getRandomNumber(min, max);
 		else // Get info, don't do update
 			actionInfo += AttributeEnum.SWIM + ": " + swimValue + " - [" + min + "-" + max + "] "
-						+ "= [" + (swimValue - max) + "-" + (swimValue - min) + "]\n";
+						+ "= [" + (swimValue - max) + "-" + (swimValue - min) + "]\n"
+						+ "\n";
 	}
 
 	swimValue -= value;
@@ -378,9 +490,7 @@ function swim(doUpdate)
 		switch (swimDirection)
 		{
 			case ActionEnum.SWIM_UP_LEFT:
-				player.position.row--;
 				player.position.col--;
-				break;
 			case ActionEnum.SWIM_UP:
 				player.position.row--;
 				break;
@@ -395,9 +505,7 @@ function swim(doUpdate)
 				player.position.col++;
 				break;
 			case ActionEnum.SWIM_DOWN_LEFT:
-				player.position.row++;
 				player.position.col--;
-				break;
 			case ActionEnum.SWIM_DOWN:
 				player.position.row++;
 				break;
@@ -408,80 +516,6 @@ function swim(doUpdate)
 		}
 
 		exposeMapTiles();
-	}
-
-	return actionInfo;
-}
-
-function jumpRise(doUpdate)
-{
-	var actionInfo = "";
-	var jumpRiseUp = confirmAction.innerText;
-
-	if (jumpRiseUp !== ActionEnum.JUMP_UP
-	 && jumpRiseUp !== ActionEnum.RISE_UP)
-		actionInfo = jumpRiseSide(doUpdate);
-	else // Jump/Rise Up
-	{
-		var jumpValue = player.attributeMap.get(AttributeEnum.JUMP);
-	
-		var min = 1
-		var max = jumpValue;
-		var value = max;
-	
-		if (doUpdate)
-			value = getRandomNumber(min, max);
-		else // Get info, don't do update
-			actionInfo += jumpRiseUp + " decreases " + AttributeEnum.JUMP + ".\n"
-						+ "When " + AttributeEnum.JUMP + " reaches 0, " + AttributeEnum.JUMP + " resets, "
-						+ "you " + ActionEnum.FALL + " and lose " + AttributeEnum.ENDURANCE + ".\n"
-						+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
-						+ "\n"
-						+ AttributeEnum.JUMP + ": " + jumpValue + " - [" + min + "-" + max + "] "
-						+ "= [" + (jumpValue - max) + "-" + (jumpValue - min) + "]\n"
-						+ "\n";
-	
-		jumpValue -= value;
-		if (jumpValue === 0)
-		{
-			actionInfo = loseEndurance(jumpRiseUp, actionInfo);
-	
-			if (doUpdate)
-			{
-				resetAttribute(AttributeEnum.JUMP, actionInfo);
-	
-				player.status = ActionEnum.FALL;
-
-				player.momentum.up = 0;
-			}
-			else if (!actionInfo.includes("If you " + jumpRiseUp + ", you risk "))
-				actionInfo += "If you " + jumpRiseUp + ", you risk losing " + AttributeEnum.ENDURANCE + ".\n";
-		}
-		else if (doUpdate)
-		{
-			player.status = AttributeEnum.JUMP;
-
-			player.attributeMap.set(AttributeEnum.JUMP, jumpValue);
-
-			player.momentum.up = 1;
-		}
-
-		if (doUpdate)
-		{
-			player.momentum.left = 0;
-			player.momentum.right = 0;
-
-			updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
-	
-			player.position.row--;
-
-			exposeMapTiles();
-
-			// Check if player must stop
-			if (player.momentum.up > 0
-			 && getTileByPosition((player.position.row-1), player.position.col).solid)
-				stop(true);
-		}
 	}
 
 	return actionInfo;
@@ -501,7 +535,7 @@ function letGo(doUpdate)
 
 	if (doUpdate)
 	{
-		player.status = ActionEnum.FALL;
+		player.status = ActionEnum.FALL_DOWN;
 
 		player.momentum.left = 0;
 		player.momentum.right = 0;
@@ -511,15 +545,6 @@ function letGo(doUpdate)
 
 	if (player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
 		actionInfo = loseEndurance(letGoLeftRight, actionInfo);
-
-	return actionInfo;
-}
-
-// TODO
-function jumpRiseSide(doUpdate)
-{
-	var actionInfo = "";
-	var jumpRiseLeftRight = confirmAction.innerText;
 
 	return actionInfo;
 }
@@ -537,7 +562,7 @@ function grab(doUpdate)
 					+ "When downward momentum reaches 0, " + AttributeEnum.ENDURANCE + " resets if "
 					+ AttributeEnum.ENDURANCE + " reaches 0, and you " + AttributeEnum.CLIMB + "; otherwise, you "
 					+ (getTileByPosition((player.position.row+1), player.position.col).solid
-					   ? ActionEnum.LAND : ActionEnum.FALL) + ".\n"
+					   ? ActionEnum.LAND : ActionEnum.FALL_DOWN) + ".\n"
 					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, "
 					+ "you lose " + AttributeEnum.HEALTH + ".\n"
 					+ "When " + AttributeEnum.HEALTH + " reaches 0, your travels end.\n"
@@ -713,7 +738,7 @@ function stop(doUpdate)
 	{
 		actionInfo += stopAction + " ";
 		if (player.status === AttributeEnum.JUMP)
-			actionInfo += "allows you to " + ActionEnum.FALL + ", ";
+			actionInfo += "allows you to " + ActionEnum.FALL_DOWN + ", ";
 		actionInfo += "resets " + player.status + ", and you lose " + AttributeEnum.ENDURANCE + ".\n"
 					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
 					+ "\n";
@@ -734,12 +759,10 @@ function stop(doUpdate)
 		}
 		else // Player is jumping
 		{
-			player.status = ActionEnum.FALL;
+			player.status = ActionEnum.FALL_DOWN;
 
 			player.momentum.up = 0;
 			player.momentum.down = 0;
-
-			updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
 		}
 	}
 
@@ -795,14 +818,15 @@ function fall(doUpdate)
 	var fallAction = confirmAction.innerText;
 
 	if (!doUpdate)
-		actionInfo += fallAction + " increases downward momentum and resets " + AttributeEnum.JUMP + ".\n"
+		actionInfo += fallAction + " increases downward momentum, decreases sideways momentum, "
+					+ "and resets " + AttributeEnum.JUMP + ".\n"
 					+ "\n";
 
 	actionInfo = resetAttribute(AttributeEnum.JUMP, actionInfo);
 
 	if (doUpdate)
 	{
-		player.status = ActionEnum.FALL;
+		player.status = ActionEnum.FALL_DOWN;
 
 		var playerSightValue = player.attributeMap.get(AttributeEnum.SIGHT);
 		playerSightValue -= getRandomNumber(0, playerSightValue-1);

@@ -16,7 +16,7 @@ function test_BSB_BSB_BGB_FallDown_NoEndurance()
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  down: 1,
 			  endurance: 0});
 
@@ -33,7 +33,7 @@ function test_BSB_BSB_BGB_FallDown_NoHealth()
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  down: 1,
 			  health: 0});
 
@@ -48,7 +48,7 @@ function test_BSB_BSB_BSB_FallDown_NoEndurance()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  down: 1,
 			  endurance: 0});
 
@@ -56,7 +56,7 @@ function test_BSB_BSB_BSB_FallDown_NoEndurance()
 
 	validateInitAction({left: ActionEnum.GRAB_LEFT,
 					 	right: ActionEnum.GRAB_RIGHT,
-					 	down: ActionEnum.FALL});
+					 	down: ActionEnum.FALL_DOWN});
 }
 
 function test_BSB_BSB_BSB_FallDown_NoHealth()
@@ -65,7 +65,7 @@ function test_BSB_BSB_BSB_FallDown_NoHealth()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  down: 1,
 			  health: 0});
 
@@ -80,7 +80,7 @@ function test_SSS_SSS_BWB_FallDown_NoEndurance()
 			  ["S", "S", "S"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  down: 1,
 			  endurance: 0});
 
@@ -95,7 +95,7 @@ function test_SSS_SSS_BWB_FallDown_NoHealth()
 			  ["S", "S", "S"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  down: 1,
 			  health: 0});
 

@@ -19,7 +19,11 @@ function testMoveUpLeftRight()
 	runTest("Test Climb Up Right", testClimb_UpRight);
 	runTest("Test Climb Up Right - No Endurance/Climb", testClimb_UpRight_NoEnduranceClimb);
 	runTest("Test Jump Up", testJump_Up);
+	runTest("Test Jump Up Left", testJump_UpLeft);
+	runTest("Test Jump Up Right", testJump_UpRight);
 	runTest("Test Rise Up", testRise_Up);
+	runTest("Test Rise Up Left", testRise_UpLeft);
+	runTest("Test Rise Up Right", testRise_UpRight);
 	runTest("Test Swim Up", testSwim_Up);
 	runTest("Test Swim Up - No Swim", testSwim_Up_NoSwim);
 	runTest("Test Swim Up - No Endurance", testSwim_Up_NoEndurance);
@@ -248,7 +252,7 @@ function testClimbOut_Left_NoEndurance()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						health: (testHealth-1),
 						sight: testSight,
 						endurance: 0,
@@ -446,7 +450,7 @@ function testClimb_UpLeft_NoEnduranceClimb()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						left: 0,
 						right: 0,
 						health: (testHealth-1),
@@ -515,7 +519,7 @@ function testClimb_UpRight_NoEnduranceClimb()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						left: 0,
 						right: 0,
 						health: (testHealth-1),
@@ -536,7 +540,6 @@ function testJump_Up()
 
 	initData(tileTypes,
 			 {row: testRow, col: testCol,
-			  left: 1, right: 1,
 			  sight: testSight, endurance: testEndurance},
 			 {innerText: ActionEnum.JUMP_UP});
 
@@ -550,10 +553,78 @@ function testJump_Up()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: (falling ? ActionEnum.FALL : AttributeEnum.JUMP),
+						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
 						up: (falling ? 0 : 1),
-						left: 0,
-						right: 0,
+						sight: testSight,
+						endurance: (falling ? (testEndurance-1) : testEndurance),
+						jump: {min: 1, max: speciesJump}});
+}
+
+function testJump_UpLeft()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testLeft = 2;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["B", "S", "S"],
+					 ["B", "G", "B"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  left: testLeft,
+			  sight: testSight, endurance: testEndurance},
+			 {innerText: ActionEnum.JUMP_UP});
+
+	moveUp(true);
+
+	var speciesJump = player.species.attributeMap.get(AttributeEnum.JUMP);
+	var falling = (player.attributeMap.get(AttributeEnum.JUMP) === speciesJump);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/" + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png",
+						row: testRow,
+						col: testCol,
+						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						up: (falling ? 0 : 1),
+						left: (testLeft-1),
+						sight: testSight,
+						endurance: (falling ? (testEndurance-1) : testEndurance),
+						jump: {min: 1, max: speciesJump}});
+}
+
+function testJump_UpRight()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testRight = 2;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "B"],
+					 ["B", "G", "B"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  right: testRight,
+			  sight: testSight, endurance: testEndurance},
+			 {innerText: ActionEnum.JUMP_UP});
+
+	moveUp(true);
+
+	var speciesJump = player.species.attributeMap.get(AttributeEnum.JUMP);
+	var falling = (player.attributeMap.get(AttributeEnum.JUMP) === speciesJump);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/" + ActionEnum.JUMP_RIGHT.replace(" ", "") + ".png",
+						row: testRow,
+						col: testCol,
+						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						up: (falling ? 0 : 1),
+						right: (testRight-1),
 						sight: testSight,
 						endurance: (falling ? (testEndurance-1) : testEndurance),
 						jump: {min: 1, max: speciesJump}});
@@ -584,10 +655,82 @@ function testRise_Up()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: (falling ? ActionEnum.FALL : AttributeEnum.JUMP),
+						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
 						up: (falling ? 0 : 1),
-						left: 0,
-						right: 0,
+						sight: testSight,
+						endurance: (falling ? (testEndurance-1) : testEndurance),
+						jump: {min: 1, max: speciesJump}});
+}
+
+function testRise_UpLeft()
+{
+	var testImage = "images/" + (new Human()).type + "/" + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png";
+	var testRow = 1;
+	var testCol = 1;
+	var testLeft = 2;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["B", "S", "S"],
+					 ["B", "G", "B"]];
+
+	initData(tileTypes,
+			 {image: testImage,
+			  row: testRow, col: testCol,
+			  left: testLeft,
+			  sight: testSight, endurance: testEndurance},
+			 {innerText: ActionEnum.RISE_UP});
+
+	moveUp(true);
+
+	var speciesJump = player.species.attributeMap.get(AttributeEnum.JUMP);
+	var falling = (player.attributeMap.get(AttributeEnum.JUMP) === speciesJump);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: tileTypes[0].length,
+						image: testImage,
+						row: testRow,
+						col: testCol,
+						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						up: (falling ? 0 : 1),
+						left: (testLeft-1),
+						sight: testSight,
+						endurance: (falling ? (testEndurance-1) : testEndurance),
+						jump: {min: 1, max: speciesJump}});
+}
+
+function testRise_UpRight()
+{
+	var testImage = "images/" + (new Human()).type + "/" + ActionEnum.JUMP_RIGHT.replace(" ", "") + ".png";
+	var testRow = 1;
+	var testCol = 1;
+	var testRight = 2;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "B"],
+					 ["B", "G", "B"]];
+
+	initData(tileTypes,
+			 {image: testImage,
+			  row: testRow, col: testCol,
+			  right: testRight,
+			  sight: testSight, endurance: testEndurance},
+			 {innerText: ActionEnum.RISE_UP});
+
+	moveUp(true);
+
+	var speciesJump = player.species.attributeMap.get(AttributeEnum.JUMP);
+	var falling = (player.attributeMap.get(AttributeEnum.JUMP) === speciesJump);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: tileTypes[0].length,
+						image: testImage,
+						row: testRow,
+						col: testCol,
+						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						up: (falling ? 0 : 1),
+						right: (testRight-1),
 						sight: testSight,
 						endurance: (falling ? (testEndurance-1) : testEndurance),
 						jump: {min: 1, max: speciesJump}});
@@ -933,7 +1076,7 @@ function testClimbOut_Right_NoEndurance()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						health: (testHealth-1),
 						sight: testSight,
 						endurance: 0,

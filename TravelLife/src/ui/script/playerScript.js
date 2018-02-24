@@ -259,7 +259,7 @@ function moveDown(doUpdate)
 		case ActionEnum.CLIMB_DOWN:
 			actionInfo = climb(doUpdate);
 			break;
-		case ActionEnum.FALL:
+		case ActionEnum.FALL_DOWN:
 			actionInfo = fall(doUpdate);
 			break;
 		case ActionEnum.LAND:

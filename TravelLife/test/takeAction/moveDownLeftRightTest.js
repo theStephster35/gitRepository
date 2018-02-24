@@ -343,7 +343,7 @@ function testClimb_DownLeft_NoEnduranceClimb()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: (testRow+1),
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						left: 0,
 						right: 0,
 						health: (testHealth-1),
@@ -412,7 +412,7 @@ function testClimb_DownRight_NoEnduranceClimb()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: (testRow+1),
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						left: 0,
 						right: 0,
 						health: (testHealth-1),
@@ -437,7 +437,7 @@ function testFall()
 			 {row: testRow, col: testCol,
 			  down: testDown,
 			  sight: testSight, jump: 0},
-			 {innerText: ActionEnum.FALL});
+			 {innerText: ActionEnum.FALL_DOWN});
 
 	moveDown(true);
 
@@ -447,7 +447,7 @@ function testFall()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: (testRow+1),
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						down: (testDown+1),
 						sight: {min: 1, max: player.species.attributeMap.get(AttributeEnum.SIGHT)},
 						jump: player.species.attributeMap.get(AttributeEnum.JUMP)});
@@ -467,7 +467,7 @@ function testLand()
 	initData(tileTypes,
 			 {image: "",
 			  row: testRow, col: testCol,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  left: 1, right: 1, down: testDown,
 			  health: testHealth, sight: testSight},
 			 {innerText: ActionEnum.LAND});

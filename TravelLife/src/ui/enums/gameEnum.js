@@ -30,6 +30,7 @@ var ActionEnum =
 	CLIMB_OVER: AttributeEnum.CLIMB + " Over",
 
 	// LEFT, RIGHT
+	DRIFT: "Drift",
 	LET_GO: "Let Go",
 
 	// DOWN_LEFT, DOWN_RIGHT
@@ -37,7 +38,8 @@ var ActionEnum =
 
 	UP_LEFT: "upLeft",
 	CLIMB_LEFT: AttributeEnum.CLIMB + " Left",
-	GRAB_LEFT: "Grab Left",
+	JUMP_LEFT: AttributeEnum.JUMP + " Left",
+	RISE_LEFT: "Rise Left",
 	SWIM_UP_LEFT: AttributeEnum.SWIM + " Up-Left",
 	CLIMB_OUT_LEFT: AttributeEnum.CLIMB + " Out Left",
 
@@ -49,11 +51,13 @@ var ActionEnum =
 
 	UP_RIGHT: "upRight",
 	CLIMB_RIGHT: AttributeEnum.CLIMB + " Right",
-	GRAB_RIGHT: "Grab Right",
+	JUMP_RIGHT: AttributeEnum.JUMP + " Right",
+	RISE_RIGHT: "Rise Right",
 	SWIM_UP_RIGHT: AttributeEnum.SWIM + " Up-Right",
 	CLIMB_OUT_RIGHT: AttributeEnum.CLIMB + " Out Right",
 
 	LEFT: "left",
+	GRAB_LEFT: "Grab Left",
 	RUN_LEFT: AttributeEnum.RUN + " Left",
 	SWIM_LEFT: AttributeEnum.SWIM + " Left",
 
@@ -63,6 +67,7 @@ var ActionEnum =
 	FLOAT: "Float",
 
 	RIGHT: "right",
+	GRAB_RIGHT: "Grab Right",
 	RUN_RIGHT: AttributeEnum.RUN + " Right",
 	SWIM_RIGHT: AttributeEnum.SWIM + " Right",
 
@@ -71,7 +76,7 @@ var ActionEnum =
 
 	DOWN: "down",
 	CLIMB_DOWN: AttributeEnum.CLIMB + " Down",
-	FALL: "Fall",
+	FALL_DOWN: "Fall Down",
 	LAND: "Land",
 	SPLASH: "Splash",
 	SWIM_DOWN: AttributeEnum.SWIM + " Down",

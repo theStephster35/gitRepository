@@ -5,6 +5,11 @@ function testCheckActionsSwim()
 	runTest("SSS BWB WWW - Swim, No Recovery", test_SSS_BWB_WWW_Swim_NoRecovery);
 	runTest("SSS BWB WWW - Swim, No Health", test_SSS_BWB_WWW_Swim_NoHealth);
 
+	runTest("SSS WWW WWW - Swim", test_SSS_WWW_WWW_Swim);
+	runTest("SSS WWW WWW - Swim, No Endurance", test_SSS_WWW_WWW_Swim_NoEndurance);
+	runTest("SSS WWW WWW - Swim, No Recovery", test_SSS_WWW_WWW_Swim_NoRecovery);
+	runTest("SSS WWW WWW - Swim, No Health", test_SSS_WWW_WWW_Swim_NoHealth);
+
 	runTest("BSB BWB WBW - Swim", test_BSB_BWB_WBW_Swim);
 	runTest("BSB BWB WBW - Swim, No Endurance", test_BSB_BWB_WBW_Swim_NoEndurance);
 	runTest("BSB BWB WBW - Swim, No Recovery", test_BSB_BWB_WBW_Swim_NoRecovery);
@@ -76,6 +81,74 @@ function test_SSS_BWB_WWW_Swim_NoHealth()
 {
 	initData([["S", "S", "S"],
 			  ["B", "W", "B"],
+			  ["W", "W", "W"]],
+			 {row: 1, col: 1,
+			  status: AttributeEnum.SWIM,
+			  health: 0});
+
+	initAction();
+
+	validateInitAction({});
+}
+
+function test_SSS_WWW_WWW_Swim()
+{
+	initData([["S", "S", "S"],
+			  ["W", "W", "W"],
+			  ["W", "W", "W"]],
+			 {row: 1, col: 1,
+			  status: AttributeEnum.SWIM});
+
+	initAction();
+
+	validateInitAction({left: ActionEnum.SWIM_LEFT,
+						right: ActionEnum.SWIM_RIGHT,
+						downLeft: ActionEnum.SWIM_DOWN_LEFT,
+						down: ActionEnum.SWIM_DOWN,
+						downRight: ActionEnum.SWIM_DOWN_RIGHT});
+}
+
+function test_SSS_WWW_WWW_Swim_NoEndurance()
+{
+	initData([["S", "S", "S"],
+			  ["W", "W", "W"],
+			  ["W", "W", "W"]],
+			 {row: 1, col: 1,
+			  status: AttributeEnum.SWIM,
+			  endurance: 0});
+
+	initAction();
+
+	validateInitAction({left: ActionEnum.SWIM_LEFT,
+						center: ActionEnum.FLOAT,
+						right: ActionEnum.SWIM_RIGHT,
+						downLeft: ActionEnum.SWIM_DOWN_LEFT,
+						down: ActionEnum.SWIM_DOWN,
+						downRight: ActionEnum.SWIM_DOWN_RIGHT});
+}
+
+function test_SSS_WWW_WWW_Swim_NoRecovery()
+{
+	initData([["S", "S", "S"],
+			  ["W", "W", "W"],
+			  ["W", "W", "W"]],
+			 {row: 1, col: 1,
+			  status: AttributeEnum.SWIM,
+			  recovery: 0});
+
+	initAction();
+
+	validateInitAction({left: ActionEnum.SWIM_LEFT,
+						right: ActionEnum.SWIM_RIGHT,
+						downLeft: ActionEnum.SWIM_DOWN_LEFT,
+						down: ActionEnum.SWIM_DOWN,
+						downRight: ActionEnum.SWIM_DOWN_RIGHT});
+}
+
+function test_SSS_WWW_WWW_Swim_NoHealth()
+{
+	initData([["S", "S", "S"],
+			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
 			  status: AttributeEnum.SWIM,

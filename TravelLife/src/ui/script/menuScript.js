@@ -202,19 +202,20 @@ function checkUpLeft(row, col)
 				if (!aboveTile.solid
 				 && aboveTile.type !== TileTypeEnum.WATER)
 				{
-					// If player is down-right a solid tile
+					// If player is on a tile down-right a solid tile
 					if (getTileByPosition((row-1), (col-1)).solid)
 					{
 						upLeftButton.label = ActionEnum.CLIMB_OUT_LEFT;
 						upLeftButton.innerText = "\u2923";
+						upLeftButton.disabled = false;
 					}
-					else // Player is down-right a not solid tile
+					else if (getTileByPosition(row, (col-1)).solid)
 					{
+						// If player is on a tile right of a solid tile
 						upLeftButton.label = ActionEnum.CLIMB_OVER;
 						upLeftButton.innerText = "\u21B0";
+						upLeftButton.disabled = false;
 					}
-
-					upLeftButton.disabled = false;
 				}
 			}
 			else if (getTileByPosition(row, (col-1)).solid)
@@ -242,6 +243,7 @@ function checkUpLeft(row, col)
 	}
 
 	//upLeftButton.innerText = "\u21B6"; // Jump Left?
+	//upLeftButton.innerText = "\u21D6"; // Rise Left?
 }
 
 function checkUp(row, col)
@@ -335,19 +337,20 @@ function checkUpRight(row, col)
 				if (!aboveTile.solid
 				 && aboveTile.type !== TileTypeEnum.WATER)
 				{
-					// If player is down-left a solid tile
+					// If player is on a tile down-left a solid tile
 					if (getTileByPosition((row-1), (col+1)).solid)
 					{
 						upRightButton.label = ActionEnum.CLIMB_OUT_RIGHT;
 						upRightButton.innerText = "\u2924";
+						upRightButton.disabled = false;
 					}
-					else // Player is down-left a not solid tile
+					else if (getTileByPosition(row, (col+1)).solid)
 					{
+						// If player is on a tile left of a solid tile
 						upRightButton.label = ActionEnum.CLIMB_OVER;
 						upRightButton.innerText = "\u21B1";
+						upRightButton.disabled = false;
 					}
-
-					upRightButton.disabled = false;
 				}
 			}
 			else if (getTileByPosition(row, (col+1)).solid)
@@ -375,6 +378,7 @@ function checkUpRight(row, col)
 	}
 
 	//upRightButton.innerText = "\u21B7"; // Jump Right?
+	//upRightButton.innerText = "\u21D7"; // Rise Right?
 }
 
 function checkLeft(row, col)
@@ -385,7 +389,7 @@ function checkLeft(row, col)
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
 		// If player is falling
-		if (playerIsInStatus(ActionEnum.FALL))
+		if (playerIsInStatus(ActionEnum.FALL_DOWN))
 		{
 			// If player is on a tile right of a solid tile
 			if (getTileByPosition(row, (col-1)).solid)
@@ -427,8 +431,8 @@ function checkLeft(row, col)
 		}
 	}
 
-	//leftButton.innerText = "\u2345"; // Jump?
-	//leftButton.innerText = "\u2345"; // Dig?
+	//leftButton.innerText = "\u21D0"; // Drift Left?
+	//leftButton.innerText = "\u2345"; // Dig Left?
 }
 
 function checkCenter(row, col)
@@ -489,7 +493,7 @@ function checkRight(row, col)
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
 		// If player is falling
-		if (playerIsInStatus(ActionEnum.FALL))
+		if (playerIsInStatus(ActionEnum.FALL_DOWN))
 		{
 			// If player is on a tile left of a solid tile
 			if (getTileByPosition(row, (col+1)).solid)
@@ -589,7 +593,7 @@ function checkDown(row, col)
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
 		// If player is falling
-		if (playerIsInStatus(ActionEnum.FALL))
+		if (playerIsInStatus(ActionEnum.FALL_DOWN))
 		{
 			// If player is on a tile above a solid tile
 			if (getTileByPosition((row+1), col).solid)
@@ -605,7 +609,7 @@ function checkDown(row, col)
 			}
 			else // Player is on a tile above a not solid tile
 			{
-				downButton.label = ActionEnum.FALL;
+				downButton.label = ActionEnum.FALL_DOWN;
 				downButton.innerText = "\u21D3";
 			}
 

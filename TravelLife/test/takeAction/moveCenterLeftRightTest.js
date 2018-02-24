@@ -58,7 +58,7 @@ function testLetGo_Left()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						left: 0,
 						right: 0,
 						sight: testSight,
@@ -88,7 +88,7 @@ function testLetGo_Left_NoEndurance()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						left: 0,
 						right: 0,
 						health: (testHealth-1),
@@ -126,7 +126,7 @@ function testGrab_Left_Fall()
 							 	: "images/" + player.species.type + "/Suspended.png"),
 					 	row: (climbing ? testRow : testRow+1),
 					 	col: testCol,
-					 	status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL),
+					 	status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL_DOWN),
 					 	left: (climbing ? 1 : 0),
 					 	right: (climbing ? 0 : 1),
 					 	down: playerDown,
@@ -150,7 +150,7 @@ function testGrab_Left_Land()
 	initData(tileTypes,
 			 {image: "images/" + (new Human()).type + "/Suspended.png",
 			  row: testRow, col: testCol,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  right: 1, down: testDown,
 			  health: testHealth, sight: testSight, endurance: testEndurance, climb: 0},
 			 {innerText: ActionEnum.GRAB_LEFT});
@@ -198,7 +198,7 @@ function testGrab_Left_Land_NoEndurance()
 	initData(tileTypes,
 			 {image: "images/" + (new Human()).type + "/Suspended.png",
 			  row: testRow, col: testCol,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  right: 1, down: testDown,
 			  health: testHealth, sight: testSight, endurance: 1, climb: 0},
 			 {innerText: ActionEnum.GRAB_LEFT});
@@ -435,6 +435,7 @@ function testSwim_Left_NoEnduranceSwim()
 
 function testStop_Jump()
 {
+	var testImage = "images/" + (new Human()).type + "/Suspended.png";
 	var testRow = 1;
 	var testCol = 1;
 	var testEndurance = 5;
@@ -443,7 +444,7 @@ function testStop_Jump()
 					 ["B", "G", "B"]];
 
 	initData(tileTypes,
-			 {image: "",
+			 {image: testImage,
 			  row: testRow, col: testCol,
 			  status: AttributeEnum.JUMP,
 			  up: 1, down: 1,
@@ -454,10 +455,10 @@ function testStop_Jump()
 
 	validateTakeAction({rows: tileTypes.length,
 						cols: tileTypes[0].length,
-						image: "images/" + player.species.type + "/Suspended.png",
+						image: testImage,
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						up: 0,
 						down: 0,
 						endurance: (testEndurance-1),
@@ -466,6 +467,7 @@ function testStop_Jump()
 
 function testStop_Jump_NoEnduranceJump()
 {
+	var testImage = "images/" + (new Human()).type + "/Suspended.png";
 	var testRow = 1;
 	var testCol = 1;
 	var testHealth = 3;
@@ -474,7 +476,7 @@ function testStop_Jump_NoEnduranceJump()
 					 ["B", "G", "B"]];
 
 	initData(tileTypes,
-			 {image: "",
+			 {image: testImage,
 			  row: testRow, col: testCol,
 			  status: AttributeEnum.JUMP,
 			  up: 1, down: 1,
@@ -485,10 +487,10 @@ function testStop_Jump_NoEnduranceJump()
 
 	validateTakeAction({rows: tileTypes.length,
 						cols: tileTypes[0].length,
-						image: "images/" + player.species.type + "/Suspended.png",
+						image: testImage,
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						up: 0,
 						down: 0,
 						health: (testHealth-1),
@@ -632,7 +634,7 @@ function testLetGo_Right()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						left: 0,
 						right: 0,
 						sight: testSight,
@@ -662,7 +664,7 @@ function testLetGo_Right_NoEndurance()
 						image: "images/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL,
+						status: ActionEnum.FALL_DOWN,
 						left: 0,
 						right: 0,
 						health: (testHealth-1),
@@ -700,7 +702,7 @@ function testGrab_Right_Fall()
 							 	: "images/" + player.species.type + "/Suspended.png"),
 						row: (climbing ? testRow : testRow+1),
 						col: testCol,
-						status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL),
+						status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL_DOWN),
 						left: (climbing ? 0 : 1),
 						right: (climbing ? 1 : 0),
 						down: playerDown,
@@ -724,7 +726,7 @@ function testGrab_Right_Land()
 	initData(tileTypes,
 			 {image: "images/" + (new Human()).type + "/Suspended.png",
 			  row: testRow, col: testCol,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  left: 1, down: testDown,
 			  health: testHealth, sight: testSight, endurance: testEndurance, climb: 0},
 			 {innerText: ActionEnum.GRAB_RIGHT});
@@ -772,7 +774,7 @@ function testGrab_Right_Land_NoEndurance()
 	initData(tileTypes,
 			 {image: "images/" + (new Human()).type + "/Suspended.png",
 			  row: testRow, col: testCol,
-			  status: ActionEnum.FALL,
+			  status: ActionEnum.FALL_DOWN,
 			  left: 1, down: testDown,
 			  health: testHealth, sight: testSight, endurance: 1, climb: 0},
 			 {innerText: ActionEnum.GRAB_RIGHT});

@@ -143,7 +143,7 @@ function takeAction()
 		actionFunction(true);
 
 		if (confirmAction.label !== ActionEnum.CENTER
-		 && player.status !== ActionEnum.FALL)
+		 && player.status !== ActionEnum.FALL_DOWN)
 			gainSightRecovery();
 	}
 
