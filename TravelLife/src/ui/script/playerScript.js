@@ -97,11 +97,15 @@ function moveUpLeft(doUpdate)
 				player.momentum.left = 1;
 			actionInfo = climbOverOff(doUpdate);
 			break;
-		case ActionEnum.CLIMB_OUT_LEFT:
-			actionInfo = climbOut(doUpdate);
+		case ActionEnum.JUMP_LEFT:
+		case ActionEnum.RISE_LEFT:
+			actionInfo = jumpRiseDrift(doUpdate);
 			break;
 		case ActionEnum.SWIM_UP_LEFT:
 			actionInfo = swim(doUpdate);
+			break;
+		case ActionEnum.CLIMB_OUT_LEFT:
+			actionInfo = climbOut(doUpdate);
 			break;
 		default:
 			actionInfo = "";
@@ -119,7 +123,7 @@ function moveUp(doUpdate)
 			break;
 		case ActionEnum.JUMP_UP:
 		case ActionEnum.RISE_UP:
-			actionInfo = jumpRise(doUpdate);
+			actionInfo = jumpRiseDrift(doUpdate);
 			break;
 		case ActionEnum.SWIM_UP:
 			actionInfo = swim(doUpdate);
@@ -145,11 +149,15 @@ function moveUpRight(doUpdate)
 				player.momentum.right = 1;
 			actionInfo = climbOverOff(doUpdate);
 			break;
-		case ActionEnum.CLIMB_OUT_RIGHT:
-			actionInfo = climbOut(doUpdate);
+		case ActionEnum.JUMP_RIGHT:
+		case ActionEnum.RISE_RIGHT:
+			actionInfo = jumpRiseDrift(doUpdate);
 			break;
 		case ActionEnum.SWIM_UP_RIGHT:
 			actionInfo = swim(doUpdate);
+			break;
+		case ActionEnum.CLIMB_OUT_RIGHT:
+			actionInfo = climbOut(doUpdate);
 			break;
 		default:
 			actionInfo = "";
@@ -164,6 +172,9 @@ function moveLeft(doUpdate)
 
 	switch (confirmAction.innerText)
 	{
+		case ActionEnum.DRIFT:
+			actionInfo = jumpRiseDrift(doUpdate);
+			break;
 		case ActionEnum.LET_GO:
 			actionInfo = letGo(doUpdate);
 			break;
@@ -209,6 +220,9 @@ function moveRight(doUpdate)
 
 	switch (confirmAction.innerText)
 	{
+		case ActionEnum.DRIFT:
+			actionInfo = jumpRiseDrift(doUpdate);
+			break;
 		case ActionEnum.LET_GO:
 			actionInfo = letGo(doUpdate);
 			break;
@@ -239,6 +253,9 @@ function moveDownLeft(doUpdate)
 			break;
 		case ActionEnum.CLIMB_LEFT:
 			actionInfo = climb(doUpdate);
+			break;
+		case ActionEnum.FALL_LEFT:
+			actionInfo = fall(doUpdate);
 			break;
 		case ActionEnum.SWIM_DOWN_LEFT:
 			actionInfo = swim(doUpdate);
@@ -289,6 +306,9 @@ function moveDownRight(doUpdate)
 			break;
 		case ActionEnum.CLIMB_RIGHT:
 			actionInfo = climb(doUpdate);
+			break;
+		case ActionEnum.FALL_RIGHT:
+			actionInfo = fall(doUpdate);
 			break;
 		case ActionEnum.SWIM_DOWN_RIGHT:
 			actionInfo = swim(doUpdate);

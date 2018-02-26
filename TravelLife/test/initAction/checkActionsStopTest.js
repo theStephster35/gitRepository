@@ -4,10 +4,17 @@ function testCheckActionsStop()
 
 	runTest("BBB BSB WGW", test_BBB_BSB_WGW);
 
-	runTest("BBB BSB BGB", test_BBB_BSB_BGB);
-	runTest("BBB BSB BGB - No Endurance", test_BBB_BSB_BGB_NoEndurance);
-	runTest("BBB BSB BGB - No Recovery", test_BBB_BSB_BGB_NoRecovery);
-	runTest("BBB BSB BGB - No Health", test_BBB_BSB_BGB_NoHealth);
+	runTest("BSB BSB BGB", test_BSB_BSB_BGB);
+	runTest("BSB BSB BGB - No Endurance", test_BSB_BSB_BGB_NoEndurance);
+	runTest("BSB BSB BGB - No Recovery", test_BSB_BSB_BGB_NoRecovery);
+	runTest("BSB BSB BGB - No Health", test_BSB_BSB_BGB_NoHealth);
+
+	runTest("SBS SSS BGB", test_SBS_SSS_BGB);
+
+	runTest("SSS BSB BGB", test_SSS_BSB_BGB);
+	runTest("SSS BSB BGB - No Endurance", test_SSS_BSB_BGB_NoEndurance);
+	runTest("SSS BSB BGB - No Recovery", test_SSS_BSB_BGB_NoRecovery);
+	runTest("SSS BSB BGB - No Health", test_SSS_BSB_BGB_NoHealth);
 
 	runTest("SSS SSS BGB", test_SSS_SSS_BGB);
 	runTest("SSS SSS BGB - No Endurance", test_SSS_SSS_BGB_NoEndurance);
@@ -55,9 +62,9 @@ function test_BBB_BSB_WGW()
 					 	center: ActionEnum.REST});
 }
 
-function test_BBB_BSB_BGB()
+function test_BSB_BSB_BGB()
 {
-	initData([["B", "B", "B"],
+	initData([["B", "S", "B"],
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
@@ -65,14 +72,15 @@ function test_BBB_BSB_BGB()
 
 	initAction();
 
-	validateInitAction({upLeft: ActionEnum.CLIMB_LEFT,
+	validateInitAction({up: ActionEnum.JUMP_UP,
+						upLeft: ActionEnum.CLIMB_LEFT,
 					 	upRight: ActionEnum.CLIMB_RIGHT,
 					 	center: ActionEnum.REST});
 }
 
-function test_BBB_BSB_BGB_NoEndurance()
+function test_BSB_BSB_BGB_NoEndurance()
 {
-	initData([["B", "B", "B"],
+	initData([["B", "S", "B"],
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
@@ -83,9 +91,83 @@ function test_BBB_BSB_BGB_NoEndurance()
 	validateInitAction({center: ActionEnum.REST});
 }
 
-function test_BBB_BSB_BGB_NoRecovery()
+function test_BSB_BSB_BGB_NoRecovery()
 {
-	initData([["B", "B", "B"],
+	initData([["B", "S", "B"],
+			  ["B", "S", "B"],
+			  ["B", "G", "B"]],
+			 {row: 1, col: 1,
+			  recovery: 0, endurance: 1});
+
+	initAction();
+
+	validateInitAction({up: ActionEnum.JUMP_UP,
+						upLeft: ActionEnum.CLIMB_LEFT,
+						upRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_BSB_BSB_BGB_NoHealth()
+{
+	initData([["B", "S", "B"],
+			  ["B", "S", "B"],
+			  ["B", "G", "B"]],
+			 {row: 1, col: 1,
+			  health: 0});
+
+	initAction();
+
+	validateInitAction({});
+}
+
+function test_SBS_SSS_BGB()
+{
+	initData([["S", "B", "S"],
+			  ["S", "S", "S"],
+			  ["B", "G", "B"]],
+			 {row: 1, col: 1,
+			  endurance: 1});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+					 	upRight: ActionEnum.JUMP_RIGHT,
+					 	left: ActionEnum.RUN_LEFT,
+					 	center: ActionEnum.REST,
+					 	right: ActionEnum.RUN_RIGHT});
+}
+
+function test_SSS_BSB_BGB()
+{
+	initData([["S", "S", "S"],
+			  ["B", "S", "B"],
+			  ["B", "G", "B"]],
+			 {row: 1, col: 1,
+			  endurance: 1});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.CLIMB_LEFT,
+						up: ActionEnum.JUMP_UP,
+					 	upRight: ActionEnum.CLIMB_RIGHT,
+					 	center: ActionEnum.REST});
+}
+
+function test_SSS_BSB_BGB_NoEndurance()
+{
+	initData([["S", "S", "S"],
+			  ["B", "S", "B"],
+			  ["B", "G", "B"]],
+			 {row: 1, col: 1,
+			  endurance: 0});
+
+	initAction();
+
+	validateInitAction({center: ActionEnum.REST});
+}
+
+function test_SSS_BSB_BGB_NoRecovery()
+{
+	initData([["S", "S", "S"],
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
@@ -94,12 +176,13 @@ function test_BBB_BSB_BGB_NoRecovery()
 	initAction();
 
 	validateInitAction({upLeft: ActionEnum.CLIMB_LEFT,
+						up: ActionEnum.JUMP_UP,
 						upRight: ActionEnum.CLIMB_RIGHT});
 }
 
-function test_BBB_BSB_BGB_NoHealth()
+function test_SSS_BSB_BGB_NoHealth()
 {
-	initData([["B", "B", "B"],
+	initData([["S", "S", "S"],
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
@@ -120,7 +203,9 @@ function test_SSS_SSS_BGB()
 
 	initAction();
 
-	validateInitAction({up: ActionEnum.JUMP_UP,
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
 						left: ActionEnum.RUN_LEFT,
 						center: ActionEnum.REST,
 						right: ActionEnum.RUN_RIGHT});
@@ -149,7 +234,9 @@ function test_SSS_SSS_BGB_NoRecovery()
 
 	initAction();
 
-	validateInitAction({up: ActionEnum.JUMP_UP,
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
 						left: ActionEnum.RUN_LEFT,
 						right: ActionEnum.RUN_RIGHT});
 }
@@ -177,7 +264,9 @@ function test_SSS_SSS_SGS()
 
 	initAction();
 
-	validateInitAction({up: ActionEnum.JUMP_UP,
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
 						center: ActionEnum.REST,
 						downLeft: ActionEnum.CLIMB_LEFT,
 						downRight: ActionEnum.CLIMB_RIGHT});
@@ -206,7 +295,9 @@ function test_SSS_SSS_SGS_NoRecovery()
 
 	initAction();
 
-	validateInitAction({up: ActionEnum.JUMP_UP,
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
 						downLeft: ActionEnum.CLIMB_LEFT,
 						downRight: ActionEnum.CLIMB_RIGHT});
 }
@@ -234,7 +325,9 @@ function test_SSS_SSS_WGW()
 
 	initAction();
 
-	validateInitAction({up: ActionEnum.JUMP_UP,
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
 						center: ActionEnum.REST,
 						downLeft: ActionEnum.CLIMB_LEFT,
 						downRight: ActionEnum.CLIMB_RIGHT});
@@ -263,7 +356,9 @@ function test_SSS_SSS_WGW_NoRecovery()
 
 	initAction();
 
-	validateInitAction({up: ActionEnum.JUMP_UP,
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
 						downLeft: ActionEnum.CLIMB_LEFT,
 						downRight: ActionEnum.CLIMB_RIGHT});
 }

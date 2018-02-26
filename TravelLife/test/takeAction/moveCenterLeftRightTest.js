@@ -1,9 +1,12 @@
 function testMoveCenterLeftRight()
 {
 	// Move Left
+	runTest("Test Drift Left - Left", testDrift_Left_Left);
+	runTest("Test Drift Left - Down", testDrift_Left_Down);
 	runTest("Test Let Go Left", testLetGo_Left);
 	runTest("Test Let Go Left - No Endurance", testLetGo_Left_NoEndurance);
-	runTest("Test Grab Left - Fall", testGrab_Left_Fall);
+	runTest("Test Grab Left - Fall Left", testGrab_Left_FallLeft);
+	runTest("Test Grab Left - Fall Down", testGrab_Left_FallDown);
 	runTest("Test Grab Left - Land", testGrab_Left_Land);
 	runTest("Test Grab Left - Land, No Endurance", testGrab_Left_Land_NoEndurance);
 	runTest("Test Run Left", testRun_Left);
@@ -18,13 +21,16 @@ function testMoveCenterLeftRight()
 	runTest("Test Stop - Jump, No Endurance/Jump", testStop_Jump_NoEnduranceJump);
 	runTest("Test Stop - Run", testStop_Run);
 	runTest("Test Stop - Run, No Endurance/Run", testStop_Run_NoEnduranceRun);
-	runTest("Test Rest", testRestFloat_Rest);
-	runTest("Test Float", testRestFloat_Float);
+	runTest("Test Rest", testRest);
+	runTest("Test Float", testFloat);
 
 	// Move Right
+	runTest("Test Drift Right - Right", testDrift_Right_Right);
+	runTest("Test Drift Right - Down", testDrift_Right_Down);
 	runTest("Test Let Go Right", testLetGo_Right);
 	runTest("Test Let Go Right - No Endurance", testLetGo_Right_NoEndurance);
-	runTest("Test Grab Right - Fall", testGrab_Right_Fall);
+	runTest("Test Grab Right - Fall Right", testGrab_Right_FallRight);
+	runTest("Test Grab Right - Fall Down", testGrab_Right_FallDown);
 	runTest("Test Grab Right - Land", testGrab_Right_Land);
 	runTest("Test Grab Right - Land, No Endurance", testGrab_Right_Land_NoEndurance);
 	runTest("Test Run Right", testRun_Right);
@@ -33,6 +39,79 @@ function testMoveCenterLeftRight()
 	runTest("Test Swim Right - No Swim", testSwim_Right_NoSwim);
 	runTest("Test Swim Right - No Endurance", testSwim_Right_NoEndurance);
 	runTest("Test Swim Right - No Endurance/Swim", testSwim_Right_NoEnduranceSwim);
+}
+
+function testDrift_Left_Left()
+{
+	var testImage = "images/" + (new Human()).type + "/" + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png";
+	var testRow = 1;
+	var testCol = 1;
+	var testLeft = 2;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["B", "S", "B"]];
+
+	initData(tileTypes,
+			 {image: testImage,
+			  row: testRow, col: testCol,
+			  status: AttributeEnum.JUMP,
+			  up: 1, left: testLeft,
+			  sight: testSight, endurance: testEndurance},
+			 {innerText: ActionEnum.DRIFT});
+
+	moveLeft(true);
+
+	var speciesJump = player.species.attributeMap.get(AttributeEnum.JUMP);
+	var falling = (player.attributeMap.get(AttributeEnum.JUMP) === speciesJump);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: (tileTypes[0].length+1),
+						image: testImage,
+						row: testRow,
+						col: testCol,
+						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						up: (falling ? 0 : 1),
+						left: (testLeft-1),
+						sight: testSight,
+						endurance: (falling ? (testEndurance-1) : testEndurance),
+						jump: {min: 1, max: speciesJump}});
+}
+
+function testDrift_Left_Down()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["B", "S", "B"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  status: AttributeEnum.JUMP,
+			  up: 1, left: 1,
+			  sight: testSight, endurance: testEndurance},
+			 {innerText: ActionEnum.DRIFT});
+
+	moveLeft(true);
+
+	var speciesJump = player.species.attributeMap.get(AttributeEnum.JUMP);
+	var falling = (player.attributeMap.get(AttributeEnum.JUMP) === speciesJump);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: (tileTypes[0].length+1),
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: testRow,
+						col: testCol,
+						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						up: (falling ? 0 : 1),
+						left: 0,
+						sight: testSight,
+						endurance: (falling ? (testEndurance-1) : testEndurance),
+						jump: {min: 1, max: speciesJump}});
 }
 
 function testLetGo_Left()
@@ -96,7 +175,49 @@ function testLetGo_Left_NoEndurance()
 						endurance: 0});
 }
 
-function testGrab_Left_Fall()
+function testGrab_Left_FallLeft()
+{
+	var testImage = "images/" + (new Human()).type + "/" + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png";
+	var testRow = 1;
+	var testCol = 1;
+	var testRight = 2;
+	var testDown = 3;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["B", "S", "B"],
+					 ["B", "S", "B"]];
+
+	initData(tileTypes,
+			 {image: testImage,
+			  row: testRow, col: testCol,
+			  status: "",
+			  right: testRight, down: testDown,
+			  sight: testSight, endurance: testEndurance, climb: 0},
+			 {innerText: ActionEnum.GRAB_LEFT});
+
+	moveLeft(true);
+
+	var playerDown = player.momentum.down;
+	var climbing = (playerDown === 0);
+
+	validateTakeAction({rows: (climbing ? tileTypes.length : tileTypes.length+1),
+						cols: tileTypes[0].length,
+						image: (climbing
+								? "images/" + player.species.type + "/" + ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png"
+							 	: testImage),
+					 	row: (climbing ? testRow : testRow+1),
+					 	col: testCol,
+					 	status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL_DOWN),
+					 	left: (climbing ? 1 : 0),
+					 	right: (climbing ? 0 : (testRight-1)),
+					 	down: playerDown,
+					 	sight: testSight,
+					 	endurance: (testEndurance-1),
+					 	climb: (player.species.attributeMap.get(AttributeEnum.CLIMB))});
+}
+
+function testGrab_Left_FallDown()
 {
 	var testRow = 1;
 	var testCol = 1;
@@ -128,7 +249,7 @@ function testGrab_Left_Fall()
 					 	col: testCol,
 					 	status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL_DOWN),
 					 	left: (climbing ? 1 : 0),
-					 	right: (climbing ? 0 : 1),
+					 	right: 0,
 					 	down: playerDown,
 					 	sight: testSight,
 					 	endurance: (testEndurance-1),
@@ -561,7 +682,7 @@ function testStop_Run_NoEnduranceRun()
 						run: player.species.attributeMap.get(AttributeEnum.RUN)});
 }
 
-function testRestFloat_Rest()
+function testRest()
 {
 	var testRow = 1;
 	var testCol = 1;
@@ -586,7 +707,7 @@ function testRestFloat_Rest()
 						endurance: {min: 1, max: testRecovery}});
 }
 
-function testRestFloat_Float()
+function testFloat()
 {
 	var testRow = 1;
 	var testCol = 1;
@@ -609,6 +730,79 @@ function testRestFloat_Float()
 						sight: {min: 1, max: player.species.attributeMap.get(AttributeEnum.SIGHT)},
 						recovery: {min: 0, max: testRecovery},
 						endurance: {min: 1, max: (Math.ceil(testRecovery/2))}});
+}
+
+function testDrift_Right_Right()
+{
+	var testImage = "images/" + (new Human()).type + "/" + ActionEnum.JUMP_RIGHT.replace(" ", "") + ".png";
+	var testRow = 1;
+	var testCol = 1;
+	var testRight = 2;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["B", "S", "B"]];
+
+	initData(tileTypes,
+			 {image: testImage,
+			  row: testRow, col: testCol,
+			  status: AttributeEnum.JUMP,
+			  up: 1, right: testRight,
+			  sight: testSight, endurance: testEndurance},
+			 {innerText: ActionEnum.DRIFT});
+
+	moveRight(true);
+
+	var speciesJump = player.species.attributeMap.get(AttributeEnum.JUMP);
+	var falling = (player.attributeMap.get(AttributeEnum.JUMP) === speciesJump);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: (tileTypes[0].length+1),
+						image: testImage,
+						row: testRow,
+						col: (testCol+1),
+						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						up: (falling ? 0 : 1),
+						right: (testRight-1),
+						sight: testSight,
+						endurance: (falling ? (testEndurance-1) : testEndurance),
+						jump: {min: 1, max: speciesJump}});
+}
+
+function testDrift_Right_Down()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["B", "S", "B"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  status: AttributeEnum.JUMP,
+			  up: 1, right: 1,
+			  sight: testSight, endurance: testEndurance},
+			 {innerText: ActionEnum.DRIFT});
+
+	moveRight(true);
+
+	var speciesJump = player.species.attributeMap.get(AttributeEnum.JUMP);
+	var falling = (player.attributeMap.get(AttributeEnum.JUMP) === speciesJump);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: (tileTypes[0].length+1),
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: testRow,
+						col: (testCol+1),
+						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						up: (falling ? 0 : 1),
+						right: 0,
+						sight: testSight,
+						endurance: (falling ? (testEndurance-1) : testEndurance),
+						jump: {min: 1, max: speciesJump}});
 }
 
 function testLetGo_Right()
@@ -672,7 +866,49 @@ function testLetGo_Right_NoEndurance()
 						endurance: 0});
 }
 
-function testGrab_Right_Fall()
+function testGrab_Right_FallRight()
+{
+	var testImage = "images/" + (new Human()).type + "/" + ActionEnum.JUMP_RIGHT.replace(" ", "") + ".png";
+	var testRow = 1;
+	var testCol = 1;
+	var testLeft = 2;
+	var testDown = 3;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["B", "S", "B"],
+					 ["B", "S", "B"]];
+
+	initData(tileTypes,
+			 {image: testImage,
+			  row: testRow, col: testCol,
+			  status: "",
+			  left: testLeft, down: testDown,
+			  sight: testSight, endurance: testEndurance, climb: 0},
+			 {innerText: ActionEnum.GRAB_RIGHT});
+
+	moveRight(true);
+
+	var playerDown = player.momentum.down;
+	var climbing = (playerDown === 0);
+
+	validateTakeAction({rows: (climbing ? tileTypes.length : (tileTypes.length+1)),
+						cols: tileTypes[0].length,
+						image: (climbing
+								? "images/" + player.species.type + "/" + ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png"
+							 	: testImage),
+						row: (climbing ? testRow : testRow+1),
+						col: testCol,
+						status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL_DOWN),
+						left: (climbing ? 0 : (testLeft-1)),
+						right: (climbing ? 1 : 0),
+						down: playerDown,
+						sight: testSight,
+						endurance: (testEndurance-1),
+						climb: (player.species.attributeMap.get(AttributeEnum.CLIMB))});
+}
+
+function testGrab_Right_FallDown()
 {
 	var testRow = 1;
 	var testCol = 1;
@@ -703,7 +939,7 @@ function testGrab_Right_Fall()
 						row: (climbing ? testRow : testRow+1),
 						col: testCol,
 						status: (climbing ? AttributeEnum.CLIMB : ActionEnum.FALL_DOWN),
-						left: (climbing ? 0 : 1),
+						left: 0,
 						right: (climbing ? 1 : 0),
 						down: playerDown,
 						sight: testSight,

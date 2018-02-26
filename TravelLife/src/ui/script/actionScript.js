@@ -312,7 +312,7 @@ function climbOut(doUpdate)
 	return actionInfo;
 }
 
-function jumpRise(doUpdate)
+function jumpRiseDrift(doUpdate)
 {
 	var actionInfo = "";
 	var jumpRiseDriftDirection = confirmAction.innerText;
@@ -326,7 +326,8 @@ function jumpRise(doUpdate)
 	if (doUpdate)
 		value = getRandomNumber(min, max);
 	else // Get info, don't do update
-		actionInfo += jumpRiseDriftDirection + " decreases sideways momentum and " + AttributeEnum.JUMP + ".\n"
+		actionInfo += jumpRiseDriftDirection + " decreases sideways momentum and " + AttributeEnum.JUMP
+					+ (player.status === AttributeEnum.CLIMB ? ", and resets " + AttributeEnum.CLIMB : "") + ".\n"
 					+ "When " + AttributeEnum.JUMP + " reaches 0, " + AttributeEnum.JUMP + " resets, "
 					+ "you " + ActionEnum.FALL_DOWN + " and lose " + AttributeEnum.ENDURANCE + ".\n"
 					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
@@ -334,6 +335,9 @@ function jumpRise(doUpdate)
 					+ AttributeEnum.JUMP + ": " + jumpValue + " - [" + min + "-" + max + "] "
 					+ "= [" + (jumpValue - max) + "-" + (jumpValue - min) + "]\n"
 					+ "\n";
+
+	if (player.status === AttributeEnum.CLIMB)
+		actionInfo = resetAttribute(AttributeEnum.CLIMB, actionInfo);
 
 	jumpValue -= value;
 	if (jumpValue === 0)
@@ -370,6 +374,7 @@ function jumpRise(doUpdate)
 				updatePlayerIcon("images/" + player.species.type + "/"
 						   + jumpRiseDriftDirection.replace(" ", "") + ".png");
 			case ActionEnum.RISE_LEFT:
+				player.momentum.right = 0;
 				player.position.row--;
 				player.position.col--;
 				break;
@@ -388,6 +393,7 @@ function jumpRise(doUpdate)
 				updatePlayerIcon("images/" + player.species.type + "/"
 							   + jumpRiseDriftDirection.replace(" ", "") + ".png");
 			case ActionEnum.RISE_RIGHT:
+				player.momentum.left = 0;
 				player.position.row--;
 				player.position.col++;
 				break;
@@ -413,11 +419,6 @@ function jumpRise(doUpdate)
 			updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
 			
 		exposeMapTiles();
-
-		// Check if player must stop
-		if (player.momentum.up > 0
-		 && getTileByPosition((player.position.row-1), player.position.col).solid)
-			stop(true);
 	}
 
 	return actionInfo;
@@ -815,10 +816,10 @@ function restFloat(doUpdate)
 function fall(doUpdate)
 {
 	var actionInfo = "";
-	var fallAction = confirmAction.innerText;
+	var fallDirection = confirmAction.innerText;
 
 	if (!doUpdate)
-		actionInfo += fallAction + " increases downward momentum, decreases sideways momentum, "
+		actionInfo += fallDirection + " increases downward momentum, decreases sideways momentum, "
 					+ "and resets " + AttributeEnum.JUMP + ".\n"
 					+ "\n";
 
@@ -832,9 +833,28 @@ function fall(doUpdate)
 		playerSightValue -= getRandomNumber(0, playerSightValue-1);
 		player.attributeMap.set(AttributeEnum.SIGHT, playerSightValue);
 
+		switch (fallDirection)
+		{
+			case ActionEnum.FALL_LEFT:
+				player.momentum.left--;
+				player.position.col--;
+				break;
+			case ActionEnum.FALL_RIGHT:
+				player.momentum.right--;
+				player.position.col++;
+				break;
+			default:
+				if (player.momentum.left > 0)
+					player.momentum.left--;
+				else if (player.momentum.right > 0)
+					player.momentum.right--;
+		}
+
 		player.momentum.down++;
 
-		updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+		if (player.momentum.left === 0
+		 && player.momentum.right === 0)
+			updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
 
 		player.position.row++;
 
@@ -845,7 +865,7 @@ function fall(doUpdate)
 		if (actionInfo.includes(" => "))
 			actionInfo += "\n";
 
-		actionInfo += "If you " + fallAction + ", you risk losing " + AttributeEnum.SIGHT + ".\n";
+		actionInfo += "If you " + fallDirection + ", you risk losing " + AttributeEnum.SIGHT + ".\n";
 	}
 
 	return actionInfo;

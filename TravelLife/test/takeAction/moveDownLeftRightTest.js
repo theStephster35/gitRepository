@@ -1,10 +1,12 @@
 function testMoveDownLeftRight()
 {
 	// Move Down Left
-	runTest("Test Climb Off Left", testClimbOverOff_OffLeft);
-	runTest("Test Climb Off Left - No Endurance", testClimbOverOff_OffLeft_NoEndurance);
+	runTest("Test Climb Off Left", testClimbOff_Left);
+	runTest("Test Climb Off Left - No Endurance", testClimbOff_Left_NoEndurance);
 	runTest("Test Climb Left - Climb", testClimb_Left_Climb);
 	runTest("Test Climb Left - Swim", testClimb_Left_Swim);
+	runTest("Test Fall Left - Left", testFall_Left_Left);
+	runTest("Test Fall Left - Down", testFall_Left_Down);
 	runTest("Test Swim Down Left", testSwim_DownLeft);
 	runTest("Test Swim Down Left - No Swim", testSwim_DownLeft_NoSwim);
 	runTest("Test Swim Down Left - No Endurance", testSwim_DownLeft_NoEndurance);
@@ -15,7 +17,10 @@ function testMoveDownLeftRight()
 	runTest("Test Climb Down Left - No Endurance/Climb", testClimb_DownLeft_NoEnduranceClimb);
 	runTest("Test Climb Down Right", testClimb_DownRight);
 	runTest("Test Climb Down Right - No Endurance/Climb", testClimb_DownRight_NoEnduranceClimb);
-	runTest("Test Fall", testFall);
+	runTest("Test Fall Down - Left", testFall_Down_Left);
+	runTest("Test Fall Down - Left-Down", testFall_Down_LeftDown);
+	runTest("Test Fall Down - Right", testFall_Down_Right);
+	runTest("Test Fall Down - Right-Down", testFall_Down_RightDown);
 	runTest("Test Land", testLand);
 	runTest("Test Splash", testSplash);
 	runTest("Test Swim Down", testSwim_Up);
@@ -24,17 +29,19 @@ function testMoveDownLeftRight()
 	runTest("Test Swim Down - No Endurance/Swim", testSwim_Down_NoEnduranceSwim);
 
 	// Move Down Right
-	runTest("Test Climb Off Right", testClimbOverOff_OffRight);
-	runTest("Test Climb Off Right - No Endurance", testClimbOverOff_OffRight_NoEndurance);
+	runTest("Test Climb Off Right", testClimbOff_Right);
+	runTest("Test Climb Off Right - No Endurance", testClimbOff_Right_NoEndurance);
 	runTest("Test Climb Right - Climb", testClimb_Right_Climb);
 	runTest("Test Climb Right - Swim", testClimb_Right_Swim);
+	runTest("Test Fall Right - Right", testFall_Right_Right);
+	runTest("Test Fall Right - Down", testFall_Right_Down);
 	runTest("Test Swim Down Right", testSwim_DownRight);
 	runTest("Test Swim Down Right - No Swim", testSwim_DownRight_NoSwim);
 	runTest("Test Swim Down Right - No Endurance", testSwim_DownRight_NoEndurance);
 	runTest("Test Swim Down Right - No Endurance/Swim", testSwim_DownRight_NoEnduranceSwim);
 }
 
-function testClimbOverOff_OffLeft()
+function testClimbOff_Left()
 {
 	var testRow = 1;
 	var testCol = 1;
@@ -67,7 +74,7 @@ function testClimbOverOff_OffLeft()
 						climb: player.species.attributeMap.get(AttributeEnum.CLIMB)});
 }
 
-function testClimbOverOff_OffLeft_NoEndurance()
+function testClimbOff_Left_NoEndurance()
 {
 	var testRow = 1;
 	var testCol = 1;
@@ -149,6 +156,69 @@ function testClimb_Left_Swim()
 						row: (testRow+1),
 						col: testCol,
 						status: AttributeEnum.SWIM,
+						sight: testSight});
+}
+
+function testFall_Left_Left()
+{
+	var testImage = "images/" + (new Human()).type + "/" + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png";
+	var testRow = 1;
+	var testCol = 1;
+	var testLeft = 2;
+	var testDown = 1;
+	var testSight = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["S", "S", "S"]];
+
+	initData(tileTypes,
+			 {image: testImage,
+			  row: testRow, col: testCol,
+			  status: ActionEnum.FALL_DOWN,
+			  left: testLeft, down: testDown,
+			  sight: testSight},
+			 {innerText: ActionEnum.FALL_LEFT});
+
+	moveDownLeft(true);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: (tileTypes[0].length+1),
+						image: testImage,
+						row: (testRow+1),
+						col: testCol,
+						status: ActionEnum.FALL_DOWN,
+						left: (testLeft-1),
+						down: (testDown+1),
+						sight: testSight});
+}
+
+function testFall_Left_Down()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testDown = 1;
+	var testSight = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["S", "S", "S"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  status: ActionEnum.FALL_DOWN,
+			  left: 1, down: testDown,
+			  sight: testSight},
+			 {innerText: ActionEnum.FALL_LEFT});
+
+	moveDownLeft(true);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: (tileTypes[0].length+1),
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: (testRow+1),
+						col: testCol,
+						status: ActionEnum.FALL_DOWN,
+						left: 0,
+						down: (testDown+1),
 						sight: testSight});
 }
 
@@ -421,7 +491,43 @@ function testClimb_DownRight_NoEnduranceClimb()
 						climb: player.species.attributeMap.get(AttributeEnum.CLIMB)});
 }
 
-function testFall()
+function testFall_Down_Left()
+{
+	var testImage = "images/" + (new Human()).type + "/" + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png";
+	var testRow = 2;
+	var testCol = 2;
+	var testLeft = 2;
+	var testDown = 0;
+	var testSight = 2;
+	var tileTypes = [["B", "B", "B", "B", "B"],
+					 ["B", "B", "S", "B", "B"],
+					 ["B", "B", "S", "B", "B"],
+					 ["B", "B", "S", "B", "B"],
+					 ["B", "B", "B", "B", "B"]];
+
+	initData(tileTypes,
+			 {image: testImage,
+			  row: testRow, col: testCol,
+			  left: testLeft, down: testDown,
+			  sight: testSight, jump: 0},
+			 {innerText: ActionEnum.FALL_DOWN});
+
+	moveDown(true);
+
+	validateTakeAction({rows: (tileTypes.length
+							 + (player.attributeMap.get(AttributeEnum.SIGHT) === testSight ? 1 : 0)),
+						cols: tileTypes[0].length,
+						image: testImage,
+						row: (testRow+1),
+						col: testCol,
+						status: ActionEnum.FALL_DOWN,
+						left: (testLeft-1),
+						down: (testDown+1),
+						sight: {min: 1, max: player.species.attributeMap.get(AttributeEnum.SIGHT)},
+						jump: player.species.attributeMap.get(AttributeEnum.JUMP)});
+}
+
+function testFall_Down_LeftDown()
 {
 	var testRow = 2;
 	var testCol = 2;
@@ -435,7 +541,7 @@ function testFall()
 
 	initData(tileTypes,
 			 {row: testRow, col: testCol,
-			  down: testDown,
+			  left: 1, down: testDown,
 			  sight: testSight, jump: 0},
 			 {innerText: ActionEnum.FALL_DOWN});
 
@@ -448,6 +554,76 @@ function testFall()
 						row: (testRow+1),
 						col: testCol,
 						status: ActionEnum.FALL_DOWN,
+						left: 0,
+						down: (testDown+1),
+						sight: {min: 1, max: player.species.attributeMap.get(AttributeEnum.SIGHT)},
+						jump: player.species.attributeMap.get(AttributeEnum.JUMP)});
+}
+
+function testFall_Down_Right()
+{
+	var testImage = "images/" + (new Human()).type + "/" + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png";
+	var testRow = 2;
+	var testCol = 2;
+	var testRight = 2;
+	var testDown = 0;
+	var testSight = 2;
+	var tileTypes = [["B", "B", "B", "B", "B"],
+					 ["B", "B", "S", "B", "B"],
+					 ["B", "B", "S", "B", "B"],
+					 ["B", "B", "S", "B", "B"],
+					 ["B", "B", "B", "B", "B"]];
+
+	initData(tileTypes,
+			 {image: testImage,
+			  row: testRow, col: testCol,
+			  right: testRight, down: testDown,
+			  sight: testSight, jump: 0},
+			 {innerText: ActionEnum.FALL_DOWN});
+
+	moveDown(true);
+
+	validateTakeAction({rows: (tileTypes.length
+							 + (player.attributeMap.get(AttributeEnum.SIGHT) === testSight ? 1 : 0)),
+						cols: tileTypes[0].length,
+						image: testImage,
+						row: (testRow+1),
+						col: testCol,
+						status: ActionEnum.FALL_DOWN,
+						right: (testRight-1),
+						down: (testDown+1),
+						sight: {min: 1, max: player.species.attributeMap.get(AttributeEnum.SIGHT)},
+						jump: player.species.attributeMap.get(AttributeEnum.JUMP)});
+}
+
+function testFall_Down_RightDown()
+{
+	var testRow = 2;
+	var testCol = 2;
+	var testDown = 0;
+	var testSight = 2;
+	var tileTypes = [["B", "B", "B", "B", "B"],
+					 ["B", "B", "S", "B", "B"],
+					 ["B", "B", "S", "B", "B"],
+					 ["B", "B", "S", "B", "B"],
+					 ["B", "B", "B", "B", "B"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  right: 1, down: testDown,
+			  sight: testSight, jump: 0},
+			 {innerText: ActionEnum.FALL_DOWN});
+
+	moveDown(true);
+
+	validateTakeAction({rows: (tileTypes.length
+							 + (player.attributeMap.get(AttributeEnum.SIGHT) === testSight ? 1 : 0)),
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: (testRow+1),
+						col: testCol,
+						status: ActionEnum.FALL_DOWN,
+						right: 0,
 						down: (testDown+1),
 						sight: {min: 1, max: player.species.attributeMap.get(AttributeEnum.SIGHT)},
 						jump: player.species.attributeMap.get(AttributeEnum.JUMP)});
@@ -661,7 +837,7 @@ function testSwim_Down_NoEnduranceSwim()
 						swim: 0});
 }
 
-function testClimbOverOff_OffRight()
+function testClimbOff_Right()
 {
 	var testRow = 1;
 	var testCol = 1;
@@ -694,7 +870,7 @@ function testClimbOverOff_OffRight()
 						climb: player.species.attributeMap.get(AttributeEnum.CLIMB)});
 }
 
-function testClimbOverOff_OffRight_NoEndurance()
+function testClimbOff_Right_NoEndurance()
 {
 	var testRow = 1;
 	var testCol = 1;
@@ -776,6 +952,69 @@ function testClimb_Right_Swim()
 						row: (testRow+1),
 						col: (testCol+1),
 						status: AttributeEnum.SWIM,
+						sight: testSight});
+}
+
+function testFall_Right_Right()
+{
+	var testImage = "images/" + (new Human()).type + "/" + ActionEnum.JUMP_RIGHT.replace(" ", "") + ".png";
+	var testRow = 1;
+	var testCol = 1;
+	var testRight = 2;
+	var testDown = 1;
+	var testSight = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["S", "S", "S"]];
+
+	initData(tileTypes,
+			 {image: testImage,
+			  row: testRow, col: testCol,
+			  status: ActionEnum.FALL_DOWN,
+			  right: testRight, down: testDown,
+			  sight: testSight},
+			 {innerText: ActionEnum.FALL_RIGHT});
+
+	moveDownRight(true);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: (tileTypes[0].length+1),
+						image: testImage,
+						row: (testRow+1),
+						col: (testCol+1),
+						status: ActionEnum.FALL_DOWN,
+						right: (testRight-1),
+						down: (testDown+1),
+						sight: testSight});
+}
+
+function testFall_Right_Down()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testDown = 1;
+	var testSight = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["S", "S", "S"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  status: ActionEnum.FALL_DOWN,
+			  right: 1, down: testDown,
+			  sight: testSight},
+			 {innerText: ActionEnum.FALL_RIGHT});
+
+	moveDownRight(true);
+
+	validateTakeAction({rows: (tileTypes.length+1),
+						cols: (tileTypes[0].length+1),
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: (testRow+1),
+						col: (testCol+1),
+						status: ActionEnum.FALL_DOWN,
+						right: 0,
+						down: (testDown+1),
 						sight: testSight});
 }
 

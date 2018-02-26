@@ -194,9 +194,30 @@ function checkUpLeft(row, col)
 		else if (player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
 		{
 			// If player has endurance...
-			// ... and is swimming
-			if (playerIsInStatus(AttributeEnum.SWIM))
+			// ... and is not moving
+			if (playerIsInStatus(ActionEnum.STOP))
 			{
+				// If player is on a tile right of a solid tile
+				if (getTileByPosition(row, (col-1)).solid)
+				{
+					upLeftButton.label = ActionEnum.CLIMB_LEFT;
+					upLeftButton.innerText = "\u2B11";
+					upLeftButton.disabled = false;
+				}
+				else if (!getTileByPosition((row-1), (col-1)).solid
+					  && (!getTileByPosition((row-1), col).solid
+					   || !getTileByPosition(row, (col-1)).solid))
+				{
+					// If player is on a tile down-right a not solid tile...
+					// ... and below or right of a not solid tile
+					upLeftButton.label = ActionEnum.JUMP_LEFT;
+					upLeftButton.innerText = "\u21B6";
+					upLeftButton.disabled = false;
+				}
+			}
+			else if (playerIsInStatus(AttributeEnum.SWIM))
+			{
+				// ... and is swimming
 				// If player is on a tile below a not solid/water tile
 				var aboveTile = getTileByPosition((row-1), col);
 				if (!aboveTile.solid
@@ -218,32 +239,46 @@ function checkUpLeft(row, col)
 					}
 				}
 			}
-			else if (getTileByPosition(row, (col-1)).solid)
+			else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT))
 			{
-				// ... and is on a tile right of a solid tile
-				// If player is not moving on a tile above a solid tile
-				if (playerIsInStatus(ActionEnum.STOP)
-				 && getTileByPosition((row+1), col).solid)
+				// ... and is climbing left
+				// If player is on a tile below and down-right a not solid tile
+				if (!getTileByPosition((row-1), col).solid
+				 && !getTileByPosition((row-1), (col-1)).solid)
 				{
-					upLeftButton.label = ActionEnum.CLIMB_LEFT;
-					upLeftButton.innerText = "\u2B11";
-					upLeftButton.disabled = false;
-				}
-				else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
-					  && !getTileByPosition((row-1), col).solid
-					  && !getTileByPosition((row-1), (col-1)).solid)
-				{
-					// If player is climbing left on a tile below and down-right a not solid tile
 					upLeftButton.label = ActionEnum.CLIMB_OVER;
 					upLeftButton.innerText = "\u21B0";
 					upLeftButton.disabled = false;
 				}
 			}
+			if (!getTileByPosition((row-1), (col-1)).solid)
+			{
+				// ... and is on a tile below and down-right a not solid tile
+				// If player is climbing right or running left
+				if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
+				 || playerIsInStatus(AttributeEnum.RUN, ActionEnum.LEFT))
+				{
+					// If player is on a tile below or right of a not solid tile
+					if (!getTileByPosition((row-1), col).solid
+					 || !getTileByPosition(row, (col-1)).solid)
+					{
+						upLeftButton.label = ActionEnum.JUMP_LEFT;
+						upLeftButton.innerText = "\u21B6";
+						upLeftButton.disabled = false;
+					}
+				}
+				else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.LEFT)
+					  && (!getTileByPosition((row-1), col).solid
+					   || !getTileByPosition(row, (col-1)).solid))
+				{
+					// ... and is jumping left on a tile below or right of a not solid tile
+					upLeftButton.label = ActionEnum.RISE_LEFT;
+					upLeftButton.innerText = "\u21D6";
+					upLeftButton.disabled = false;
+				}
+			}
 		}
 	}
-
-	//upLeftButton.innerText = "\u21B6"; // Jump Left?
-	//upLeftButton.innerText = "\u21D6"; // Rise Left?
 }
 
 function checkUp(row, col)
@@ -268,8 +303,9 @@ function checkUp(row, col)
 		else if (player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
 		{
 			// If player has endurance...
-			// ... and is not moving
-			if (playerIsInStatus(ActionEnum.STOP))
+			// If player is not moving or is running
+			if (playerIsInStatus(ActionEnum.STOP)
+			 || playerIsInStatus(AttributeEnum.RUN))
 			{
 				// If player is on a tile above a solid tile
 				if (getTileByPosition((row+1), col).solid)
@@ -310,6 +346,7 @@ function checkUpRight(row, col)
 {
 	disableButton(upRightButton);
 
+
 	// If player has health
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
@@ -329,9 +366,30 @@ function checkUpRight(row, col)
 		else if (player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
 		{
 			// If player has endurance...
-			// ... and is swimming
-			if (playerIsInStatus(AttributeEnum.SWIM))
+			// ... and is not moving
+			if (playerIsInStatus(ActionEnum.STOP))
 			{
+				// If player is on a tile left of a solid tile
+				if (getTileByPosition(row, (col+1)).solid)
+				{
+					upRightButton.label = ActionEnum.CLIMB_RIGHT;
+					upRightButton.innerText = "\u2B0F";
+					upRightButton.disabled = false;
+				}
+				else if (!getTileByPosition((row-1), (col+1)).solid
+					  && (!getTileByPosition((row-1), col).solid
+					   || !getTileByPosition(row, (col+1)).solid))
+				{
+					// If player is on a tile down-left a not solid tile...
+					// ... and below or left of a not solid tile
+					upRightButton.label = ActionEnum.JUMP_RIGHT;
+					upRightButton.innerText = "\u21B7";
+					upRightButton.disabled = false;
+				}
+			}
+			else if (playerIsInStatus(AttributeEnum.SWIM))
+			{
+				// ... and is swimming
 				// If player is on a tile below a not solid/water tile
 				var aboveTile = getTileByPosition((row-1), col);
 				if (!aboveTile.solid
@@ -353,32 +411,46 @@ function checkUpRight(row, col)
 					}
 				}
 			}
-			else if (getTileByPosition(row, (col+1)).solid)
+			else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT))
 			{
-				// ... and is on a tile left of a solid tile
-				// If player is not moving on a tile above a solid tile
-				if (playerIsInStatus(ActionEnum.STOP)
-				 && getTileByPosition((row+1), col).solid)
+				// ... and is climbing right
+				// If player is on a tile below and down-left a not solid tile
+				if (!getTileByPosition((row-1), col).solid
+				 && !getTileByPosition((row-1), (col+1)).solid)
 				{
-					upRightButton.label = ActionEnum.CLIMB_RIGHT;
-					upRightButton.innerText = "\u2B0F";
-					upRightButton.disabled = false;
-				}
-				else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
-					  && !getTileByPosition((row-1), col).solid
-					  && !getTileByPosition((row-1), (col+1)).solid)
-				{
-					// If player is climbing right on a tile below and down-left a not solid tile
 					upRightButton.label = ActionEnum.CLIMB_OVER;
 					upRightButton.innerText = "\u21B1";
 					upRightButton.disabled = false;
 				}
 			}
+			if (!getTileByPosition((row-1), (col+1)).solid)
+			{
+				// ... and is on a tile below and down-left a not solid tile
+				// If player is climbing left or running right
+				if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
+				 || playerIsInStatus(AttributeEnum.RUN, ActionEnum.RIGHT))
+				{
+					// If player is on a tile below or right of a not solid tile
+					if (!getTileByPosition((row-1), col).solid
+					 || !getTileByPosition(row, (col+1)).solid)
+					{
+						upRightButton.label = ActionEnum.JUMP_RIGHT;
+						upRightButton.innerText = "\u21B7";
+						upRightButton.disabled = false;
+					}
+				}
+				else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.RIGHT)
+					  && (!getTileByPosition((row-1), col).solid
+					   || !getTileByPosition(row, (col+1)).solid))
+				{
+					// ... and is jumping right on a tile below or left of a not solid tile
+					upRightButton.label = ActionEnum.RISE_RIGHT;
+					upRightButton.innerText = "\u21D7";
+					upRightButton.disabled = false;
+				}
+			}
 		}
 	}
-
-	//upRightButton.innerText = "\u21B7"; // Jump Right?
-	//upRightButton.innerText = "\u21D7"; // Rise Right?
 }
 
 function checkLeft(row, col)
@@ -417,6 +489,17 @@ function checkLeft(row, col)
 			leftButton.innerText = "\u21A9";
 			leftButton.disabled = false;
 		}
+		else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.LEFT))
+		{
+			// If player is jumping left...
+			// ... and is on a tile right of a not solid tile
+			if (!getTileByPosition(row, (col-1)).solid)
+			{
+				leftButton.label = ActionEnum.DRIFT;
+				leftButton.innerText = "\u21D0";
+				leftButton.disabled = false;
+			}
+		}
 		else if ((playerIsInStatus(ActionEnum.STOP)
 			   || playerIsInStatus(AttributeEnum.RUN, ActionEnum.LEFT))
 			  && player.attributeMap.get(AttributeEnum.ENDURANCE) > 0
@@ -431,7 +514,6 @@ function checkLeft(row, col)
 		}
 	}
 
-	//leftButton.innerText = "\u21D0"; // Drift Left?
 	//leftButton.innerText = "\u2345"; // Dig Left?
 }
 
@@ -521,6 +603,17 @@ function checkRight(row, col)
 			rightButton.innerText = "\u21AA";
 			rightButton.disabled = false;
 		}
+		else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.RIGHT))
+		{
+			// If player is jumping right...
+			// ... and is on a tile left of a not solid tile
+			if (!getTileByPosition(row, (col+1)).solid)
+			{
+				rightButton.label = ActionEnum.DRIFT;
+				rightButton.innerText = "\u21D2";
+				rightButton.disabled = false;
+			}
+		}
 		else if ((playerIsInStatus(ActionEnum.STOP)
 			   || playerIsInStatus(AttributeEnum.RUN, ActionEnum.RIGHT))
 			  && player.attributeMap.get(AttributeEnum.ENDURANCE) > 0
@@ -545,9 +638,23 @@ function checkDownLeft(row, col)
 	// If player has health
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
-		// If player is swimming
-		if (playerIsInStatus(AttributeEnum.SWIM))
+		// If player is falling left
+		if (playerIsInStatus(ActionEnum.FALL_DOWN, ActionEnum.LEFT))
 		{
+			// If player is on a tile up-right a not solid tile...
+			// ... and right of or above a not solid tile
+			if (!getTileByPosition((row+1), (col-1)).solid
+			 && (!getTileByPosition((row+1), col).solid
+			  || !getTileByPosition(row, (col-1)).solid))
+			{
+				downLeftButton.label = ActionEnum.FALL_LEFT;
+				downLeftButton.innerText = "\u21D9";
+				downLeftButton.disabled = false;
+			}
+		}
+		else if (playerIsInStatus(AttributeEnum.SWIM))
+		{
+			// ... and is swimming
 			// If player is on a tile up-right a water tile, and right of or above a water tile
 			if (getTileByPosition((row+1), (col-1)).type === TileTypeEnum.WATER
 			 && (getTileByPosition((row+1), col).type === TileTypeEnum.WATER
@@ -659,9 +766,23 @@ function checkDownRight(row, col)
 	// If player has health
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
-		// If player is swimming
-		if (playerIsInStatus(AttributeEnum.SWIM))
+		// If player is falling right
+		if (playerIsInStatus(ActionEnum.FALL_DOWN, ActionEnum.RIGHT))
 		{
+			// If player is on a tile up-left a not solid tile...
+			// ... and left of or above a not solid tile
+			if (!getTileByPosition((row+1), (col+1)).solid
+			 && (!getTileByPosition((row+1), col).solid
+			  || !getTileByPosition(row, (col+1)).solid))
+			{
+				downRightButton.label = ActionEnum.FALL_RIGHT;
+				downRightButton.innerText = "\u21D8";
+				downRightButton.disabled = false;
+			}
+		}
+		else if (playerIsInStatus(AttributeEnum.SWIM))
+		{
+			// ... and is swimming
 			// If player is on a tile up-left a water tile, and left of or above a water tile
 			if (getTileByPosition((row+1), (col+1)).type === TileTypeEnum.WATER
 			 && (getTileByPosition((row+1), col).type === TileTypeEnum.WATER

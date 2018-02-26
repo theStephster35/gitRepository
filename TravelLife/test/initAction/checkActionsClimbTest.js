@@ -5,6 +5,9 @@ function testCheckActionsClimb()
 	runTest("SBS BSB BGB - Climb Right", test_SBS_BSB_BGB_ClimbRight);
 	runTest("SBS BSB BGB - Climb Right, No Health", test_SBS_BSB_BGB_ClimbRight_NoHealth);
 
+	runTest("SBS BSS BGB - Climb Left", test_SBS_BSS_BGB_ClimbLeft);
+	runTest("SBS SSB BGB - Climb Right", test_SBS_BSB_BGB_ClimbRight);
+
 	runTest("BSB BSB BSB - Climb Left", test_BSB_BSB_BSB_ClimbLeft);
 	runTest("BSB BSB BSB - Climb Left, No Health", test_BSB_BSB_BSB_ClimbLeft_NoHealth);
 	runTest("BSB BSB BSB - Climb Right", test_BSB_BSB_BSB_ClimbRight);
@@ -81,6 +84,40 @@ function test_SBS_BSB_BGB_ClimbRight_NoHealth()
 	initAction();
 
 	validateInitAction({});
+}
+
+function test_SBS_BSS_BGB_ClimbLeft()
+{
+	initData([["S", "B", "S"],
+			  ["B", "S", "S"],
+			  ["B", "G", "B"]],
+			 {row: 1, col: 1,
+			  status: AttributeEnum.CLIMB,
+			  left: 1,
+			  endurance: 1});
+
+	initAction();
+
+	validateInitAction({upRight: ActionEnum.JUMP_RIGHT,
+						right: ActionEnum.LET_GO,
+					 	downRight: ActionEnum.CLIMB_OFF});
+}
+
+function test_SBS_SSB_BGB_ClimbRight()
+{
+	initData([["S", "B", "S"],
+			  ["S", "S", "B"],
+			  ["B", "G", "B"]],
+			 {row: 1, col: 1,
+			  status: AttributeEnum.CLIMB,
+			  right: 1,
+			  endurance: 1});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						right: ActionEnum.LET_GO,
+					 	downRight: ActionEnum.CLIMB_OFF});
 }
 
 function test_BSB_BSB_BSB_ClimbLeft()
@@ -160,6 +197,7 @@ function test_SSS_BSB_BSB_ClimbLeft()
 	initAction();
 
 	validateInitAction({upLeft: ActionEnum.CLIMB_OVER,
+						upRight: ActionEnum.JUMP_RIGHT,
 						right: ActionEnum.LET_GO,
 						down: ActionEnum.CLIMB_DOWN});
 }
@@ -191,7 +229,8 @@ function test_SSS_BSB_BSB_ClimbRight()
 
 	initAction();
 
-	validateInitAction({upRight: ActionEnum.CLIMB_OVER,
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						upRight: ActionEnum.CLIMB_OVER,
 						left: ActionEnum.LET_GO,
 						down: ActionEnum.CLIMB_DOWN});
 }
@@ -224,6 +263,7 @@ function test_SSS_BSB_BWB_ClimbLeft()
 	initAction();
 
 	validateInitAction({upLeft: ActionEnum.CLIMB_OVER,
+						upRight: ActionEnum.JUMP_RIGHT,
 						right: ActionEnum.LET_GO});
 }
 
@@ -254,7 +294,8 @@ function test_SSS_BSB_BWB_ClimbRight()
 
 	initAction();
 
-	validateInitAction({upRight: ActionEnum.CLIMB_OVER,
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						upRight: ActionEnum.CLIMB_OVER,
 						left: ActionEnum.LET_GO});
 }
 

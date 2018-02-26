@@ -72,6 +72,7 @@ var ActionEnum =
 	SWIM_RIGHT: AttributeEnum.SWIM + " Right",
 
 	DOWN_LEFT: "downLeft",
+	FALL_LEFT: "Fall Left",
 	SWIM_DOWN_LEFT: AttributeEnum.SWIM + " Down-Left",
 
 	DOWN: "down",
@@ -82,5 +83,6 @@ var ActionEnum =
 	SWIM_DOWN: AttributeEnum.SWIM + " Down",
 
 	DOWN_RIGHT: "downRight",
+	FALL_RIGHT: "Fall Right",
 	SWIM_DOWN_RIGHT: AttributeEnum.SWIM + " Down-Right"
 };

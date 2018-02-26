@@ -51,7 +51,9 @@ function test_SSS_SSS_BGB_RunLeft()
 
 	initAction();
 
-	validateInitAction({left: ActionEnum.RUN_LEFT,
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						left: ActionEnum.RUN_LEFT,
 					 	center: ActionEnum.STOP});
 }
 
@@ -67,6 +69,8 @@ function test_SSS_SSS_BGB_RunRight()
 
 	initAction();
 
-	validateInitAction({center: ActionEnum.STOP,
+	validateInitAction({up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
+						center: ActionEnum.STOP,
 						right: ActionEnum.RUN_RIGHT});
 }
