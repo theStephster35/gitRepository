@@ -3,7 +3,7 @@ function testInitAction()
 	testCheckActionsStop();
 	testCheckActionsClimb();
 	testCheckActionsJump();
-	testCheckActionsRun();
+	testCheckActionsRunDig();
 	testCheckActionsFall();
 	testCheckActionsSwim();
 }

@@ -22,6 +22,11 @@ function testCheckActionsClimb()
 	runTest("SSS BSB BWB - Climb Left, No Health", test_SSS_BSB_BWB_ClimbLeft_NoHealth);
 	runTest("SSS BSB BWB - Climb Right", test_SSS_BSB_BWB_ClimbRight);
 	runTest("SSS BSB BWB - Climb Right, No Health", test_SSS_BSB_BWB_ClimbRight_NoHealth);
+
+	runTest("SSS GSG BWB - Climb Left", test_SSS_GSG_BWB_ClimbLeft);
+	runTest("SSS GSG BWB - Climb Left, No Health", test_SSS_GSG_BWB_ClimbLeft_NoHealth);
+	runTest("SSS GSG BWB - Climb Right", test_SSS_GSG_BWB_ClimbRight);
+	runTest("SSS GSG BWB - Climb Right, No Health", test_SSS_GSG_BWB_ClimbRight_NoHealth);
 }
 
 function test_SBS_BSB_BGB_ClimbLeft()
@@ -303,6 +308,72 @@ function test_SSS_BSB_BWB_ClimbRight_NoHealth()
 {
 	initData([["S", "S", "S"],
 			  ["B", "S", "B"],
+			  ["B", "W", "B"]],
+			 {row: 1, col: 1,
+			  status: AttributeEnum.CLIMB,
+			  right: 1,
+			  health: 0});
+
+	initAction();
+
+	validateInitAction({});
+}
+
+function test_SSS_GSG_BWB_ClimbLeft()
+{
+	initData([["S", "S", "S"],
+			  ["G", "S", "G"],
+			  ["B", "W", "B"]],
+			 {row: 1, col: 1,
+			  status: AttributeEnum.CLIMB,
+			  left: 1,
+			  endurance: 1});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.CLIMB_OVER,
+						upRight: ActionEnum.JUMP_RIGHT,
+						left: ActionEnum.DIG_LEFT,
+						right: ActionEnum.LET_GO});
+}
+
+function test_SSS_GSG_BWB_ClimbLeft_NoHealth()
+{
+	initData([["S", "S", "S"],
+			  ["G", "S", "G"],
+			  ["B", "W", "B"]],
+			 {row: 1, col: 1,
+			  status: AttributeEnum.CLIMB,
+			  left: 1,
+			  health: 0});
+
+	initAction();
+
+	validateInitAction({});
+}
+
+function test_SSS_GSG_BWB_ClimbRight()
+{
+	initData([["S", "S", "S"],
+			  ["G", "S", "G"],
+			  ["B", "W", "B"]],
+			 {row: 1, col: 1,
+			  status: AttributeEnum.CLIMB,
+			  right: 1,
+			  endurance: 1});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						upRight: ActionEnum.CLIMB_OVER,
+						left: ActionEnum.LET_GO,
+						right: ActionEnum.DIG_RIGHT});
+}
+
+function test_SSS_GSG_BWB_ClimbRight_NoHealth()
+{
+	initData([["S", "S", "S"],
+			  ["G", "S", "G"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
 			  status: AttributeEnum.CLIMB,

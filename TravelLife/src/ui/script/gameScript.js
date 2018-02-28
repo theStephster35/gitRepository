@@ -61,6 +61,7 @@ function handleKeypress(event)
 			case "q":
 			case "Q":
 			case "7":
+				resetAction();
 				if (!document.getElementById(ActionEnum.UP_LEFT).disabled)
 					getAction(ActionEnum.UP_LEFT);
 				break;
@@ -68,12 +69,14 @@ function handleKeypress(event)
 			case "W":
 			case "ArrowUp":
 			case "8":
+				resetAction();
 				if (!document.getElementById(ActionEnum.UP).disabled)
 					getAction(ActionEnum.UP);
 				break;
 			case "e":
 			case "E":
 			case "9":
+				resetAction();
 				if (!document.getElementById(ActionEnum.UP_RIGHT).disabled)
 					getAction(ActionEnum.UP_RIGHT);
 				break;
@@ -81,6 +84,7 @@ function handleKeypress(event)
 			case "A":
 			case "ArrowLeft":
 			case "4":
+				resetAction();
 				if (!document.getElementById(ActionEnum.LEFT).disabled)
 					getAction(ActionEnum.LEFT);
 				break;
@@ -88,6 +92,7 @@ function handleKeypress(event)
 			case "R":
 			case "0":
 			case "5":
+				resetAction();
 				if (!document.getElementById(ActionEnum.CENTER).disabled)
 					getAction(ActionEnum.CENTER);
 				break;
@@ -95,12 +100,14 @@ function handleKeypress(event)
 			case "D":
 			case "ArrowRight":
 			case "6":
+				resetAction();
 				if (!document.getElementById(ActionEnum.RIGHT).disabled)
 					getAction(ActionEnum.RIGHT);
 				break;
 			case "z":
 			case "Z":
 			case "1":
+				resetAction();
 				if (!document.getElementById(ActionEnum.DOWN_LEFT).disabled)
 					getAction(ActionEnum.DOWN_LEFT);
 				break;
@@ -108,19 +115,21 @@ function handleKeypress(event)
 			case "S":
 			case "ArrowDown":
 			case "2":
+				resetAction();
 				if (!document.getElementById(ActionEnum.DOWN).disabled)
 					getAction(ActionEnum.DOWN);
 				break;
 			case "c":
 			case "C":
 			case "3":
+				resetAction();
 				if (!document.getElementById(ActionEnum.DOWN_RIGHT).disabled)
 					getAction(ActionEnum.DOWN_RIGHT);
 				break;
 			case " ":
 			case "Enter":
-				if (action !== "")
-					confirmAction();
+				if (!confirmAction.disabled)
+					takeAction();
 				break;
 			default:
 				resetAction();

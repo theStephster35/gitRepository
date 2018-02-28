@@ -33,6 +33,8 @@ function validateTakeAction(results)
 			player.species.attributeMap.get(AttributeEnum.RUN), results.run);
 	validateTakeActionData("swim", player.attributeMap.get(AttributeEnum.SWIM),
 			player.species.attributeMap.get(AttributeEnum.SWIM), results.swim);
+	validateTakeActionData("dig", player.attributeMap.get(AttributeEnum.DIG),
+			player.species.attributeMap.get(AttributeEnum.DIG), results.dig);
 }
 
 function validateTakeActionData(dataType, actualData, defaultData, resultData)

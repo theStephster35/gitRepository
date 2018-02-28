@@ -24,6 +24,7 @@ class Human extends Species
 		attributeMap.set(AttributeEnum.JUMP,	  2);
 		attributeMap.set(AttributeEnum.RUN,		  5);
 		attributeMap.set(AttributeEnum.SWIM,	  4);
+		attributeMap.set(AttributeEnum.DIG, 	  3);
 
 		super(SpeciesEnum.HUMAN, "images/Human/Species.png", description, attributeMap);
 	}

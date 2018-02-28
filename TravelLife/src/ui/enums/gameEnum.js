@@ -12,7 +12,8 @@ var AttributeEnum =
 	CLIMB: "Climb",
 	JUMP: "Jump",
 	RUN: "Run",
-	SWIM: "Swim"
+	SWIM: "Swim",
+	DIG: "Dig"
 };
 
 var TileTypeEnum =
@@ -60,6 +61,7 @@ var ActionEnum =
 	GRAB_LEFT: "Grab Left",
 	RUN_LEFT: AttributeEnum.RUN + " Left",
 	SWIM_LEFT: AttributeEnum.SWIM + " Left",
+	DIG_LEFT: AttributeEnum.DIG + " Left",
 
 	CENTER: "center",
 	STOP: "Stop",
@@ -70,6 +72,7 @@ var ActionEnum =
 	GRAB_RIGHT: "Grab Right",
 	RUN_RIGHT: AttributeEnum.RUN + " Right",
 	SWIM_RIGHT: AttributeEnum.SWIM + " Right",
+	DIG_RIGHT: AttributeEnum.DIG + " Right",
 
 	DOWN_LEFT: "downLeft",
 	FALL_LEFT: "Fall Left",
@@ -81,6 +84,7 @@ var ActionEnum =
 	LAND: "Land",
 	SPLASH: "Splash",
 	SWIM_DOWN: AttributeEnum.SWIM + " Down",
+	DIG_DOWN: AttributeEnum.DIG + " Down",
 
 	DOWN_RIGHT: "downRight",
 	FALL_RIGHT: "Fall Right",

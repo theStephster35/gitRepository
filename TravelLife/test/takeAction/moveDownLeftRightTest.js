@@ -27,6 +27,10 @@ function testMoveDownLeftRight()
 	runTest("Test Swim Down - No Swim", testSwim_Down_NoSwim);
 	runTest("Test Swim Down - No Endurance", testSwim_Down_NoEndurance);
 	runTest("Test Swim Down - No Endurance/Swim", testSwim_Down_NoEnduranceSwim);
+	runTest("Test Dig Down", testDig_Down);
+	runTest("Test Dig Down - Stop", testDig_Down_Stop);
+	runTest("Test Dig Down - Fall", testDig_Down_Fall);
+	runTest("Test Dig Down - No Endurance/Dig", testDig_Down_NoEnduranceDig);
 
 	// Move Down Right
 	runTest("Test Climb Off Right", testClimbOff_Right);
@@ -835,6 +839,160 @@ function testSwim_Down_NoEnduranceSwim()
 						sight: testSight,
 						endurance: 0,
 						swim: 0});
+}
+
+function testDig_Down()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testSight = 1;
+	var testEndurance = 5;
+	var testDig = 3;
+	var tileTypes = [["S", "S", "S"],
+					 ["G", "S", "G"],
+					 ["B", "G", "B"]];
+
+	initData(tileTypes,
+			 {image: "",
+			  row: testRow, col: testCol,
+			  status: "",
+			  sight: testSight, endurance: testEndurance, dig: testDig},
+			 {innerText: ActionEnum.DIG_DOWN});
+
+	var testDurability = 3;
+	var row = 2;
+	var col = 1;
+	mapTiles.children[row].children[col].value = testDurability;
+
+	moveDown(true);
+
+	var speciesDig = player.species.attributeMap.get(AttributeEnum.DIG);
+	var stopped = (player.attributeMap.get(AttributeEnum.DIG) === speciesDig);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: (stopped
+								? "images/" + player.species.type + "/Species.png"
+								: "images/" + player.species.type + "/" + ActionEnum.DIG_DOWN.replace(" ", "") + ".png"),
+						row: testRow,
+						col: testCol,
+						status: (stopped ? ActionEnum.STOP : AttributeEnum.DIG),
+						down: (stopped ? 0 : 1),
+						sight: testSight,
+						endurance: (stopped ? (testEndurance-1) : testEndurance),
+						dig: {min: 1, max: speciesDig}});
+
+	validateTakeActionData("durability", mapTiles.children[row].children[col].value, -1, (testDurability-1));
+}
+
+function testDig_Down_Stop()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["G", "S", "G"],
+					 ["B", "G", "B"],
+					 ["B", "G", "B"]];
+
+	initData(tileTypes,
+			 {image: "",
+			  row: testRow, col: testCol,
+			  status: "",
+			  sight: testSight, endurance: testEndurance},
+			 {innerText: ActionEnum.DIG_DOWN});
+
+	var row = 2;
+	var col = 1;
+	mapTiles.children[row].children[col].value = 1;
+
+	moveDown(true);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Species.png",
+						row: (testRow+1),
+						col: testCol,
+						status: ActionEnum.STOP,
+						sight: testSight,
+						endurance: (testEndurance-1),
+						dig: player.species.attributeMap.get(AttributeEnum.DIG)});
+
+	validateTakeActionData("durability", mapTiles.children[row].children[col].value, -1, -1);
+}
+
+function testDig_Down_Fall()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testSight = 1;
+	var testEndurance = 5;
+	var tileTypes = [["S", "S", "S"],
+					 ["G", "S", "G"],
+					 ["B", "G", "B"],
+					 ["B", "D", "B"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  sight: testSight, endurance: testEndurance},
+			 {innerText: ActionEnum.DIG_DOWN});
+
+	var row = 2;
+	var col = 1;
+	mapTiles.children[row].children[col].value = 1;
+
+	moveDown(true);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Suspended.png",
+						row: (testRow+1),
+						col: testCol,
+						status: ActionEnum.FALL_DOWN,
+						sight: testSight,
+						endurance: (testEndurance-1),
+						dig: player.species.attributeMap.get(AttributeEnum.DIG)});
+
+	validateTakeActionData("durability", mapTiles.children[row].children[col].value, -1, -1);
+}
+
+function testDig_Down_NoEnduranceDig()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testHealth = 3;
+	var testSight = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["G", "S", "G"],
+					 ["B", "G", "B"]];
+
+	initData(tileTypes,
+			 {image: "",
+			  row: testRow, col: testCol,
+			  status: "",
+			  health: testHealth, sight: testSight, endurance: 1, dig: 1},
+			 {innerText: ActionEnum.DIG_DOWN});
+
+	var testDurability = 3;
+	var row = 2;
+	var col = 1;
+	mapTiles.children[row].children[col].value = testDurability;
+
+	moveDown(true);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						image: "images/" + player.species.type + "/Species.png",
+						row: testRow,
+						col: testCol,
+						status: ActionEnum.STOP,
+						health: (testHealth-1),
+						sight: testSight,
+						endurance: 0,
+						dig: player.species.attributeMap.get(AttributeEnum.DIG)});
+
+	validateTakeActionData("durability", mapTiles.children[row].children[col].value, -1, (testDurability-1));
 }
 
 function testClimbOff_Right()

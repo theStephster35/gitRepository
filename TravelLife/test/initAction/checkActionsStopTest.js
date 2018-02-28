@@ -2,12 +2,12 @@ function testCheckActionsStop()
 {
 	runTest("BBB BSB SGS", test_BBB_BSB_SGS);
 
-	runTest("BBB BSB WGW", test_BBB_BSB_WGW);
+	runTest("BBB BSB WBW", test_BBB_BSB_WBW);
 
-	runTest("BSB BSB BGB", test_BSB_BSB_BGB);
-	runTest("BSB BSB BGB - No Endurance", test_BSB_BSB_BGB_NoEndurance);
-	runTest("BSB BSB BGB - No Recovery", test_BSB_BSB_BGB_NoRecovery);
-	runTest("BSB BSB BGB - No Health", test_BSB_BSB_BGB_NoHealth);
+	runTest("BSB GSG BGB", test_BSB_GSG_BGB);
+	runTest("BSB GSG BGB - No Endurance", test_BSB_GSG_BGB_NoEndurance);
+	runTest("BSB GSG BGB - No Recovery", test_BSB_GSG_BGB_NoRecovery);
+	runTest("BSB GSG BGB - No Health", test_BSB_GSG_BGB_NoHealth);
 
 	runTest("SBS SSS BGB", test_SBS_SSS_BGB);
 
@@ -26,10 +26,10 @@ function testCheckActionsStop()
 	runTest("SSS SSS SGS - No Recovery", test_SSS_SSS_SGS_NoRecovery);
 	runTest("SSS SSS SGS - No Health", test_SSS_SSS_SGS_NoHealth);
 
-	runTest("SSS SSS WGW", test_SSS_SSS_WGW);
-	runTest("SSS SSS WGW - No Endurance", test_SSS_SSS_WGW_NoEndurance);
-	runTest("SSS SSS WGW - No Recovery", test_SSS_SSS_WGW_NoRecovery);
-	runTest("SSS SSS WGW - No Health", test_SSS_SSS_WGW_NoHealth);
+	runTest("SSS SSS WBW", test_SSS_SSS_WBW);
+	runTest("SSS SSS WBW - No Endurance", test_SSS_SSS_WBW_NoEndurance);
+	runTest("SSS SSS WBW - No Recovery", test_SSS_SSS_WBW_NoRecovery);
+	runTest("SSS SSS WBW - No Health", test_SSS_SSS_WBW_NoHealth);
 }
 
 function test_BBB_BSB_SGS()
@@ -44,14 +44,15 @@ function test_BBB_BSB_SGS()
 
 	validateInitAction({upLeft: ActionEnum.CLIMB_LEFT,
 					 	upRight: ActionEnum.CLIMB_RIGHT,
-					 	center: ActionEnum.REST});
+					 	center: ActionEnum.REST,
+					 	down: ActionEnum.DIG_DOWN});
 }
 
-function test_BBB_BSB_WGW()
+function test_BBB_BSB_WBW()
 {
 	initData([["B", "B", "B"],
 			  ["B", "S", "B"],
-			  ["W", "G", "W"]],
+			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
 			  endurance: 1});
 
@@ -62,10 +63,10 @@ function test_BBB_BSB_WGW()
 					 	center: ActionEnum.REST});
 }
 
-function test_BSB_BSB_BGB()
+function test_BSB_GSG_BGB()
 {
 	initData([["B", "S", "B"],
-			  ["B", "S", "B"],
+			  ["G", "S", "G"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
 			  endurance: 1});
@@ -75,13 +76,16 @@ function test_BSB_BSB_BGB()
 	validateInitAction({up: ActionEnum.JUMP_UP,
 						upLeft: ActionEnum.CLIMB_LEFT,
 					 	upRight: ActionEnum.CLIMB_RIGHT,
-					 	center: ActionEnum.REST});
+						left: ActionEnum.DIG_LEFT,
+					 	center: ActionEnum.REST,
+						right: ActionEnum.DIG_RIGHT,
+					 	down: ActionEnum.DIG_DOWN});
 }
 
-function test_BSB_BSB_BGB_NoEndurance()
+function test_BSB_GSG_BGB_NoEndurance()
 {
 	initData([["B", "S", "B"],
-			  ["B", "S", "B"],
+			  ["G", "S", "G"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
 			  endurance: 0});
@@ -91,10 +95,10 @@ function test_BSB_BSB_BGB_NoEndurance()
 	validateInitAction({center: ActionEnum.REST});
 }
 
-function test_BSB_BSB_BGB_NoRecovery()
+function test_BSB_GSG_BGB_NoRecovery()
 {
 	initData([["B", "S", "B"],
-			  ["B", "S", "B"],
+			  ["G", "S", "G"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
 			  recovery: 0, endurance: 1});
@@ -103,13 +107,16 @@ function test_BSB_BSB_BGB_NoRecovery()
 
 	validateInitAction({up: ActionEnum.JUMP_UP,
 						upLeft: ActionEnum.CLIMB_LEFT,
-						upRight: ActionEnum.CLIMB_RIGHT});
+						upRight: ActionEnum.CLIMB_RIGHT,
+						left: ActionEnum.DIG_LEFT,
+						right: ActionEnum.DIG_RIGHT,
+					 	down: ActionEnum.DIG_DOWN});
 }
 
-function test_BSB_BSB_BGB_NoHealth()
+function test_BSB_GSG_BGB_NoHealth()
 {
 	initData([["B", "S", "B"],
-			  ["B", "S", "B"],
+			  ["G", "S", "G"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
 			  health: 0});
@@ -133,7 +140,8 @@ function test_SBS_SSS_BGB()
 					 	upRight: ActionEnum.JUMP_RIGHT,
 					 	left: ActionEnum.RUN_LEFT,
 					 	center: ActionEnum.REST,
-					 	right: ActionEnum.RUN_RIGHT});
+					 	right: ActionEnum.RUN_RIGHT,
+					 	down: ActionEnum.DIG_DOWN});
 }
 
 function test_SSS_BSB_BGB()
@@ -149,7 +157,8 @@ function test_SSS_BSB_BGB()
 	validateInitAction({upLeft: ActionEnum.CLIMB_LEFT,
 						up: ActionEnum.JUMP_UP,
 					 	upRight: ActionEnum.CLIMB_RIGHT,
-					 	center: ActionEnum.REST});
+					 	center: ActionEnum.REST,
+					 	down: ActionEnum.DIG_DOWN});
 }
 
 function test_SSS_BSB_BGB_NoEndurance()
@@ -177,7 +186,8 @@ function test_SSS_BSB_BGB_NoRecovery()
 
 	validateInitAction({upLeft: ActionEnum.CLIMB_LEFT,
 						up: ActionEnum.JUMP_UP,
-						upRight: ActionEnum.CLIMB_RIGHT});
+						upRight: ActionEnum.CLIMB_RIGHT,
+					 	down: ActionEnum.DIG_DOWN});
 }
 
 function test_SSS_BSB_BGB_NoHealth()
@@ -208,7 +218,8 @@ function test_SSS_SSS_BGB()
 						upRight: ActionEnum.JUMP_RIGHT,
 						left: ActionEnum.RUN_LEFT,
 						center: ActionEnum.REST,
-						right: ActionEnum.RUN_RIGHT});
+						right: ActionEnum.RUN_RIGHT,
+					 	down: ActionEnum.DIG_DOWN});
 }
 
 function test_SSS_SSS_BGB_NoEndurance()
@@ -238,7 +249,8 @@ function test_SSS_SSS_BGB_NoRecovery()
 						up: ActionEnum.JUMP_UP,
 						upRight: ActionEnum.JUMP_RIGHT,
 						left: ActionEnum.RUN_LEFT,
-						right: ActionEnum.RUN_RIGHT});
+						right: ActionEnum.RUN_RIGHT,
+					 	down: ActionEnum.DIG_DOWN});
 }
 
 function test_SSS_SSS_BGB_NoHealth()
@@ -269,6 +281,7 @@ function test_SSS_SSS_SGS()
 						upRight: ActionEnum.JUMP_RIGHT,
 						center: ActionEnum.REST,
 						downLeft: ActionEnum.CLIMB_LEFT,
+					 	down: ActionEnum.DIG_DOWN,
 						downRight: ActionEnum.CLIMB_RIGHT});
 }
 
@@ -299,6 +312,7 @@ function test_SSS_SSS_SGS_NoRecovery()
 						up: ActionEnum.JUMP_UP,
 						upRight: ActionEnum.JUMP_RIGHT,
 						downLeft: ActionEnum.CLIMB_LEFT,
+					 	down: ActionEnum.DIG_DOWN,
 						downRight: ActionEnum.CLIMB_RIGHT});
 }
 
@@ -315,11 +329,11 @@ function test_SSS_SSS_SGS_NoHealth()
 	validateInitAction({});
 }
 
-function test_SSS_SSS_WGW()
+function test_SSS_SSS_WBW()
 {
 	initData([["S", "S", "S"],
 			  ["S", "S", "S"],
-			  ["W", "G", "W"]],
+			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
 			  endurance: 1});
 
@@ -333,11 +347,11 @@ function test_SSS_SSS_WGW()
 						downRight: ActionEnum.CLIMB_RIGHT});
 }
 
-function test_SSS_SSS_WGW_NoEndurance()
+function test_SSS_SSS_WBW_NoEndurance()
 {
 	initData([["S", "S", "S"],
 			  ["S", "S", "S"],
-			  ["W", "G", "W"]],
+			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
 			  endurance: 0});
 
@@ -346,11 +360,11 @@ function test_SSS_SSS_WGW_NoEndurance()
 	validateInitAction({center: ActionEnum.REST});
 }
 
-function test_SSS_SSS_WGW_NoRecovery()
+function test_SSS_SSS_WBW_NoRecovery()
 {
 	initData([["S", "S", "S"],
 			  ["S", "S", "S"],
-			  ["W", "G", "W"]],
+			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
 			  recovery: 0, endurance: 1});
 
@@ -363,11 +377,11 @@ function test_SSS_SSS_WGW_NoRecovery()
 						downRight: ActionEnum.CLIMB_RIGHT});
 }
 
-function test_SSS_SSS_WGW_NoHealth()
+function test_SSS_SSS_WBW_NoHealth()
 {
 	initData([["S", "S", "S"],
 			  ["S", "S", "S"],
-			  ["W", "G", "W"]],
+			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
 			  health: 0});
 

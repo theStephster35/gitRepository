@@ -52,7 +52,7 @@ function createMapTile(row, col, tile)
 		mapTile.style.display = "block";
 		mapTile.style.visibility = "hidden";
 		mapTile.className = "mapTile " + hiddenTile.type + " hidden";
-		mapTile.style.setProperty("background-color", hiddenTile.color);
+		mapTile.style.setProperty("background", hiddenTile.color);
 
 		mapRow.appendChild(mapTile);
 	}
@@ -66,8 +66,9 @@ function createMapTile(row, col, tile)
 		mapTile = document.createElement("div");
 		mapTile.type = tile.type;
 		mapTile.style.display = "block";
+		mapTile.value = tile.durability;
 		mapTile.className = "mapTile " + tile.type;
-		mapTile.style.setProperty("background-color", tile.color);
+		mapTile.style.setProperty("background", tile.color);
 
 		if (col < 0)
 		{
@@ -83,8 +84,9 @@ function createMapTile(row, col, tile)
 				mapTile.type = hiddenTile.type;
 				mapTile.style.display = "block";
 				mapTile.style.visibility = "hidden";
+				mapTile.value = hiddenTile.durability;
 				mapTile.className = "mapTile " + hiddenTile.type + " hidden";
-				mapTile.style.setProperty("background-color", hiddenTile.color);
+				mapTile.style.setProperty("background", hiddenTile.color);
 
 				mapRows[i].prepend(mapTile);
 			}
@@ -98,8 +100,9 @@ function createMapTile(row, col, tile)
 				mapTile.type = hiddenTile.type;
 				mapTile.style.display = "block";
 				mapTile.style.visibility = "hidden";
+				mapTile.value = hiddenTile.durability;
 				mapTile.className = "mapTile " + hiddenTile.type + " hidden";
-				mapTile.style.setProperty("background-color", hiddenTile.color);
+				mapTile.style.setProperty("background", hiddenTile.color);
 
 				mapRows[i].prepend(mapTile);
 			}
@@ -292,6 +295,35 @@ function exposeMapTiles()
 		for (var col = player.position.col+1, colSight = 0; colSight < sight; col++, colSight++)
 			createMapTile(row, col);
 	}
+}
+
+function transformMapTile(row, col)
+{
+	var mapTileTransformed = false;
+	var mapTile = mapTiles.children[row].children[col];
+	var tile = getTileByTileType(mapTile.type);
+	var transformTile = tile.transformTile;
+
+	mapTile.value -= 1;
+
+	// Transform map tile
+	if (mapTile.value === 0)
+	{
+		mapTile.value = -1;
+		mapTile.type = transformTile.type;
+		mapTile.className = "mapTile " + transformTile.type;
+		mapTile.style.setProperty("background", transformTile.color);
+
+		mapTileTransformed = true;
+	}
+	else // Map tile lost durability
+	{
+		var gradient = Math.ceil(100-(((mapTile.value/tile.durability)*100)));
+		mapTile.style.setProperty("background",
+				"radial-gradient(" + transformTile.color + ", " + tile.color + + " " + gradient + "%)");
+	}
+
+	return mapTileTransformed;
 }
 
 function resetMap()

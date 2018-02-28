@@ -28,8 +28,8 @@ function startTest(event)
 		case "checkActionsJump":
 			testCheckActionsJump();
 			break;
-		case "checkActionsRun":
-			testCheckActionsRun();
+		case "checkActionsRunDig":
+			testCheckActionsRunDig();
 			break;
 		case "checkActionsFall":
 			testCheckActionsFall();
@@ -135,6 +135,8 @@ function initData(tileTypes, playerData, actionData)
 		player.attributeMap.set(AttributeEnum.RUN, playerData.run);
 	if (playerData.swim != null)
 		player.attributeMap.set(AttributeEnum.SWIM, playerData.swim);
+	if (playerData.dig != null)
+		player.attributeMap.set(AttributeEnum.DIG, playerData.dig);
 
 	confirmAction = document.createElement("button");
 	if (actionData != null && actionData.innerText != null)

@@ -1,9 +1,10 @@
 class Tile
 {
-	constructor(type, solid, color, upMap, downMap, sideMap)
+	constructor(type, solid, durability, color, upMap, downMap, sideMap)
 	{
 		this.type = type;
 		this.solid = solid;
+		this.durability = durability;
 		this.color = color;
 
 		this.upMap = upMap;
@@ -23,7 +24,7 @@ class Barrier extends Tile
 		upSideDownMap.set(TileTypeEnum.SKY,     1);
 		upSideDownMap.set(TileTypeEnum.WATER,   1);
 
-		super(TileTypeEnum.BARRIER, true, "rgb(127, 127, 127)",
+		super(TileTypeEnum.BARRIER, true, -1, "rgb(127, 127, 127)",
 				upSideDownMap, upSideDownMap, upSideDownMap);
 	}
 }
@@ -49,7 +50,7 @@ class Dirt extends Tile
 		sideMap.set(TileTypeEnum.GROUND,  1);
 		sideMap.set(TileTypeEnum.SKY,     1);
 
-		super(TileTypeEnum.DIRT, false, "rgb(185, 122, 87)",
+		super(TileTypeEnum.DIRT, false, -1, "rgb(185, 122, 87)",
 				upMap, downMap, sideMap);
 	}
 }
@@ -70,8 +71,10 @@ class Ground extends Tile
 		downMap.set(TileTypeEnum.GROUND,  1);
 		downMap.set(TileTypeEnum.WATER,   1);
 
-		super(TileTypeEnum.GROUND, true, "rgb(34, 177, 76)",
+		super(TileTypeEnum.GROUND, true, 3, "rgb(34, 177, 76)",
 				upSideMap, downMap, upSideMap);
+
+		this.transformTile = new Dirt();
 	}
 }
 
@@ -95,7 +98,7 @@ class Sky extends Tile
 		sideMap.set(TileTypeEnum.GROUND,  1);
 		sideMap.set(TileTypeEnum.SKY,     1);
 
-		super(TileTypeEnum.SKY, false, "rgb(153, 217, 234)",
+		super(TileTypeEnum.SKY, false, -1, "rgb(153, 217, 234)",
 				upMap, downMap, sideMap);
 	}
 }
@@ -115,7 +118,7 @@ class Water extends Tile
 		downSideMap.set(TileTypeEnum.BARRIER, 1);
 		downSideMap.set(TileTypeEnum.WATER,   1);
 
-		super(TileTypeEnum.WATER, false, "rgb(0, 162, 232)",
+		super(TileTypeEnum.WATER, false, -1, "rgb(0, 162, 232)",
 				upMap, downSideMap, downSideMap);
 	}
 }

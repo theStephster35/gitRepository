@@ -500,21 +500,33 @@ function checkLeft(row, col)
 				leftButton.disabled = false;
 			}
 		}
-		else if ((playerIsInStatus(ActionEnum.STOP)
-			   || playerIsInStatus(AttributeEnum.RUN, ActionEnum.LEFT))
-			  && player.attributeMap.get(AttributeEnum.ENDURANCE) > 0
-			  && !getTileByPosition(row, (col-1)).solid
-			  && getTileByPosition((row+1), (col-1)).solid)
+		else if (player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
 		{
-			// If player has endurance and is not moving or is running left...
-			// ... and is on a tile right of a not solid tile and up-right a solid tile
-			leftButton.label = ActionEnum.RUN_LEFT;
-			leftButton.innerText = "\u21A4";
-			leftButton.disabled = false;
+			// If player has endurance...
+			// ... and is not moving or is digging/climbing left...
+			// ... and is on a tile right of a tile with durability
+			if ((playerIsInStatus(ActionEnum.STOP)
+			  || playerIsInStatus(AttributeEnum.DIG, ActionEnum.LEFT)
+			  || playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT))
+			 && getTileByPosition(row, (col-1)).durability > 0)
+			{
+				leftButton.label = ActionEnum.DIG_LEFT;
+				leftButton.innerText = "\u2345";
+				leftButton.disabled = false;
+			}
+			else if ((playerIsInStatus(ActionEnum.STOP)
+				   || playerIsInStatus(AttributeEnum.RUN, ActionEnum.LEFT))
+				  && !getTileByPosition(row, (col-1)).solid
+				  && getTileByPosition((row+1), (col-1)).solid)
+			{
+				// ... and is not moving or is running left...
+				// ... and is on a tile right of a not solid tile and up-right a solid tile
+				leftButton.label = ActionEnum.RUN_LEFT;
+				leftButton.innerText = "\u21A4";
+				leftButton.disabled = false;
+			}
 		}
 	}
-
-	//leftButton.innerText = "\u2345"; // Dig Left?
 }
 
 function checkCenter(row, col)
@@ -536,6 +548,13 @@ function checkCenter(row, col)
 			// If player is running
 			centerButton.label = ActionEnum.STOP;
 			centerButton.innerText = "\u2B1B";
+			centerButton.disabled = false;
+		}
+		else if (playerIsInStatus(AttributeEnum.DIG))
+		{
+			// If player is digging
+			centerButton.label = ActionEnum.STOP;
+			centerButton.innerText = "\u229E";
 			centerButton.disabled = false;
 		}
 		else if (player.attributeMap.get(AttributeEnum.RECOVERY) > 0
@@ -614,21 +633,33 @@ function checkRight(row, col)
 				rightButton.disabled = false;
 			}
 		}
-		else if ((playerIsInStatus(ActionEnum.STOP)
-			   || playerIsInStatus(AttributeEnum.RUN, ActionEnum.RIGHT))
-			  && player.attributeMap.get(AttributeEnum.ENDURANCE) > 0
-			  && !getTileByPosition(row, (col+1)).solid
-			  && getTileByPosition((row+1), (col+1)).solid)
+		else if (player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
 		{
-			// If player has endurance and is not moving or is running right...
-			// ... and is on a tile left of a not solid tile and up-left a solid tile
-			rightButton.label = ActionEnum.RUN_RIGHT;
-			rightButton.innerText = "\u21A6";
-			rightButton.disabled = false;
+			// If player has endurance...
+			// ... and is not moving or is digging/climbing right...
+			// ... and is on a tile left of a tile with durability
+			if ((playerIsInStatus(ActionEnum.STOP)
+			  || playerIsInStatus(AttributeEnum.DIG, ActionEnum.RIGHT)
+			  || playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT))
+			 && getTileByPosition(row, (col+1)).durability > 0)
+			{
+				rightButton.label = ActionEnum.DIG_RIGHT;
+				rightButton.innerText = "\u2346";
+				rightButton.disabled = false;
+			}
+			else if ((playerIsInStatus(ActionEnum.STOP)
+				   || playerIsInStatus(AttributeEnum.RUN, ActionEnum.RIGHT))
+				  && !getTileByPosition(row, (col+1)).solid
+				  && getTileByPosition((row+1), (col+1)).solid)
+			{
+				// ... and is not moving or is running right...
+				// ... and is on a tile left of a not solid tile and up-left a solid tile
+				rightButton.label = ActionEnum.RUN_RIGHT;
+				rightButton.innerText = "\u21A6";
+				rightButton.disabled = false;
+			}
 		}
 	}
-
-	//rightButton.innerText = "\u2346"; // Dig?
 }
 
 function checkDownLeft(row, col)
@@ -754,9 +785,20 @@ function checkDown(row, col)
 				downButton.disabled = false;
 			}
 		}
+		else if (player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
+		{
+			// If player has endurance...
+			// ... and is digging down or not moving above a tile with durability
+			if (playerIsInStatus(AttributeEnum.DIG, ActionEnum.DOWN)
+			 || (playerIsInStatus(ActionEnum.STOP)
+			  && getTileByPosition((row+1), col).durability > 0))
+			{
+				downButton.label = ActionEnum.DIG_DOWN;
+				downButton.innerText = "\u2356";
+				downButton.disabled = false;
+			}
+		}
 	}
-
-	//downButton.innerText = "\u2356"; // Dig?
 }
 
 function checkDownRight(row, col)
