@@ -74,14 +74,11 @@ function getSpecies()
 {
 	var species = document.getElementById("species");
 
-	switch (species.options[species.selectedIndex].value)
-	{
-		case SpeciesEnum.HUMAN:
-			setSpeciesDetails(new Human());
-			break;
-		default:
-			resetSpecies(species);
-	}
+	var speciesType = getSpeciesByType(species.options[species.selectedIndex].value);
+	if (speciesType == null)
+		resetSpecies(species);
+	else
+		setSpeciesDetails(speciesType);
 }
 
 function setSpeciesDetails(species)

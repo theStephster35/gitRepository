@@ -12,6 +12,26 @@ actionFunctionMap.set(ActionEnum.DOWN_LEFT,  moveDownLeft);
 actionFunctionMap.set(ActionEnum.DOWN,       moveDown);
 actionFunctionMap.set(ActionEnum.DOWN_RIGHT, moveDownRight);
 
+function getSpeciesByType(speciesType, getDefault)
+{
+	var species;
+
+	switch (speciesType)
+	{
+		case SpeciesEnum.HUMAN:
+			species = new Human();
+			break;
+		case SpeciesEnum.DOG:
+			species = new Dog();
+			break;
+		default:
+			if (getDefault)
+				species = new Human();
+	}
+
+	return species;
+}
+
 function initPlayer()
 {
 	var species = document.getElementById("species");

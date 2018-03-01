@@ -1,6 +1,7 @@
 var SpeciesEnum =
 {
-	HUMAN: "Human"
+	HUMAN: "Human",
+	DOG: "Dog"
 };
 
 var AttributeEnum =

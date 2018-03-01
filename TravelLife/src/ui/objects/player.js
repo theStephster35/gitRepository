@@ -1,17 +1,9 @@
 class Player
 {
-	constructor(name, speciesValue)
+	constructor(name, speciesType)
 	{
 		this.name = name;
-
-		switch (speciesValue)
-		{
-			case SpeciesEnum.HUMAN:
-				this.species = new Human();
-				break;
-			default:
-				this.species = new Human();
-		}
+		this.species = getSpeciesByType(speciesType, true);
 
 		this.image = this.species.image;
 
