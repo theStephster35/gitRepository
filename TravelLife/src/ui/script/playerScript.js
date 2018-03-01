@@ -24,6 +24,9 @@ function getSpeciesByType(speciesType, getDefault)
 		case SpeciesEnum.DOG:
 			species = new Dog();
 			break;
+		case SpeciesEnum.CAT:
+			species = new Cat();
+			break;
 		default:
 			if (getDefault)
 				species = new Human();
