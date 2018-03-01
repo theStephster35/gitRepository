@@ -167,13 +167,18 @@ function takeAction()
 	// Check if player is alive
 	if (player.attributeMap.get(AttributeEnum.HEALTH) === 0)
 	{
-		if (getTileByPosition((player.position.row+1), player.position.col).solid)
+		if (getTileByPosition(player.position.row, player.position.col).type !== TileTypeEnum.WATER
+		 && getTileByPosition((player.position.row+1), player.position.col).solid)
 			updatePlayerIcon("images/" + player.species.type + "/End.png");
 		else
 			updatePlayerIcon("images/" + player.species.type + "/SuspendedEnd.png");
 
-		alert("The travels of " + player.name + " the "
-			+ player.species.type + " have come to an end.");
+		alert("The travels of " + player.name + " the " + player.species.type + " have come to an end.\n"
+			+ "\n"
+			+ "You traveled " + player.stats.tilesTraveled + " of the "
+			+ player.stats.tilesExposed + " " + " tiles you exposed.\n"
+			+ "\n"
+			+ "Thank you for playing!");
 	}
 }
 

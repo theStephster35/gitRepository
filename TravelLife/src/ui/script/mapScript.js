@@ -109,6 +109,7 @@ function createMapTile(row, col, tile)
 		mapTile.style.height = (tileHeight*zoom) + "px";
 		mapTile.className = "mapTile " + hiddenTile.type + " hidden";
 		mapTile.style.setProperty("background", hiddenTile.color);
+		mapTile.traveled = false;
 
 		mapRow.appendChild(mapTile);
 	}
@@ -127,6 +128,9 @@ function createMapTile(row, col, tile)
 		mapTile.style.width = (tileWidth*zoom) + "px";
 		mapTile.style.height = (tileHeight*zoom) + "px";
 		mapTile.style.setProperty("background", tile.color);
+		mapTile.traveled = false;
+
+		player.stats.tilesExposed++;
 
 		if (col < 0)
 		{
@@ -147,6 +151,7 @@ function createMapTile(row, col, tile)
 				mapTile.style.height = (tileHeight*zoom) + "px";
 				mapTile.className = "mapTile " + hiddenTile.type + " hidden";
 				mapTile.style.setProperty("background", hiddenTile.color);
+				mapTile.traveled = false;
 
 				mapRows[i].prepend(mapTile);
 			}
@@ -165,6 +170,7 @@ function createMapTile(row, col, tile)
 				mapTile.style.height = (tileHeight*zoom) + "px";
 				mapTile.className = "mapTile " + hiddenTile.type + " hidden";
 				mapTile.style.setProperty("background", hiddenTile.color);
+				mapTile.traveled = false;
 
 				mapRows[i].prepend(mapTile);
 			}
@@ -172,10 +178,12 @@ function createMapTile(row, col, tile)
 		else
 			mapRow.appendChild(mapTile);
 	}
-	else // Expose hidden map tile
+	else if (mapTile.style.visibility === "hidden")
 	{
 		mapTile.style.visibility = "visible";
 		mapTile.className = mapTile.className.replace(" hidden", "");
+
+		player.stats.tilesExposed++;
 	}
 }
 
@@ -312,6 +320,13 @@ function getTileByPosition(row, col)
 function exposeMapTiles()
 {
 	var sight = player.attributeMap.get(AttributeEnum.SIGHT);
+	var playerTile = mapTiles.children[player.position.row].children[player.position.col];
+
+	if (!playerTile.traveled)
+	{
+		playerTile.traveled = true;
+		player.stats.tilesTraveled++;
+	}
 
 	// Expose up column
 	for (var row = player.position.row-1, rowSight = 0;

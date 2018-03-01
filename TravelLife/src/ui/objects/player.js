@@ -15,5 +15,6 @@ class Player
 		this.position = {row: 0, col: 0};
 		this.momentum = {up: 0, left: 0, right: 0, down: 0};
 
+		this.stats = {tilesExposed: 0, tilesTraveled: 0};
 	}
 }

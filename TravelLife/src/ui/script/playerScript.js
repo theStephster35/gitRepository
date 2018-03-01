@@ -403,9 +403,12 @@ function gainSightRecovery()
 	if (playerAttributeValue < speciesAttributeValue)
 	{
 		playerAttributeValue += getRandomNumber(0, 1);
-		player.attributeMap.set(AttributeEnum.SIGHT, playerAttributeValue);
+		if (player.attributeMap.get(AttributeEnum.SIGHT) < playerAttributeValue)
+		{
+			player.attributeMap.set(AttributeEnum.SIGHT, playerAttributeValue);
 
-		exposeMapTiles();
+			exposeMapTiles();
+		}
 	}
 
 	// Gain Recovery

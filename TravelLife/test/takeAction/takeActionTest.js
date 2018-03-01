@@ -1,7 +1,8 @@
 function testTakeAction()
 {
 	testMoveUpLeftRight();
-	testMoveCenterLeftRight();
+	testMoveUpCenterDown();
+	testMoveLeftRight();
 	testMoveDownLeftRight();
 }
 
@@ -35,6 +36,8 @@ function validateTakeAction(results)
 			player.species.attributeMap.get(AttributeEnum.SWIM), results.swim);
 	validateTakeActionData("dig", player.attributeMap.get(AttributeEnum.DIG),
 			player.species.attributeMap.get(AttributeEnum.DIG), results.dig);
+	validateTakeActionData("tilesExposed", player.stats.tilesExposed, 0, results.tilesExposed);
+	validateTakeActionData("tilesTraveled", player.stats.tilesTraveled, 0, results.tilesTraveled);
 }
 
 function validateTakeActionData(dataType, actualData, defaultData, resultData)

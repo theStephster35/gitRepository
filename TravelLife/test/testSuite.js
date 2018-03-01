@@ -43,8 +43,11 @@ function startTest(event)
 		case "moveUpLeftRight":
 			testMoveUpLeftRight();
 			break;
-		case "moveCenterLeftRight":
-			testMoveCenterLeftRight();
+		case "moveUpCenterDown":
+			testMoveUpCenterDown();
+			break;
+		case "moveLeftRight":
+			testMoveLeftRight();
 			break;
 		case "moveDownLeftRight":
 			testMoveDownLeftRight();
@@ -93,14 +96,6 @@ function initData(tileTypes, playerData, actionData)
 	downButton		= document.createElement("button");
 	downRightButton	= document.createElement("button");
 
-	map = document.createElement("div");
-	mapTiles = document.createElement("div");
-	for (var i = 0; i < tileTypes.length; i++)
-	{
-		for (var j = 0; j < tileTypes[i].length; j++)
-			createMapTile(i, j, getTileByCode(tileTypes[i][j]));
-	}
-
 	playerIcon = document.createElement("img");
 	player = new Player("Player", (playerData.species == null ? new Human() : playerData.species));
 	if (playerData.image != null)
@@ -137,6 +132,17 @@ function initData(tileTypes, playerData, actionData)
 		player.attributeMap.set(AttributeEnum.SWIM, playerData.swim);
 	if (playerData.dig != null)
 		player.attributeMap.set(AttributeEnum.DIG, playerData.dig);
+
+	map = document.createElement("div");
+	mapTiles = document.createElement("div");
+	for (var i = 0; i < tileTypes.length; i++)
+	{
+		for (var j = 0; j < tileTypes[i].length; j++)
+			createMapTile(i, j, getTileByCode(tileTypes[i][j]));
+	}
+
+	player.stats.tilesTraveled = 1;
+	mapTiles.children[player.position.row].children[player.position.col].traveled = true;
 
 	confirmAction = document.createElement("button");
 	if (actionData != null && actionData.innerText != null)
