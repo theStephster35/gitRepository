@@ -14,7 +14,7 @@ class Human extends Species
 	constructor()
 	{
 		var description = "The human is a well-rounded species and performs acceptably at most tasks.\n"
-						+ "recommended for beginners.";
+						+ "Recommended for beginners.";
 
 		var attributeMap = new Map();
 		attributeMap.set(AttributeEnum.HEALTH,	  3);
