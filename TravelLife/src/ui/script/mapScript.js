@@ -1,5 +1,8 @@
 var map = document.getElementById("map");
 var mapTiles;
+var zoom = 3;
+var tileWidth = 15;
+var tileHeight = 16;
 
 function adjustMapContents(height)
 {
@@ -8,6 +11,55 @@ function adjustMapContents(height)
 	map.style.maxHeight = map.style.minHeight;
 	map.style.minWidth = (window.innerWidth- getWidthOffset(map)) + "px";
 	map.style.maxWidth = map.style.minWidth;
+}
+
+function zoomMapInOut(zoomType)
+{
+	var zoomInOut = false;
+	switch (zoomType)
+	{
+		case "zoomIn":
+			if (zoom < 5)
+			{
+				zoom++;
+				zoomInOut = true;
+			}
+			break;
+		case "zoomOut":
+			if (zoom > 1)
+			{
+				zoom--;
+				zoomInOut = true;
+			}
+			break;
+	}
+
+	if (zoomInOut
+	 && mapTiles != null && mapTiles.children != null)
+	{
+		var zoomWidth = (tileWidth*zoom) + "px";
+		var zoomHeight = (tileHeight*zoom) + "px";
+
+		playerIcon.style.width = zoomWidth;
+		playerIcon.style.height = zoomHeight;
+
+		for (var row = 0; row < mapTiles.children.length; row++)
+		{
+			var mapRow = mapTiles.children[row];
+			if (mapRow.children != null)
+			{
+				for (var col = 0; col < mapRow.children.length; col++)
+				{
+					var mapTile = mapRow.children[col];
+
+					mapTile.style.width = zoomWidth;
+					mapTile.style.height = zoomHeight;
+				}
+			}
+		}
+
+		adjustContents();
+	}
 }
 
 function initMapTiles()
@@ -21,6 +73,8 @@ function initMapTiles()
 	createMapTile(1, 0, new Ground());
 
 	exposeMapTiles();
+
+	document.getElementById("mapMenu").style.visibility = "visible";
 }
 
 function createMapTile(row, col, tile)
@@ -51,6 +105,8 @@ function createMapTile(row, col, tile)
 		mapTile.type = hiddenTile.type;
 		mapTile.style.display = "block";
 		mapTile.style.visibility = "hidden";
+		mapTile.style.width = (tileWidth*zoom) + "px";
+		mapTile.style.height = (tileHeight*zoom) + "px";
 		mapTile.className = "mapTile " + hiddenTile.type + " hidden";
 		mapTile.style.setProperty("background", hiddenTile.color);
 
@@ -68,6 +124,8 @@ function createMapTile(row, col, tile)
 		mapTile.style.display = "block";
 		mapTile.value = tile.durability;
 		mapTile.className = "mapTile " + tile.type;
+		mapTile.style.width = (tileWidth*zoom) + "px";
+		mapTile.style.height = (tileHeight*zoom) + "px";
 		mapTile.style.setProperty("background", tile.color);
 
 		if (col < 0)
@@ -85,6 +143,8 @@ function createMapTile(row, col, tile)
 				mapTile.style.display = "block";
 				mapTile.style.visibility = "hidden";
 				mapTile.value = hiddenTile.durability;
+				mapTile.style.width = (tileWidth*zoom) + "px";
+				mapTile.style.height = (tileHeight*zoom) + "px";
 				mapTile.className = "mapTile " + hiddenTile.type + " hidden";
 				mapTile.style.setProperty("background", hiddenTile.color);
 
@@ -101,6 +161,8 @@ function createMapTile(row, col, tile)
 				mapTile.style.display = "block";
 				mapTile.style.visibility = "hidden";
 				mapTile.value = hiddenTile.durability;
+				mapTile.style.width = (tileWidth*zoom) + "px";
+				mapTile.style.height = (tileHeight*zoom) + "px";
 				mapTile.className = "mapTile " + hiddenTile.type + " hidden";
 				mapTile.style.setProperty("background", hiddenTile.color);
 
@@ -328,5 +390,11 @@ function transformMapTile(row, col)
 
 function resetMap()
 {
+	if (!document.getElementById("rememberMe").checked)
+		zoom = 3;
+
+
 	document.getElementById("mapTiles").innerHTML = "";
+
+	document.getElementById("mapMenu").style.visibility = "hidden";
 }

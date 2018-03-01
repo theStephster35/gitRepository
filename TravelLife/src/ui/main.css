@@ -15,6 +15,17 @@ body {
 	background-color: black;
 }
 
+a {
+	color: black;
+	font-family: Symbola;
+	text-decoration: none;
+}
+
+a:hover {
+	color: white;
+	background-color: black;
+}
+
 .gameTitle {
 	height: 37px;
 	text-align: center;
@@ -24,15 +35,19 @@ body {
 
 .menuLink {
 	float: left;
-	color: black;
-	font-size: 26px;
+	font-size: 36px;
 	padding-left: 5px;
-	text-decoration: none;
+	padding-right: 5px;
 }
 
-.menuLink:hover {
-	color: white;
-	background-color: black;
+.mapMenu {
+	visibility: hidden;
+}
+
+.mapLink {
+	float: right;
+	font-size: 24px;
+	padding: 6px;
 }
 
 .gameContent {
@@ -195,8 +210,6 @@ body {
 
 .mapTile {
 	z-index: 1;
-	width: 15px;
-	height: 16px;
 	display: none;
 	position: relative;
 }

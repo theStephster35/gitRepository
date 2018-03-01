@@ -43,6 +43,9 @@ function initPlayer()
 
 	updatePlayerIcon(player.image);
 
+	playerIcon.style.width = (tileWidth*zoom) + "px";
+	playerIcon.style.height = (tileHeight*zoom) + "px";
+
 	// Player
 	var playerSpecies = document.getElementById("playerSpecies");
 	playerSpecies.src = player.species.image;
