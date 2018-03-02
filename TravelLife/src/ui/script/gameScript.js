@@ -58,6 +58,14 @@ function handleKeypress(event)
 	{
 		switch (event.key)
 		{
+			case "+":
+			case "=":
+				zoomMapInOut("zoomIn");
+				break;
+			case "-":
+			case "_":
+				zoomMapInOut("zoomOut");
+				break;
 			case "q":
 			case "Q":
 			case "7":
