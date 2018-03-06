@@ -84,7 +84,7 @@ function assert(value, desc)
 	return li;
 }
 
-function initData(tileTypes, playerData, actionData)
+function initData(tileTypes, playerData, actionData, treasureData)
 {
 	upLeftButton	= document.createElement("button");
 	upButton		= document.createElement("button");
@@ -147,6 +147,31 @@ function initData(tileTypes, playerData, actionData)
 	confirmAction = document.createElement("button");
 	if (actionData != null && actionData.innerText != null)
 		confirmAction.innerText = actionData.innerText;
+
+	treasureMap = new Map();
+	if (treasureData != null)
+	{
+		var treasure;
+		var row = treasureData.row;
+		var col = treasureData.col;
+
+		treasureMap.set(row, new Map());
+
+		switch (treasureData.type)
+		{
+			case TreasureTypeEnum.SMALL:
+				treasure = new SmallTreasure(1, row, col);
+				treasureMap.get(row).set(col, treasure);
+				break;
+			case TreasureTypeEnum.BIG:
+				treasure = new BigTreasure(1, row, col);
+				treasureMap.get(row).set(col, treasure);
+				break;
+		}
+
+		if (treasureData.attribute != null)
+			treasure.attribute = treasureData.attribute;
+	}
 }
 
 function getTileByCode(code)

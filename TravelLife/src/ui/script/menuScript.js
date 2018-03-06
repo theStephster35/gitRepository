@@ -531,11 +531,40 @@ function checkCenter(row, col)
 	disableButton(centerButton);
 
 	// If player has health
-	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
+	var playerHealth = player.attributeMap.get(AttributeEnum.HEALTH);
+	if (playerHealth > 0)
 	{
-		// If player is jumping
-		if (playerIsInStatus(AttributeEnum.JUMP))
+		var playerRecovery = player.attributeMap.get(AttributeEnum.RECOVERY);
+		var playerEndurance = player.attributeMap.get(AttributeEnum.ENDURANCE);
+		var speciesEndurance = player.species.attributeMap.get(AttributeEnum.ENDURANCE);
+
+		var treasureTile;
+		if (treasureMap.has(row) && treasureMap.get(row).has(col))
+			treasureTile = treasureMap.get(row).get(col);
+
+		// If player is on a tile with a treasure (and needs it)
+		if (treasureTile != null
+		 && (treasureTile.attribute == null
+		  || ((treasureTile.attribute === AttributeEnum.HEALTH
+			&& playerHealth
+			 < player.species.attributeMap.get(AttributeEnum.HEALTH))
+		   || (treasureTile.attribute === AttributeEnum.SIGHT
+			&& player.attributeMap.get(AttributeEnum.SIGHT)
+			 < player.species.attributeMap.get(AttributeEnum.SIGHT))
+		   || (treasureTile.attribute === AttributeEnum.RECOVERY
+		   	&& playerRecovery
+		   	 < player.species.attributeMap.get(AttributeEnum.RECOVERY))
+		   || (treasureTile.attribute === AttributeEnum.ENDURANCE
+			&& playerEndurance < speciesEndurance))))
 		{
+			// Player can collect treasure
+			centerButton.label = ActionEnum.COLLECT;
+			centerButton.innerText = "\u27E1";
+			centerButton.disabled = false;
+		}
+		else if (playerIsInStatus(AttributeEnum.JUMP))
+		{
+			// If player is jumping
 			centerButton.label = ActionEnum.STOP;
 			centerButton.innerText = "\u2B1C";
 			centerButton.disabled = false;
@@ -554,9 +583,8 @@ function checkCenter(row, col)
 			centerButton.innerText = "\u229E";
 			centerButton.disabled = false;
 		}
-		else if (player.attributeMap.get(AttributeEnum.RECOVERY) > 0
-			  && player.attributeMap.get(AttributeEnum.ENDURANCE)
-			   < player.species.attributeMap.get(AttributeEnum.ENDURANCE))
+		else if (playerRecovery > 0
+			  && playerEndurance < speciesEndurance)
 		{
 			// If player has recovery and not max endurance...
 			// ... and is not moving
@@ -581,8 +609,6 @@ function checkCenter(row, col)
 			}
 		}
 	}
-
-//	centerButton.innerText = "\u29BF"; // Collect
 }
 
 function checkRight(row, col)
@@ -671,9 +697,11 @@ function checkDownLeft(row, col)
 		// If player is falling left
 		if (playerIsInStatus(ActionEnum.FALL_DOWN, ActionEnum.LEFT))
 		{
-			// If player is on a tile up-right a not solid tile...
+			// If player is on a tile up-right a not solid/water tile...
 			// ... and right of or above a not solid tile
-			if (!getTileByPosition((row+1), (col-1)).solid
+			var downLeftTile = getTileByPosition((row+1), (col-1));
+			if (!downLeftTile.solid
+			 && downLeftTile.type !== TileTypeEnum.WATER
 			 && (!getTileByPosition((row+1), col).solid
 			  || !getTileByPosition(row, (col-1)).solid))
 			{
@@ -810,9 +838,11 @@ function checkDownRight(row, col)
 		// If player is falling right
 		if (playerIsInStatus(ActionEnum.FALL_DOWN, ActionEnum.RIGHT))
 		{
-			// If player is on a tile up-left a not solid tile...
+			// If player is on a tile up-left a not solid/water tile...
 			// ... and left of or above a not solid tile
-			if (!getTileByPosition((row+1), (col+1)).solid
+			var downRightTile = getTileByPosition((row+1), (col+1));
+			if (!downRightTile.solid
+			 && downRightTile.type !== TileTypeEnum.WATER
 			 && (!getTileByPosition((row+1), col).solid
 			  || !getTileByPosition(row, (col+1)).solid))
 			{

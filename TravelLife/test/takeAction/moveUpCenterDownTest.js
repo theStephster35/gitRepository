@@ -25,6 +25,12 @@ function testMoveUpCenterDown()
 	runTest("Test Stop - Dig, No Endurance/Dig", testStop_Dig_NoEnduranceDig);
 	runTest("Test Rest", testRest);
 	runTest("Test Float", testFloat);
+	runTest("Test Collect - Small, Full", testCollect_Small_Full);
+	runTest("Test Collect - Small, Health", testCollect_Small_Health);
+	runTest("Test Collect - Small, Sight", testCollect_Small_Sight);
+	runTest("Test Collect - Small, Recovery", testCollect_Small_Recovery);
+	runTest("Test Collect - Small, Endurance", testCollect_Small_Endurance);
+	runTest("Test Collect - Big", testCollect_Big);
 
 	// Move Down
 	runTest("Test Climb Down Left", testClimb_DownLeft);
@@ -809,6 +815,236 @@ function testFloat()
 						endurance: {min: 1, max: (Math.ceil(testRecovery/2))},
 						tilesExposed: 9,
 						tilesTraveled: 1});
+}
+
+function testCollect_Small_Full()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["G", "G", "G"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol},
+			 {innerText: ActionEnum.COLLECT},
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol});
+
+	stayCenter(true);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						row: testRow,
+						col: testCol,
+						tilesExposed: 9,
+						tilesTraveled: 1});
+
+	validateTakeActionData("treasure", treasureMap.get(testRow).get(testCol).attribute,
+			null, {option: (new SmallTreasure(1, testRow, testCol)).probabilityMap.keys()});
+	validateTakeActionData("treasures", treasureMap.size, -1, 1);
+}
+
+function testCollect_Small_Health()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testHealth = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["G", "G", "G"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  health: testHealth},
+			 {innerText: ActionEnum.COLLECT},
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.HEALTH});
+
+	stayCenter(true);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						row: testRow,
+						col: testCol,
+						health: (testHealth+1),
+						tilesExposed: 9,
+						tilesTraveled: 1,
+						treasuresCollected: 1});
+
+	validateTakeActionData("treasures", treasureMap.size, -1, 0);
+}
+
+function testCollect_Small_Sight()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testSight = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["G", "G", "G"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  sight: testSight},
+			 {innerText: ActionEnum.COLLECT},
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.SIGHT});
+
+	stayCenter(true);
+
+	validateTakeAction({rows: (tileTypes.length+2),
+						cols: (tileTypes[0].length+2),
+						row: (testRow+1),
+						col: (testCol+1),
+						sight: (testSight+1),
+						tilesExposed: 25,
+						tilesTraveled: 1,
+						treasuresCollected: 1});
+
+	validateTakeActionData("treasures", treasureMap.size, -1, {min: 0, max: 14});
+}
+
+function testCollect_Small_Recovery()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testRecovery = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["G", "G", "G"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  recovery: testRecovery},
+			 {innerText: ActionEnum.COLLECT},
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.RECOVERY});
+
+	stayCenter(true);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						row: testRow,
+						col: testCol,
+						recovery: (testRecovery+1),
+						tilesExposed: 9,
+						tilesTraveled: 1,
+						treasuresCollected: 1});
+
+	validateTakeActionData("treasures", treasureMap.size, -1, 0);
+}
+
+function testCollect_Small_Endurance()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var testEndurance = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["G", "G", "G"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol,
+			  endurance: testEndurance},
+			 {innerText: ActionEnum.COLLECT},
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.ENDURANCE});
+
+	stayCenter(true);
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						row: testRow,
+						col: testCol,
+						endurance: (testEndurance+1),
+						tilesExposed: 9,
+						tilesTraveled: 1,
+						treasuresCollected: 1});
+
+	validateTakeActionData("treasures", treasureMap.size, -1, 0);
+}
+
+function testCollect_Big()
+{
+	var testRow = 1;
+	var testCol = 1;
+	var tileTypes = [["S", "S", "S"],
+					 ["S", "S", "S"],
+					 ["G", "G", "G"]];
+
+	initData(tileTypes,
+			 {row: testRow, col: testCol},
+			 {innerText: ActionEnum.COLLECT},
+			 {type: TreasureTypeEnum.BIG,
+			  row: testRow, col: testCol});
+
+	stayCenter(true);
+
+	var result = "";
+	var attribute = "None";
+	var human = new Human();
+	if (player.species.attributeMap.get(AttributeEnum.HEALTH) === (human.attributeMap.get(AttributeEnum.HEALTH)+1))
+	{
+		result += AttributeEnum.HEALTH;
+		attribute = AttributeEnum.HEALTH;
+	}
+	if (player.species.attributeMap.get(AttributeEnum.SIGHT) === (human.attributeMap.get(AttributeEnum.SIGHT)+1))
+	{
+		result += AttributeEnum.SIGHT;
+		attribute = AttributeEnum.SIGHT;
+	}
+	if (player.species.attributeMap.get(AttributeEnum.RECOVERY) === (human.attributeMap.get(AttributeEnum.RECOVERY)+1))
+	{
+		result += AttributeEnum.RECOVERY;
+		attribute = AttributeEnum.RECOVERY;
+	}
+	if (player.species.attributeMap.get(AttributeEnum.ENDURANCE) === (human.attributeMap.get(AttributeEnum.ENDURANCE)+1))
+	{
+		result += AttributeEnum.ENDURANCE;
+		attribute = AttributeEnum.ENDURANCE;
+	}
+	if (player.species.attributeMap.get(AttributeEnum.CLIMB) === (human.attributeMap.get(AttributeEnum.CLIMB)+1))
+	{
+		result += AttributeEnum.CLIMB;
+		attribute = AttributeEnum.CLIMB;
+	}
+	if (player.species.attributeMap.get(AttributeEnum.JUMP) === (human.attributeMap.get(AttributeEnum.JUMP)+1))
+	{
+		result += AttributeEnum.JUMP;
+		attribute = AttributeEnum.JUMP;
+	}
+	if (player.species.attributeMap.get(AttributeEnum.RUN) === (human.attributeMap.get(AttributeEnum.RUN)+1))
+	{
+		result += AttributeEnum.RUN;
+		attribute = AttributeEnum.RUN;
+	}
+	if (player.species.attributeMap.get(AttributeEnum.SWIM) === (human.attributeMap.get(AttributeEnum.SWIM)+1))
+	{
+		result += AttributeEnum.SWIM;
+		attribute = AttributeEnum.SWIM;
+	}
+	if (player.species.attributeMap.get(AttributeEnum.DIG) === (human.attributeMap.get(AttributeEnum.DIG)+1))
+	{
+		result += AttributeEnum.DIG;
+		attribute = AttributeEnum.DIG;
+	}
+
+	player.attributeMap.set(attribute, (player.attributeMap.get(attribute)+1));
+
+	validateTakeAction({rows: tileTypes.length,
+						cols: tileTypes[0].length,
+						row: testRow,
+						col: testCol,
+						tilesExposed: 9,
+						tilesTraveled: 1,
+						treasuresCollected: 1});
+
+	validateTakeActionData("attribute", attribute, "", result);
 }
 
 function testClimb_DownLeft()

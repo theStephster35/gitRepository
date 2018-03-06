@@ -75,6 +75,7 @@ var ActionEnum =
 	STOP: "Stop",
 	REST: "Rest",
 	FLOAT: "Float",
+	COLLECT: "Collect",
 
 	RIGHT: "right",
 	GRAB_RIGHT: "Grab Right",

@@ -48,15 +48,25 @@ function validateTakeActionData(dataType, actualData, defaultData, resultData)
 	if (resultData == null)
 		resultData = defaultData;
 
-	if (resultData.min == null && resultData.max == null)
-		result = (actualData === resultData);
-	else
+	if (resultData.min != null)
 	{
-		if (resultData.min != null)
-			result = (resultData.min <= actualData);
+		result = (resultData.min <= actualData);
 		if (result && resultData.max != null)
 			result = (actualData <= resultData.max);
 	}
+	else if (resultData.option != null)
+	{
+		for (var option of resultData.option)
+		{
+			if (actualData === option)
+			{
+				result = true;
+				break;
+			}
+		}
+	}
+	else
+		result = (actualData === resultData);
 
 	assert(result, dataType + ": " + actualData);
 }

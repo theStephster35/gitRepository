@@ -7,6 +7,7 @@ class Treasure
 		this.icon = icon;
 		this.row = row;
 		this.col = col;
+		this.probabilityMap = probabilityMap;
 	}
 }
 

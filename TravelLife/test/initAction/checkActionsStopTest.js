@@ -30,6 +30,16 @@ function testCheckActionsStop()
 	runTest("SSS SSS WBW - No Endurance", test_SSS_SSS_WBW_NoEndurance);
 	runTest("SSS SSS WBW - No Recovery", test_SSS_SSS_WBW_NoRecovery);
 	runTest("SSS SSS WBW - No Health", test_SSS_SSS_WBW_NoHealth);
+
+	runTest("SSS SSS WBW - Treasure", test_SSS_SSS_WBW_Treasure);
+	runTest("SSS SSS WBW - Full H-Treasure", test_SSS_SSS_WBW_FullHTreasure);
+	runTest("SSS SSS WBW - Need H-Treasure", test_SSS_SSS_WBW_NeedHTreasure);
+	runTest("SSS SSS WBW - Full S-Treasure", test_SSS_SSS_WBW_FullSTreasure);
+	runTest("SSS SSS WBW - Need S-Treasure", test_SSS_SSS_WBW_NeedSTreasure);
+	runTest("SSS SSS WBW - Full R-Treasure", test_SSS_SSS_WBW_FullRTreasure);
+	runTest("SSS SSS WBW - Need R-Treasure", test_SSS_SSS_WBW_NeedRTreasure);
+	runTest("SSS SSS WBW - Full E-Treasure", test_SSS_SSS_WBW_FullETreasure);
+	runTest("SSS SSS WBW - Need E-Treasure", test_SSS_SSS_WBW_NeedETreasure);
 }
 
 function test_BBB_BSB_SGS()
@@ -389,3 +399,226 @@ function test_SSS_SSS_WBW_NoHealth()
 
 	validateInitAction({});
 }
+
+function test_SSS_SSS_WBW_Treasure()
+{
+	var testRow = 1;
+	var testCol = 1;
+
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["W", "B", "W"]],
+			 {row: testRow, col: testCol,
+			  endurance: 1},
+			 null,
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
+						center: ActionEnum.COLLECT,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_SSS_SSS_WBW_FullHTreasure()
+{
+	var testRow = 1;
+	var testCol = 1;
+
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["W", "B", "W"]],
+			 {row: testRow, col: testCol,
+			  endurance: 1},
+			 null,
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.HEALTH});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
+						center: ActionEnum.REST,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_SSS_SSS_WBW_NeedHTreasure()
+{
+	var testRow = 1;
+	var testCol = 1;
+
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["W", "B", "W"]],
+			 {row: testRow, col: testCol,
+			  health: 1, endurance: 1},
+			 null,
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.HEALTH});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
+						center: ActionEnum.COLLECT,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_SSS_SSS_WBW_FullSTreasure()
+{
+	var testRow = 1;
+	var testCol = 1;
+
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["W", "B", "W"]],
+			 {row: testRow, col: testCol,
+			  endurance: 1},
+			 null,
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.SIGHT});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
+						center: ActionEnum.REST,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_SSS_SSS_WBW_NeedSTreasure()
+{
+	var testRow = 1;
+	var testCol = 1;
+
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["W", "B", "W"]],
+			 {row: testRow, col: testCol,
+			  sight: 1, endurance: 1},
+			 null,
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.SIGHT});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
+						center: ActionEnum.COLLECT,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_SSS_SSS_WBW_FullRTreasure()
+{
+	var testRow = 1;
+	var testCol = 1;
+
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["W", "B", "W"]],
+			 {row: testRow, col: testCol,
+			  endurance: 1},
+			 null,
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.RECOVERY});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
+						center: ActionEnum.REST,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_SSS_SSS_WBW_NeedRTreasure()
+{
+	var testRow = 1;
+	var testCol = 1;
+
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["W", "B", "W"]],
+			 {row: testRow, col: testCol,
+			  recovery: 1, endurance: 1},
+			 null,
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.RECOVERY});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
+						center: ActionEnum.COLLECT,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_SSS_SSS_WBW_FullETreasure()
+{
+	var testRow = 1;
+	var testCol = 1;
+
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["W", "B", "W"]],
+			 {row: testRow, col: testCol},
+			 null,
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.ENDURANCE});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+
+function test_SSS_SSS_WBW_NeedETreasure()
+{
+	var testRow = 1;
+	var testCol = 1;
+
+	initData([["S", "S", "S"],
+			  ["S", "S", "S"],
+			  ["W", "B", "W"]],
+			 {row: testRow, col: testCol,
+			  endurance: 1},
+			 null,
+			 {type: TreasureTypeEnum.SMALL,
+			  row: testRow, col: testCol,
+			  attribute: AttributeEnum.ENDURANCE});
+
+	initAction();
+
+	validateInitAction({upLeft: ActionEnum.JUMP_LEFT,
+						up: ActionEnum.JUMP_UP,
+						upRight: ActionEnum.JUMP_RIGHT,
+						center: ActionEnum.COLLECT,
+						downLeft: ActionEnum.CLIMB_LEFT,
+						downRight: ActionEnum.CLIMB_RIGHT});
+}
+

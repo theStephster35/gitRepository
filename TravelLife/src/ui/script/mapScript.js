@@ -401,7 +401,7 @@ function transformMapTile(row, col)
 	{
 		var gradient = Math.ceil(100-(((mapTile.value/tile.durability)*100)));
 		mapTile.style.setProperty("background",
-				"radial-gradient(" + transformTile.color + ", " + tile.color + + " " + gradient + "%)");
+				"radial-gradient(" + transformTile.color + " " + gradient + "%, " + tile.color + " 0%)");
 	}
 
 	return mapTileTransformed;

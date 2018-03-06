@@ -14,12 +14,10 @@ function initTreasure(row, col)
 	switch (getProbableResult(treasureProbabilityMap))
 	{
 		case TreasureTypeEnum.SMALL:
-			treasureCount++;
-			treasure = new SmallTreasure(treasureCount, row, col);
+			treasure = new SmallTreasure(++treasureCount, row, col);
 			break;
 		case TreasureTypeEnum.BIG:
-			treasureCount++;
-			treasure = new BigTreasure(treasureCount, row, col);
+			treasure = new BigTreasure(++treasureCount, row, col);
 			break;
 	}
 

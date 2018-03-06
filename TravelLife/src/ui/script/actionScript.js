@@ -968,6 +968,85 @@ function restFloat(doUpdate)
 	return actionInfo;
 }
 
+function collect(doUpdate)
+{
+	var actionInfo = "";
+	var collectAction = confirmAction.innerText;
+
+	var attribute;
+	var treasure = treasureMap.get(player.position.row).get(player.position.col);
+
+	var smallTreasure = treasure.type === TreasureTypeEnum.SMALL;
+	if (smallTreasure && treasure.attribute != null)
+		attribute = treasure.attribute;
+
+	if (doUpdate)
+	{
+		var attributeValue = 0;
+		var alertMessage = "";
+		var collected = true;
+
+		var treasureIcon = document.getElementById(treasure.count);
+		if (smallTreasure)
+		{
+			if (treasure.attribute == null)
+				attribute = getProbableResult(treasure.probabilityMap);
+
+			attributeValue = player.attributeMap.get(attribute);
+			if (attributeValue < player.species.attributeMap.get(attribute))
+				player.attributeMap.set(attribute, (attributeValue+1));
+			else // Treasure attribute maxed 
+			{
+				collected = false;
+
+				treasure.attribute = attribute;
+				treasure.icon = "images/Treasure/" + attribute + ".png";
+				if (treasureIcon != null)
+					treasureIcon.src = treasure.icon;
+
+				alertMessage += attribute + " discovered!\n";
+			}
+		}
+		else if (treasure.type === TreasureTypeEnum.BIG)
+		{
+			attribute = getProbableResult(treasure.probabilityMap);
+
+			attributeValue = player.species.attributeMap.get(attribute);
+			player.species.attributeMap.set(attribute, (attributeValue+1));
+
+			alertMessage += "Maximum ";
+		}
+
+		if (collected)
+		{
+			player.stats.treasuresCollected++;
+
+			alertMessage += attribute + " increased!\n"
+						  + "\n"
+						  + attribute + ": " + attributeValue + " => " + (attributeValue+1) + "\n";
+
+			treasureMap.get(player.position.row).delete(player.position.col);
+			if (treasureMap.get(player.position.row).size === 0)
+				treasureMap.delete(player.position.row);
+
+			if (treasureIcon != null)
+				map.removeChild(treasureIcon);
+
+			if (smallTreasure && attribute === AttributeEnum.SIGHT)
+				exposeMapTiles();
+		}
+
+		if (treasureIcon != null)
+			alert(alertMessage);
+	}
+	else // Get info, don't do update
+		actionInfo += collectAction + " gains you "
+					+ (attribute == null ? "a random Attribute if needed" : attribute) + ".\n"
+					+ "\n";
+
+	return actionInfo;
+}
+
 function fall(doUpdate)
 {
 	var actionInfo = "";

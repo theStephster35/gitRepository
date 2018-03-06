@@ -236,6 +236,9 @@ function stayCenter(doUpdate)
 		case ActionEnum.FLOAT:
 			actionInfo = restFloat(doUpdate);
 			break;
+		case ActionEnum.COLLECT:
+			actionInfo = collect(doUpdate);
+			break;
 		default:
 			actionInfo = "";
 	}
