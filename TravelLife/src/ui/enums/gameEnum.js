@@ -27,6 +27,12 @@ var TileTypeEnum =
 	WATER: "Water"
 };
 
+var TreasureTypeEnum =
+{
+	SMALL: "Small Treasure",
+	BIG: "Big Treasure"
+};
+
 var ActionEnum =
 {
 	// UP_LEFT, UP_RIGHT

@@ -27,7 +27,10 @@ function adjustContents()
 	adjustMapContents(height);
 
 	if (document.getElementById("gameMenu").style.display === "block")
+	{
 		placePlayer();
+		placeTreasures();
+	}
 }
 
 function getHeightOffset(element)
@@ -177,9 +180,9 @@ function takeAction()
 	{
 		if (getTileByPosition(player.position.row, player.position.col).type !== TileTypeEnum.WATER
 		 && getTileByPosition((player.position.row+1), player.position.col).solid)
-			updatePlayerIcon("images/" + player.species.type + "/End.png");
+			updatePlayerIcon("images/Species/" + player.species.type + "/End.png");
 		else
-			updatePlayerIcon("images/" + player.species.type + "/SuspendedEnd.png");
+			updatePlayerIcon("images/Species/" + player.species.type + "/SuspendedEnd.png");
 
 		alert("The travels of " + player.name + " the " + player.species.type + " have come to an end.\n"
 			+ "\n"
@@ -192,6 +195,7 @@ function takeAction()
 
 function endGame()
 {
+	resetTreasures();
 	resetAction();
 	resetPlayer();
 	resetMap();

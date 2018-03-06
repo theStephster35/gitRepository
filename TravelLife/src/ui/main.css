@@ -197,6 +197,7 @@ a:hover {
 
 .map {
 	overflow: auto;
+	position: relative;
 	display: inline-flex;
 }
 
@@ -214,6 +215,14 @@ a:hover {
 	position: relative;
 }
 
-.mapTile.playerIcon {
+.playerIcon {
 	z-index: 2;
+	display: none;
+	position: absolute;
+}
+
+.treasureIcon {
+	z-index: 3;
+	display: none;
+	position: absolute;
 }

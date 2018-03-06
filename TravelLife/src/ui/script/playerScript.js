@@ -71,8 +71,8 @@ function placePlayer()
 	var playerTile = mapTiles.children[player.position.row].children[player.position.col];
 
 	playerIcon.style.display = "block";
-	playerIcon.style.top = (playerTile.offsetTop - map.offsetTop) + "px";
-	playerIcon.style.left = (playerTile.offsetLeft - map.offsetLeft) + "px";
+	playerIcon.style.top = playerTile.offsetTop + "px";
+	playerIcon.style.left = playerTile.offsetLeft + "px";
 }
 
 function playerIsInStatus(status, direction)

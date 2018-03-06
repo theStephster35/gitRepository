@@ -8,6 +8,7 @@ function getRandomNumber(min, max)
 function initAction()
 {
 	placePlayer();
+	placeTreasures();
 
 	var row = player.position.row;
 	var col = player.position.col;
@@ -144,7 +145,7 @@ function climbSide(doUpdate)
 			else
 				player.momentum.right = 1;
 
-			updatePlayerIcon("images/" + player.species.type + "/"
+			updatePlayerIcon("images/Species/" + player.species.type + "/"
 					+ climbLeftRight.replace(" ", "") + ".png");
 		}
 		else // Get info, don't do update
@@ -166,14 +167,14 @@ function climbSide(doUpdate)
 				{
 					player.momentum.right = 1;
 
-					updatePlayerIcon("images/" + player.species.type + "/"
+					updatePlayerIcon("images/Species/" + player.species.type + "/"
 							+ ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png");
 				}
 				else
 				{
 					player.momentum.left = 1;
 
-					updatePlayerIcon("images/" + player.species.type + "/"
+					updatePlayerIcon("images/Species/" + player.species.type + "/"
 							+ ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png");
 				}
 			}
@@ -186,7 +187,7 @@ function climbSide(doUpdate)
 			{
 				player.status = AttributeEnum.SWIM;
 
-				updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+				updatePlayerIcon("images/Species/" + player.species.type + "/Suspended.png");
 			}
 			else // Get info, don't do update
 				actionInfo += AttributeEnum.SWIM + ".\n";
@@ -231,7 +232,7 @@ function climbOverOff(doUpdate)
 		player.momentum.left = 0;
 		player.momentum.right = 0;
 
-		updatePlayerIcon("images/" + player.species.type + "/Species.png");
+		updatePlayerIcon("images/Species/" + player.species.type + "/Species.png");
 
 		if (climbOverOffLeftRight === ActionEnum.CLIMB_OVER)
 		{
@@ -289,14 +290,14 @@ function climbOut(doUpdate)
 		{
 			player.momentum.left = 1;
 
-			updatePlayerIcon("images/" + player.species.type + "/"
+			updatePlayerIcon("images/Species/" + player.species.type + "/"
 					+ ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png");
 		}
 		else
 		{
 			player.momentum.right = 1;
 
-			updatePlayerIcon("images/" + player.species.type + "/"
+			updatePlayerIcon("images/Species/" + player.species.type + "/"
 					+ ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png");
 		}
 
@@ -371,7 +372,7 @@ function jumpRiseDrift(doUpdate)
 		{
 			case ActionEnum.JUMP_LEFT:
 				player.momentum.left += max;
-				updatePlayerIcon("images/" + player.species.type + "/"
+				updatePlayerIcon("images/Species/" + player.species.type + "/"
 						   + jumpRiseDriftDirection.replace(" ", "") + ".png");
 			case ActionEnum.RISE_LEFT:
 				player.momentum.right = 0;
@@ -380,17 +381,17 @@ function jumpRiseDrift(doUpdate)
 				break;
 			case ActionEnum.JUMP_UP:
 				if (player.momentum.left > 0)
-					updatePlayerIcon("images/" + player.species.type + "/"
+					updatePlayerIcon("images/Species/" + player.species.type + "/"
 							   + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png");
 				else if (player.momentum.right > 0)
-					updatePlayerIcon("images/" + player.species.type + "/"
+					updatePlayerIcon("images/Species/" + player.species.type + "/"
 							   + ActionEnum.JUMP_RIGHT.replace(" ", "") + ".png");
 			case ActionEnum.RISE_UP:
 				player.position.row--;
 				break
 			case ActionEnum.JUMP_RIGHT:
 				player.momentum.right += max;
-				updatePlayerIcon("images/" + player.species.type + "/"
+				updatePlayerIcon("images/Species/" + player.species.type + "/"
 							   + jumpRiseDriftDirection.replace(" ", "") + ".png");
 			case ActionEnum.RISE_RIGHT:
 				player.momentum.left = 0;
@@ -416,7 +417,7 @@ function jumpRiseDrift(doUpdate)
 
 		if (player.momentum.left === 0
 		 && player.momentum.right === 0)
-			updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+			updatePlayerIcon("images/Species/" + player.species.type + "/Suspended.png");
 			
 		exposeMapTiles();
 	}
@@ -541,7 +542,7 @@ function letGo(doUpdate)
 		player.momentum.left = 0;
 		player.momentum.right = 0;
 
-		updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+		updatePlayerIcon("images/Species/" + player.species.type + "/Suspended.png");
 	}
 
 	if (player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
@@ -613,14 +614,14 @@ function grab(doUpdate)
 					player.momentum.left = 1;
 					player.momentum.right = 0;
 
-					updatePlayerIcon("images/" + player.species.type + "/"
+					updatePlayerIcon("images/Species/" + player.species.type + "/"
 							+ ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png");
 					break;
 				case ActionEnum.GRAB_RIGHT:
 					player.momentum.left = 0;
 					player.momentum.right = 1;
 
-					updatePlayerIcon("images/" + player.species.type + "/"
+					updatePlayerIcon("images/Species/" + player.species.type + "/"
 							+ ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png");
 					break;					
 			}
@@ -688,7 +689,7 @@ function run(doUpdate)
 			player.momentum.left = 0;
 			player.momentum.right = 0;
 
-			updatePlayerIcon("images/" + player.species.type + "/Species.png");
+			updatePlayerIcon("images/Species/" + player.species.type + "/Species.png");
 		}
 		else if (!actionInfo.includes("If you " + runLeftRight + ", you risk "))
 			actionInfo += "If you " + runLeftRight + ", you risk losing " + AttributeEnum.ENDURANCE + ".\n";
@@ -709,7 +710,7 @@ function run(doUpdate)
 				break;
 		}
 
-		updatePlayerIcon("images/" + player.species.type + "/"
+		updatePlayerIcon("images/Species/" + player.species.type + "/"
 				+ runLeftRight.replace(" ", "") + ".png");
 	}
 
@@ -774,7 +775,7 @@ function dig(doUpdate)
 
 				player.status = ActionEnum.STOP;
 
-				updatePlayerIcon("images/" + player.species.type + "/Species.png");
+				updatePlayerIcon("images/Species/" + player.species.type + "/Species.png");
 			}
 			else if (!actionInfo.includes("If you " + digDirection + ", you risk "))
 				actionInfo += "If you " + digDirection + ", you risk losing " + AttributeEnum.ENDURANCE + ".\n";
@@ -798,7 +799,7 @@ function dig(doUpdate)
 					break;
 			}
 
-			updatePlayerIcon("images/" + player.species.type + "/"
+			updatePlayerIcon("images/Species/" + player.species.type + "/"
 					+ digDirection.replace(" ", "") + ".png");
 		}
 	}
@@ -845,13 +846,13 @@ function dig(doUpdate)
 			{
 				player.status = ActionEnum.STOP;
 
-				updatePlayerIcon("images/" + player.species.type + "/Species.png");
+				updatePlayerIcon("images/Species/" + player.species.type + "/Species.png");
 			}
 			else // Player is above a not solid tile
 			{
 				player.status = ActionEnum.FALL_DOWN;
 
-				updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+				updatePlayerIcon("images/Species/" + player.species.type + "/Suspended.png");
 			}
 		}
 		else if (player.status === AttributeEnum.CLIMB
@@ -916,7 +917,7 @@ function stop(doUpdate)
 				player.momentum.right = 0;
 				player.momentum.down = 0;
 
-				updatePlayerIcon("images/" + player.species.type + "/Species.png");
+				updatePlayerIcon("images/Species/" + player.species.type + "/Species.png");
 				break;
 		}
 	}
@@ -1008,7 +1009,7 @@ function fall(doUpdate)
 
 		if (player.momentum.left === 0
 		 && player.momentum.right === 0)
-			updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+			updatePlayerIcon("images/Species/" + player.species.type + "/Suspended.png");
 
 		player.position.row++;
 
@@ -1056,7 +1057,7 @@ function land(doUpdate)
 		player.momentum.right = 0;
 		player.momentum.down = 0;
 
-		updatePlayerIcon("images/" + player.species.type + "/Species.png");
+		updatePlayerIcon("images/Species/" + player.species.type + "/Species.png");
 	}
 	else // Get info, don't do update
 	{
@@ -1097,7 +1098,7 @@ function splash(doUpdate)
 		player.momentum.right = 0;
 		player.momentum.down = 0;
 
-		updatePlayerIcon("images/" + player.species.type + "/Suspended.png");
+		updatePlayerIcon("images/Species/" + player.species.type + "/Suspended.png");
 
 		player.position.row++;
 

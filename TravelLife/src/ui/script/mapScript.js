@@ -6,10 +6,9 @@ var tileHeight = 16;
 
 function adjustMapContents(height)
 {
-	var map = document.getElementById("map");
 	map.style.minHeight = (height - getHeightOffset(map)) + "px";
 	map.style.maxHeight = map.style.minHeight;
-	map.style.minWidth = (window.innerWidth- getWidthOffset(map)) + "px";
+	map.style.minWidth = (window.innerWidth - getWidthOffset(map)) + "px";
 	map.style.maxWidth = map.style.minWidth;
 }
 
@@ -42,6 +41,20 @@ function zoomMapInOut(zoomType)
 
 		playerIcon.style.width = zoomWidth;
 		playerIcon.style.height = zoomHeight;
+
+		for (var treasureColMap of treasureMap.values())
+		{
+			for (var treasure of treasureColMap.values())
+			{
+				var treasureTile = mapTiles.children[treasure.row].children[treasure.col];
+				var treasureIcon = document.getElementById(treasure.count);
+				if (treasureIcon != null)
+				{
+					treasureIcon.style.width = zoomWidth;
+					treasureIcon.style.height = zoomHeight;
+				}
+			}
+		}
 
 		for (var row = 0; row < mapTiles.children.length; row++)
 		{
@@ -81,6 +94,7 @@ function createMapTile(row, col, tile)
 {
 	var mapRows = mapTiles.children;
 	var mapRow = mapRows[row];
+
 	if (mapRow == null)
 	{
 		mapRow = document.createElement("div");
@@ -90,6 +104,7 @@ function createMapTile(row, col, tile)
 		{
 			row++;
 			player.position.row++;
+			adjustTreasures(1, 0);
 			mapTiles.prepend(mapRow);
 		}
 		else
@@ -135,6 +150,7 @@ function createMapTile(row, col, tile)
 		if (col < 0)
 		{
 			player.position.col++;
+			adjustTreasures(0, 1);
 			mapRow.prepend(mapTile);
 
 			// Shift columns left going up
@@ -174,9 +190,14 @@ function createMapTile(row, col, tile)
 
 				mapRows[i].prepend(mapTile);
 			}
+
+			col++;
 		}
 		else
 			mapRow.appendChild(mapTile);
+
+		if (!tile.solid || tile.durability > 0)
+			initTreasure(row, col);
 	}
 	else if (mapTile.style.visibility === "hidden")
 	{
@@ -184,6 +205,10 @@ function createMapTile(row, col, tile)
 		mapTile.className = mapTile.className.replace(" hidden", "");
 
 		player.stats.tilesExposed++;
+
+		tile = getTileByTileType(mapTile.type);
+		if (!tile.solid || tile.durability > 0)
+			initTreasure(row, col);
 	}
 }
 
@@ -239,28 +264,7 @@ function getRandomTile(row, col)
 	}
 
 	// Get tile based on probabilities
-	var max = 0;
-	for (var tileProbability of tileTypeMap.values())
-		max += tileProbability;
-
-	var value = getRandomNumber(1, max);
-
-	max = 0;
-	var min = 0;
-	var selectTileType;
-	for (var tileType of tileTypeMap.keys())
-	{
-		max += tileTypeMap.get(tileType);
-		if (value > min && value <= max)
-		{
-			selectTileType = tileType;
-			break;
-		}
-
-		min = max;
-	}
-
-	return getTileByTileType(selectTileType);
+	return getTileByTileType(getProbableResult(tileTypeMap));
 }
 
 function addTileTypeProbabilities(tileTypeMap, upSideDown)

@@ -10,7 +10,7 @@ function validateTakeAction(results)
 {
 	validateTakeActionData("rows", mapTiles.children.length, -1, results.rows);
 	validateTakeActionData("cols", mapTiles.children[1].children.length, -1, results.cols);
-	validateTakeActionData("image", player.image, "images/" + player.species.type + "/Species.png", results.image);
+	validateTakeActionData("image", player.image, "images/Species/" + player.species.type + "/Species.png", results.image);
 	validateTakeActionData("row", player.position.row, -1, results.row);
 	validateTakeActionData("col", player.position.col, -1, results.col);
 	validateTakeActionData("status", player.status, ActionEnum.STOP, results.status);
@@ -38,6 +38,7 @@ function validateTakeAction(results)
 			player.species.attributeMap.get(AttributeEnum.DIG), results.dig);
 	validateTakeActionData("tilesExposed", player.stats.tilesExposed, 0, results.tilesExposed);
 	validateTakeActionData("tilesTraveled", player.stats.tilesTraveled, 0, results.tilesTraveled);
+	validateTakeActionData("treasuresCollected", player.stats.treasuresCollected, 0, results.treasuresCollected);
 }
 
 function validateTakeActionData(dataType, actualData, defaultData, resultData)

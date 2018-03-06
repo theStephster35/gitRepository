@@ -27,7 +27,7 @@ class Human extends Species
 		attributeMap.set(AttributeEnum.SWIM,	  4);
 		attributeMap.set(AttributeEnum.DIG, 	  3);
 
-		super(SpeciesEnum.HUMAN, "images/Human/Species.png", description, attributeMap);
+		super(SpeciesEnum.HUMAN, "images/Species/Human/Species.png", description, attributeMap);
 	}
 }
 
@@ -49,7 +49,7 @@ class Dog extends Species
 		attributeMap.set(AttributeEnum.SWIM,	  4);
 		attributeMap.set(AttributeEnum.DIG, 	  4);
 
-		super(SpeciesEnum.DOG, "images/Dog/Species.png", description, attributeMap);
+		super(SpeciesEnum.DOG, "images/Species/Dog/Species.png", description, attributeMap);
 	}
 }
 
@@ -71,6 +71,6 @@ class Cat extends Species
 		attributeMap.set(AttributeEnum.SWIM,	  1);
 		attributeMap.set(AttributeEnum.DIG, 	  2);
 
-		super(SpeciesEnum.CAT, "images/Cat/Species.png", description, attributeMap);
+		super(SpeciesEnum.CAT, "images/Species/Cat/Species.png", description, attributeMap);
 	}
 }

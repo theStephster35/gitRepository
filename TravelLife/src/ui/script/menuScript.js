@@ -581,6 +581,8 @@ function checkCenter(row, col)
 			}
 		}
 	}
+
+//	centerButton.innerText = "\u29BF"; // Collect
 }
 
 function checkRight(row, col)
