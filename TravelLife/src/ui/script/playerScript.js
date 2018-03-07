@@ -422,6 +422,9 @@ function gainSightRecovery()
 		playerAttributeValue += getRandomNumber(0, Math.ceil(speciesAttributeValue/2));
 		if (playerAttributeValue > speciesAttributeValue)
 			playerAttributeValue = speciesAttributeValue;
+		else if (playerAttributeValue === 0
+			  && player.attributeMap.get(AttributeEnum.ENDURANCE) === 0)
+			playerAttributeValue++;
 		player.attributeMap.set(AttributeEnum.RECOVERY, playerAttributeValue);
 	}
 }
