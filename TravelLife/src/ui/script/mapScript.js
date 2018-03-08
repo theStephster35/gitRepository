@@ -120,6 +120,7 @@ function createMapTile(row, col, tile)
 		mapTile.type = hiddenTile.type;
 		mapTile.style.display = "block";
 		mapTile.style.visibility = "hidden";
+		mapTile.value = hiddenTile.durability;
 		mapTile.style.width = (tileWidth*zoom) + "px";
 		mapTile.style.height = (tileHeight*zoom) + "px";
 		mapTile.className = "mapTile " + hiddenTile.type + " hidden";
@@ -385,7 +386,7 @@ function transformMapTile(row, col)
 	var tile = getTileByTileType(mapTile.type);
 	var transformTile = tile.transformTile;
 
-	mapTile.value -= 1;
+	mapTile.value--;
 
 	// Transform map tile
 	if (mapTile.value === 0)
