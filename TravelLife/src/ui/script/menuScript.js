@@ -127,15 +127,21 @@ function createAttribute(label, playerData, speciesData)
 {
 	var attribute = document.createElement("tr");
 
+	var color = "rgb(0, 0, 0)";
+	if (speciesData != null)
+		color = "rgb(" + (255-((playerData/speciesData)*255)) + ", 0, 0)";
+
 	// Attribute Label
 	var attributeLabelData = document.createElement("td");
 	attributeLabelData.innerText = label + ":";
+	attributeLabelData.style.color = color;
 	attribute.appendChild(attributeLabelData);
 
 	// Attribute Data
 	attributeLabelData = document.createElement("td");
 	attributeLabelData.style.textAlign = "right";
 	attributeLabelData.innerText = playerData;
+	attributeLabelData.style.color = color;
 	attribute.appendChild(attributeLabelData);
 
 	if (speciesData != null)
