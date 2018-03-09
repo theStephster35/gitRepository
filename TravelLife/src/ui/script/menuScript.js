@@ -38,7 +38,7 @@ function startEndGame(event)
 
 		initGame();
 	}
-	else // End game
+	else if (confirm("Are you sure you want to give up?"))
 	{
 		startMenu.style.display = "block";
 		gameMenu.style.display = "none";

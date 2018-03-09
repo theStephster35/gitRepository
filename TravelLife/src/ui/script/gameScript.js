@@ -185,7 +185,7 @@ function takeAction()
 		alert("The travels of " + player.name + " the " + player.species.type + " have come to an end.\n"
 			+ "\n"
 			+ "You traveled " + player.stats.tilesTraveled + " of the "
-			+ player.stats.tilesExposed + " " + " tiles you exposed.\n"
+			+ player.stats.tilesExposed + " tiles you exposed.\n"
 			+ "\n"
 			+ "Thank you for playing!");
 	}
