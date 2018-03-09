@@ -288,57 +288,71 @@ function checkUp(row, col)
 {
 	disableButton(upButton);
 
-	// If player has health and is on a tile below a not solid tile
-	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0
-	 && !getTileByPosition((row-1), col).solid)
+	// If player has health
+	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
-		// If player is swimming
-		if (playerIsInStatus(AttributeEnum.SWIM))
+		// If player is on a tile below a not solid tile
+		if (!getTileByPosition((row-1), col).solid)
 		{
-			// If player is on a tile below a water tile
-			if (getTileByPosition((row-1), col).type === TileTypeEnum.WATER)
+			// If player is swimming
+			if (playerIsInStatus(AttributeEnum.SWIM))
 			{
-				upButton.label = ActionEnum.SWIM_UP;
-				upButton.innerText = "\u2191";
-				upButton.disabled = false;
-			}
-		}
-		else if (player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
-		{
-			// If player has endurance...
-			// If player is not moving or is running
-			if (playerIsInStatus(ActionEnum.STOP)
-			 || playerIsInStatus(AttributeEnum.RUN))
-			{
-				// If player is on a tile above a solid tile
-				if (getTileByPosition((row+1), col).solid)
+				// If player is on a tile below a water tile
+				if (getTileByPosition((row-1), col).type === TileTypeEnum.WATER)
 				{
-					upButton.label = ActionEnum.JUMP_UP;
-					upButton.innerText = "\u21A5";
+					upButton.label = ActionEnum.SWIM_UP;
+					upButton.innerText = "\u2191";
 					upButton.disabled = false;
 				}
 			}
-			else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.UP))
+			else if (player.attributeMap.get(AttributeEnum.ENDURANCE) > 0)
 			{
-				// ... and is jumping up
-				upButton.label = ActionEnum.RISE_UP;
-				upButton.innerText = "\u21D1";
-				upButton.disabled = false;
+				// If player has endurance...
+				// If player is not moving or is running
+				if (playerIsInStatus(ActionEnum.STOP)
+				 || playerIsInStatus(AttributeEnum.RUN))
+				{
+					// If player is on a tile above a solid tile
+					if (getTileByPosition((row+1), col).solid)
+					{
+						upButton.label = ActionEnum.JUMP_UP;
+						upButton.innerText = "\u21A5";
+						upButton.disabled = false;
+					}
+				}
+				else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.UP))
+				{
+					// ... and is jumping up
+					upButton.label = ActionEnum.RISE_UP;
+					upButton.innerText = "\u21D1";
+					upButton.disabled = false;
+				}
+				else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
+					  && getTileByPosition((row-1), (col-1)).solid)
+				{
+					// ... and is climbing left on a tile down-right a solid tile
+					upButton.label = ActionEnum.CLIMB_UP;
+					upButton.innerText = "\u21BE";
+					upButton.disabled = false;
+				}
+				else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
+					  && getTileByPosition((row-1), (col+1)).solid)
+				{
+					// ... and is climbing right on a tile down-left a solid tile
+					upButton.label = ActionEnum.CLIMB_UP;
+					upButton.innerText = "\u21BF";
+					upButton.disabled = false;
+				}
 			}
-			else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
-				  && getTileByPosition((row-1), (col-1)).solid)
+		}
+		else if (getTileByPosition((row-1), col).durability > 0)
+		{
+			// Player is on a tile below a tile with durability
+			// ... and is climbing
+			if (playerIsInStatus(AttributeEnum.CLIMB))
 			{
-				// ... and is climbing left on a tile down-right a solid tile
-				upButton.label = ActionEnum.CLIMB_UP;
-				upButton.innerText = "\u21BE";
-				upButton.disabled = false;
-			}
-			else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
-				  && getTileByPosition((row-1), (col+1)).solid)
-			{
-				// ... and is climbing right on a tile down-left a solid tile
-				upButton.label = ActionEnum.CLIMB_UP;
-				upButton.innerText = "\u21BF";
+				upButton.label = ActionEnum.DIG_UP;
+				upButton.innerText = "\u234F";
 				upButton.disabled = false;
 			}
 		}

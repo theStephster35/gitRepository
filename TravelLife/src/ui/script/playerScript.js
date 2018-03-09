@@ -154,6 +154,9 @@ function moveUp(doUpdate)
 		case ActionEnum.SWIM_UP:
 			actionInfo = swim(doUpdate);
 			break;
+		case ActionEnum.DIG_UP:
+			actionInfo = dig(doUpdate);
+			break;
 		default:
 			actionInfo = "";
 	}

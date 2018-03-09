@@ -57,6 +57,7 @@ var ActionEnum =
 	JUMP_UP: AttributeEnum.JUMP + " Up",
 	RISE_UP: "Rise Up",
 	SWIM_UP: AttributeEnum.SWIM + " Up",
+	DIG_UP: AttributeEnum.DIG + " Up",
 
 	UP_RIGHT: "upRight",
 	CLIMB_RIGHT: AttributeEnum.CLIMB + " Right",

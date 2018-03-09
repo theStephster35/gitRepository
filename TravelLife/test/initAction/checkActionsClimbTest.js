@@ -1,9 +1,9 @@
 function testCheckActionsClimb()
 {
-	runTest("SBS BSB BGB - Climb Left", test_SBS_BSB_BGB_ClimbLeft);
-	runTest("SBS BSB BGB - Climb Left, No Health", test_SBS_BSB_BGB_ClimbLeft_NoHealth);
-	runTest("SBS BSB BGB - Climb Right", test_SBS_BSB_BGB_ClimbRight);
-	runTest("SBS BSB BGB - Climb Right, No Health", test_SBS_BSB_BGB_ClimbRight_NoHealth);
+	runTest("SGS BSB BGB - Climb Left", test_SGS_BSB_BGB_ClimbLeft);
+	runTest("SGS BSB BGB - Climb Left, No Health", test_SGS_BSB_BGB_ClimbLeft_NoHealth);
+	runTest("SGS BSB BGB - Climb Right", test_SGS_BSB_BGB_ClimbRight);
+	runTest("SGS BSB BGB - Climb Right, No Health", test_SGS_BSB_BGB_ClimbRight_NoHealth);
 
 	runTest("BSB BSB BSB - Climb Left", test_BSB_BSB_BSB_ClimbLeft);
 	runTest("BSB BSB BSB - Climb Left, No Health", test_BSB_BSB_BSB_ClimbLeft_NoHealth);
@@ -48,9 +48,9 @@ function testCheckActionsClimb()
 	runTest("SBS SSB BGB - Climb Right, No Health", test_SBS_SSB_BGB_ClimbRight_NoHealth);
 }
 
-function test_SBS_BSB_BGB_ClimbLeft()
+function test_SGS_BSB_BGB_ClimbLeft()
 {
-	initData([["S", "B", "S"],
+	initData([["S", "G", "S"],
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
@@ -60,13 +60,14 @@ function test_SBS_BSB_BGB_ClimbLeft()
 
 	initAction();
 
-	validateInitAction({right: ActionEnum.LET_GO,
+	validateInitAction({up: ActionEnum.DIG_UP,
+						right: ActionEnum.LET_GO,
 					 	downRight: ActionEnum.CLIMB_OFF});
 }
 
-function test_SBS_BSB_BGB_ClimbLeft_NoHealth()
+function test_SGS_BSB_BGB_ClimbLeft_NoHealth()
 {
-	initData([["S", "B", "S"],
+	initData([["S", "G", "S"],
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
@@ -79,9 +80,9 @@ function test_SBS_BSB_BGB_ClimbLeft_NoHealth()
 	validateInitAction({});
 }
 
-function test_SBS_BSB_BGB_ClimbRight()
+function test_SGS_BSB_BGB_ClimbRight()
 {
-	initData([["S", "B", "S"],
+	initData([["S", "G", "S"],
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
@@ -91,13 +92,14 @@ function test_SBS_BSB_BGB_ClimbRight()
 
 	initAction();
 
-	validateInitAction({left: ActionEnum.LET_GO,
+	validateInitAction({up: ActionEnum.DIG_UP,
+						left: ActionEnum.LET_GO,
 					 	downLeft: ActionEnum.CLIMB_OFF});
 }
 
-function test_SBS_BSB_BGB_ClimbRight_NoHealth()
+function test_SGS_BSB_BGB_ClimbRight_NoHealth()
 {
-	initData([["S", "B", "S"],
+	initData([["S", "G", "S"],
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,

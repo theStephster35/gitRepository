@@ -328,7 +328,8 @@ function jumpRiseDrift(doUpdate)
 		value = getRandomNumber(min, max);
 	else // Get info, don't do update
 		actionInfo += jumpRiseDriftDirection + " decreases sideways momentum and " + AttributeEnum.JUMP
-					+ (player.status === AttributeEnum.CLIMB ? ", and resets " + AttributeEnum.CLIMB : "") + ".\n"
+					+ (player.status === AttributeEnum.CLIMB || player.status === AttributeEnum.RUN
+					   ? ", and resets " + player.status : "") + ".\n"
 					+ "When " + AttributeEnum.JUMP + " reaches 0, " + AttributeEnum.JUMP + " resets, "
 					+ "you " + ActionEnum.FALL_DOWN + " and lose " + AttributeEnum.ENDURANCE + ".\n"
 					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
@@ -337,8 +338,8 @@ function jumpRiseDrift(doUpdate)
 					+ "= [" + (jumpValue - max) + "-" + (jumpValue - min) + "]\n"
 					+ "\n";
 
-	if (player.status === AttributeEnum.CLIMB)
-		actionInfo = resetAttribute(AttributeEnum.CLIMB, actionInfo);
+	if (player.status === AttributeEnum.CLIMB || player.status === AttributeEnum.RUN)
+		actionInfo = resetAttribute(player.status, actionInfo);
 
 	jumpValue -= value;
 	if (jumpValue === 0)
@@ -811,6 +812,9 @@ function dig(doUpdate)
 
 		switch (digDirection)
 		{
+			case ActionEnum.DIG_UP:
+				row--;
+				break;
 			case ActionEnum.DIG_LEFT:
 				col--;
 				break;
@@ -823,13 +827,14 @@ function dig(doUpdate)
 		}
 
 		// Check if player must move into position
+		var playerLetGo = false;
 		if (transformMapTile(row, col))
 		{
 			resetAttribute(player.status, actionInfo);
 
 			if (digValue > 0)
 				stop(true);
-			else
+			else if (digDirection !== ActionEnum.DIG_UP)
 			{
 				player.momentum.left = 0;
 				player.momentum.right = 0;
@@ -841,8 +846,11 @@ function dig(doUpdate)
 
 			exposeMapTiles();
 
+			row = player.position.row;
+			col = player.position.col;
+
 			// Player is above a solid tile
-			if (getTileByPosition((player.position.row+1), player.position.col).solid)
+			if (getTileByPosition((row+1), col).solid)
 			{
 				player.status = ActionEnum.STOP;
 
@@ -850,13 +858,26 @@ function dig(doUpdate)
 			}
 			else // Player is above a not solid tile
 			{
-				player.status = ActionEnum.FALL_DOWN;
+				if (digDirection !== ActionEnum.DIG_UP
+				 || (player.momentum.left && !getTileByPosition(row, (col-1)).solid)
+				 || (player.momentum.right && !getTileByPosition(row, (col+1)).solid))
+				{
+					player.status = ActionEnum.FALL_DOWN;
 
-				updatePlayerIcon("images/Species/" + player.species.type + "/Suspended.png");
+					player.momentum.left = 0;
+					player.momentum.right = 0;
+
+					updatePlayerIcon("images/Species/" + player.species.type + "/Suspended.png");
+				}
+				else if (player.attributeMap.get(AttributeEnum.ENDURANCE) === 0)
+					playerLetGo = true;
 			}
 		}
 		else if (player.status === AttributeEnum.CLIMB
 			  && player.attributeMap.get(AttributeEnum.ENDURANCE) === 0)
+			playerLetGo = true;
+
+		if (playerLetGo)
 			letGo(true);
 	}
 
@@ -1002,7 +1023,10 @@ function collect(doUpdate)
 				treasure.attribute = attribute;
 				treasure.icon = "images/Treasure/" + attribute + ".png";
 				if (treasureIcon != null)
+				{
 					treasureIcon.src = treasure.icon;
+					treasureIcon.alt = attribute;
+				}
 
 				alertMessage += attribute + " discovered!\n";
 			}
