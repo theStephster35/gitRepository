@@ -335,8 +335,7 @@ function jumpRiseDrift(doUpdate)
 					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
 					+ "\n"
 					+ AttributeEnum.JUMP + ": " + jumpValue + " - [" + min + "-" + max + "] "
-					+ "= [" + (jumpValue - max) + "-" + (jumpValue - min) + "]\n"
-					+ "\n";
+					+ "= [" + (jumpValue - max) + "-" + (jumpValue - min) + "]\n";
 
 	if (player.status === AttributeEnum.CLIMB || player.status === AttributeEnum.RUN)
 		actionInfo = resetAttribute(player.status, actionInfo);
@@ -355,7 +354,8 @@ function jumpRiseDrift(doUpdate)
 			player.momentum.up = 0;
 		}
 		else if (!actionInfo.includes("If you " + jumpRiseDriftDirection + ", you risk "))
-			actionInfo += "If you " + jumpRiseDriftDirection + ", "
+			actionInfo += "\n"
+						+ "If you " + jumpRiseDriftDirection + ", "
 						+ "you risk losing " + AttributeEnum.ENDURANCE + ".\n";
 	}
 	else if (doUpdate)
