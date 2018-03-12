@@ -1,0 +1,190 @@
+@font-face {
+  font-family: "Symbola";
+  src: url("../fonts/Symbola_hint.ttf"); }
+body,
+img,
+h1,
+h3,
+p {
+  margin: 0; }
+
+body {
+  background-color: black;
+  font-family: Times, serif; }
+
+a {
+  color: black;
+  text-decoration: none; }
+
+.gameTitle {
+  height: 37px;
+  text-align: center;
+  background-color: white;
+  border-bottom: 2px solid black; }
+
+.menuLink {
+  font: 36px Symbola;
+  float: left;
+  padding: 0 5px 0; }
+  .menuLink:hover {
+    color: white;
+    background-color: black; }
+
+.mapMenu {
+  visibility: hidden; }
+
+.mapLink {
+  font: 24px Symbola;
+  float: right;
+  padding: 6px; }
+  .mapLink:hover {
+    color: white;
+    background-color: black; }
+
+.gameContent {
+  display: flex; }
+
+.menu {
+  float: left;
+  padding: 5px;
+  display: block;
+  overflow: auto;
+  min-width: 200px;
+  max-width: 200px;
+  text-align: center;
+  border-right: 2px solid black;
+  background-color: white; }
+
+.gameMenu {
+  display: none; }
+
+.userInput {
+  width: 150px;
+  height: 22px; }
+
+.forcedOption {
+  display: none; }
+
+.menuButton {
+  width: 150px;
+  height: 45px;
+  font: 15px Arial, sans-serif;
+  border-radius: 10px;
+  display: inline-block; }
+
+.details {
+  text-align: left; }
+
+.detailsLink {
+  color: black;
+  text-decoration: none; }
+
+.detailsLink:hover {
+  text-decoration: underline; }
+
+.detailsTitle {
+  display: none;
+  line-height: 30px;
+  text-align: center; }
+
+.speciesImage {
+  width: 15px;
+  height: 16px;
+  display: inline; }
+
+.detailsLabel {
+  display: inline; }
+
+.attributes {
+  margin: auto; }
+
+.actionMenu {
+  display: inline-flex; }
+
+.actionButtons {
+  display: grid;
+  grid-template-rows: repeat(3, 50px);
+  grid-template-columns: repeat(3, 50px); }
+
+.upLeft {
+  margin: auto;
+  grid-row: 0.5;
+  grid-column: 0.5; }
+
+.up {
+  margin: auto;
+  grid-row: 0.6666666667;
+  grid-column: 0.5; }
+
+.upRight {
+  margin: auto;
+  grid-row: 0.75;
+  grid-column: 0.5; }
+
+.left {
+  margin: auto;
+  grid-row: 0.5;
+  grid-column: 0.6666666667; }
+
+.center {
+  margin: auto;
+  grid-row: 0.6666666667;
+  grid-column: 0.6666666667; }
+
+.right {
+  margin: auto;
+  grid-row: 0.75;
+  grid-column: 0.6666666667; }
+
+.downLeft {
+  margin: auto;
+  grid-row: 0.5;
+  grid-column: 0.75; }
+
+.down {
+  margin: auto;
+  grid-row: 0.6666666667;
+  grid-column: 0.75; }
+
+.downRight {
+  margin: auto;
+  grid-row: 0.75;
+  grid-column: 0.75; }
+
+.actionButton {
+  width: 45px;
+  height: 45px;
+  font: 20px Symbola;
+  border-radius: 0; }
+
+.actionSymbol {
+  display: inline-flex;
+  font-family: Symbola; }
+
+.map {
+  overflow: auto;
+  position: relative;
+  display: inline-flex; }
+
+.mapTiles {
+  margin: auto; }
+
+.mapRow {
+  display: flex; }
+
+.mapTile {
+  display: none;
+  z-index: 1;
+  position: relative; }
+
+.playerIcon {
+  display: none;
+  z-index: 2;
+  position: absolute; }
+
+.treasureIcon {
+  display: none;
+  z-index: 3;
+  position: absolute; }
+
+/*# sourceMappingURL=main.css.map */

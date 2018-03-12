@@ -1,0 +1,92 @@
+.menu
+	float: left
+	padding: 5px
+	display: block
+	overflow: auto
+	min-width: $menu-width
+	max-width: $menu-width
+	text-align: center
+	border-right: $border
+	background-color: $color-light
+
+.gameMenu
+	display: none
+
+.userInput
+	width: $input-width
+	height: 22px
+
+.forcedOption
+	display: none
+
+.menuButton
+	+button($input-width, $button-size, 15px $font-family-sans, $menu-btn-radius)
+	display: inline-block
+
+.details
+	text-align: left
+
+.detailsLink
+	color: black
+	text-decoration: none
+
+.detailsLink:hover
+	text-decoration: underline
+
+.detailsTitle
+	display: none
+	line-height: 30px
+	text-align: center
+
+.speciesImage
+	width: 15px
+	height: 16px
+	display: inline
+
+.detailsLabel
+	display: inline
+
+.attributes
+	margin: auto
+
+.actionMenu
+	display: inline-flex
+
+.actionButtons
+	display: grid
+	grid-template-rows: repeat(3, $grid-size)
+	grid-template-columns: repeat(3, $grid-size)
+
+.upLeft
+	+grid-auto(1/2, 1/2)
+
+.up
+	+grid-auto(2/3, 1/2)
+
+.upRight
+	+grid-auto(3/4, 1/2)
+
+.left
+	+grid-auto(1/2, 2/3)
+
+.center
+	+grid-auto(2/3, 2/3)
+
+.right
+	+grid-auto(3/4, 2/3)
+
+.downLeft
+	+grid-auto(1/2, 3/4)
+
+.down
+	+grid-auto(2/3, 3/4)
+
+.downRight
+	+grid-auto(3/4, 3/4)
+
+.actionButton
+	+button($button-size, $button-size, 20px $font-family-symbol, 0)
+
+.actionSymbol
+	display: inline-flex
+	font-family: $font-family-symbol

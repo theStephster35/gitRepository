@@ -1,0 +1,19 @@
+.map
+	overflow: auto
+	position: relative
+	display: inline-flex
+
+.mapTiles
+	margin: auto
+
+.mapRow
+	display: flex
+
+.mapTile
+	+layer-map(1, relative)
+
+.playerIcon
+	+layer-map(2, absolute)
+
+.treasureIcon
+	+layer-map(3, absolute)
