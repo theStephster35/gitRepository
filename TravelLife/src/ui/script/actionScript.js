@@ -1071,8 +1071,7 @@ function collect(doUpdate)
 	}
 	else // Get info, don't do update
 		actionInfo += collectAction + " gains you "
-					+ (attribute == null ? "a random Attribute if needed" : attribute) + ".\n"
-					+ "\n";
+					+ (attribute == null ? "a random Attribute if needed" : attribute) + ".\n";
 
 	return actionInfo;
 }
