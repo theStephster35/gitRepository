@@ -448,7 +448,8 @@ function swim(doUpdate)
 					+ "When " + AttributeEnum.HEALTH + " reaches 0, your travels end.\n"
 					+ "\n";
 
-	if (swimValue > 0)
+	var playerHasSwim = (swimValue > 0);
+	if (playerHasSwim)
 	{
 		if (doUpdate)
 			value = getRandomNumber(min, max);
@@ -481,8 +482,13 @@ function swim(doUpdate)
 				player.attributeMap.set(AttributeEnum.HEALTH, playerHealthValue);
 			}
 			else // Get info, don't do update
-				actionInfo += AttributeEnum.HEALTH + ": " + (playerHealthValue+1)
-							+ " - 1 = " + playerHealthValue + "\n";
+			{
+				if (playerHasSwim)
+					actionInfo += "If you " + swimDirection + ", you risk losing " + AttributeEnum.HEALTH + ".\n";
+				else
+					actionInfo += AttributeEnum.HEALTH + ": " + (playerHealthValue+1)
+								+ " - 1 = " + playerHealthValue + "\n";
+			}
 		}
 	}
 	else if (doUpdate)

@@ -393,7 +393,8 @@ function loseEndurance(actionName, actionInfo)
 		   || actionName === ActionEnum.STOP
 		   || actionName === ActionEnum.GRAB_RIGHT
 		   || (player.status === AttributeEnum.CLIMB
-			&& (actionName === ActionEnum.DIG_LEFT
+			&& (actionName === ActionEnum.DIG_UP
+			 || actionName === ActionEnum.DIG_LEFT
 			 || actionName === ActionEnum.DIG_RIGHT))))
 		actionInfo += AttributeEnum.ENDURANCE + ": " + (attributeValue+1)
 					+ " - 1 = " + attributeValue + "\n";
