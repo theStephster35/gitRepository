@@ -761,10 +761,10 @@ function dig(doUpdate)
 		if (doUpdate)
 			value = getRandomNumber(min, max);
 		else // Get info, don't do update
-			actionInfo += digDirection + " reduces durability and decreases " + AttributeEnum.DIG + ".\n"
-						+ "When " + AttributeEnum.DIG + " or durability reaches 0, "
+			actionInfo += digDirection + " reduces tile durability and decreases " + AttributeEnum.DIG + ".\n"
+						+ "When " + AttributeEnum.DIG + " or tile durability reaches 0, "
 						+ AttributeEnum.DIG + " resets and you lose " + AttributeEnum.ENDURANCE + ".\n"
-						+ "When durability reaches 0, you move into position.\n"
+						+ "When tile durability reaches 0, you move into position.\n"
 						+ "When " + AttributeEnum.ENDURANCE + " reaches 0, you lose " + AttributeEnum.HEALTH + ".\n"
 						+ "\n"
 						+ AttributeEnum.DIG + ": " + digValue + " - [" + min + "-" + max + "] "
@@ -896,8 +896,8 @@ function digClimb(doUpdate)
 	var digLeftRight = confirmAction.innerText;
 
 	if (!doUpdate)
-		actionInfo += digLeftRight + " reduces durability and you lose " + AttributeEnum.ENDURANCE + ".\n"
-					+ "When durability reaches 0, " + AttributeEnum.CLIMB + " resets and you move into position.\n"
+		actionInfo += digLeftRight + " reduces tile durability and you lose " + AttributeEnum.ENDURANCE + ".\n"
+					+ "When tile durability reaches 0, " + AttributeEnum.CLIMB + " resets and you move into position.\n"
 					+ "When " + AttributeEnum.ENDURANCE + " reaches 0, "
 					+ "you lose " + AttributeEnum.HEALTH + " and " + ActionEnum.LET_GO + ".\n"
 					+ "\n";
