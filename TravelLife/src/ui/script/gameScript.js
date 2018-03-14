@@ -5,28 +5,32 @@ window.addEventListener("keypress", handleKeypress)
 var userInput = document.getElementById("userInput");
 userInput.addEventListener('submit', startEndGame);
 
+var gameOn = false
+
 function init()
 {
 	endGame();
 	adjustContents();
 	updateAutoConfirm();
+
+	openMenu(MenuEnum.HOME);
 }
 
 function adjustContents()
 {
 	var height = window.innerHeight;
 
-	var menu = document.getElementById("menu");
-	if (menu.style.display === ""
-	 || menu.style.display === "block")
+	var navMenu = document.getElementById("navMenu");
+	if (navMenu.style.display === ""
+	 || navMenu.style.display === "flex")
 	{
-		menu.style.minHeight = (height - getHeightOffset(menu)) + "px";
-		menu.style.maxHeight = menu.style.minHeight;
+		navMenu.style.minHeight = (height - getHeightOffset(navMenu)) + "px";
+		navMenu.style.maxHeight = navMenu.style.minHeight;
 	}
 
 	adjustMapContents(height);
 
-	if (document.getElementById("gameMenu").style.display === "block")
+	if (gameOn)
 	{
 		placePlayer();
 		placeTreasures();
@@ -57,7 +61,7 @@ function handleKeypress(event)
 {
 	if (event.key === "Escape")
 		showHideMenu();
-	else if (document.getElementById("gameMenu").style.display === "block")
+	else if (gameOn)
 	{
 		switch (event.key)
 		{
@@ -150,6 +154,8 @@ function handleKeypress(event)
 
 function initGame()
 {
+	gameOn = true;
+
 	initPlayer();
 	initMapTiles();
 	initAction();
@@ -169,9 +175,17 @@ function takeAction()
 
 	resetAction();
 
-	// Get updated attributes
-	getAttributes(document.getElementById("playerAttributes"),
-			player.attributeMap, player.species.attributeMap);
+	// Get updated attributes/stats1
+	switch (openNavLink.id)
+	{
+		case MenuEnum.HOME:
+			getAttributes(document.getElementById("playerAttributes"),
+					player.attributeMap, player.species.attributeMap);
+			break;
+		case MenuEnum.STATS:
+			getStatistics();
+			break;
+	}
 
 	// Check if player is alive
 	if (player.attributeMap.get(AttributeEnum.HEALTH) === 0)
@@ -184,8 +198,8 @@ function takeAction()
 
 		alert("The travels of " + player.name + " the " + player.species.type + " have come to an end.\n"
 			+ "\n"
-			+ "You traveled " + player.stats.tilesTraveled + " of the "
-			+ player.stats.tilesExposed + " tiles you exposed.\n"
+			+ "You traveled " + player.statsMap.get(StatsEnum.TILES_TRAVELED) + " of the "
+			+ player.statsMap.get(StatsEnum.TILES_EXPOSED) + " tiles you exposed.\n"
 			+ "\n"
 			+ "Thank you for playing!");
 	}
@@ -197,4 +211,8 @@ function endGame()
 	resetAction();
 	resetPlayer();
 	resetMap();
+
+	gameOn = false;
+	getStatistics();
+	document.getElementById(MenuEnum.GAME_STATS).style.display = "none";
 }

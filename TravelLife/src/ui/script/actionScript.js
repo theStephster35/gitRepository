@@ -369,7 +369,7 @@ function jumpRiseDrift(doUpdate)
 
 	if (doUpdate)
 	{
-		switch(jumpRiseDriftDirection)
+		switch (jumpRiseDriftDirection)
 		{
 			case ActionEnum.JUMP_LEFT:
 				player.momentum.left += max;
@@ -1049,7 +1049,7 @@ function collect(doUpdate)
 
 		if (collected)
 		{
-			player.stats.treasuresCollected++;
+			player.statsMap.set(StatsEnum.TREASURES_COLLECTED, player.statsMap.get(StatsEnum.TREASURES_COLLECTED)+1);
 
 			alertMessage += attribute + " increased!\n"
 						  + "\n"
@@ -1228,6 +1228,6 @@ function resetAction()
 
 	document.getElementById("actionInfo").innerText = "Select an action to get information.";
 
-	if (document.getElementById("gameMenu").style.display === "block")
+	if (gameOn)
 		initAction();
 }

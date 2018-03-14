@@ -1,0 +1,10 @@
+.nav
+	+nav-menu($nav-width, 0, hidden, $color-lighter)
+
+.navLink
+	display: block
+	+header-nav-link(30px $font-family-menu, 5px 0, $color-lighter)
+
+.navLink.open
+	background-color: $color-light
+	+hover($color-lighter, $color-dark)

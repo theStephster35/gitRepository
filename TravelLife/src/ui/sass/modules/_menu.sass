@@ -1,15 +1,12 @@
 .menu
-	float: left
-	padding: 5px
-	display: block
-	overflow: auto
-	min-width: $menu-width
-	max-width: $menu-width
-	text-align: center
+	+nav-menu($menu-width, 0 5px 0, auto, $color-light)
 	border-right: $border
-	background-color: $color-light
 
-.gameMenu
+.startMenu
+	width: 100%
+
+.notStartMenu
+	width: 100%
 	display: none
 
 .userInput
@@ -20,7 +17,7 @@
 	display: none
 
 .menuButton
-	+button($input-width, $button-size, 15px $font-family-sans, $menu-btn-radius)
+	+button(15px $font-family-sans, $input-width, $button-size, $menu-btn-radius)
 	display: inline-block
 
 .details
@@ -34,8 +31,7 @@
 	text-decoration: underline
 
 .detailsTitle
-	display: none
-	line-height: 30px
+	line-height: 32px
 	text-align: center
 
 .speciesImage
@@ -46,7 +42,7 @@
 .detailsLabel
 	display: inline
 
-.attributes
+.tableData
 	margin: auto
 
 .actionMenu
@@ -85,8 +81,8 @@
 	+grid-auto(3/4, 3/4)
 
 .actionButton
-	+button($button-size, $button-size, 20px $font-family-symbol, 0)
+	+button(20px $font-family-action, $button-size, $button-size, 0)
 
 .actionSymbol
 	display: inline-flex
-	font-family: $font-family-symbol
+	font-family: $font-family-action

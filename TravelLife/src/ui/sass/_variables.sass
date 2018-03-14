@@ -1,16 +1,24 @@
 @font-face
+	font-family: "FontAwesome"
+	src: url("../fonts/fontawesome-webfont.ttf")
+
+@font-face
 	font-family: "Symbola"
 	src: url("../fonts/Symbola_hint.ttf")
 
 $font-family-serif:	 Times, serif
 $font-family-sans:	 Arial, sans-serif
-$font-family-symbol: Symbola
+$font-family-menu:	 FontAwesome
+$font-family-action: Symbola
 
-$color-dark:  black
-$color-light: white
+$color-lightest: white
+$color-lighter:	 darken($color-lightest, 10%)
+$color-light:	 darken($color-lighter, 10%)
+$color-dark:	 black
 
 $border: 2px solid black
 
+$nav-width:	  44px
 $menu-width:  200px
 $input-width: 150px
 $button-size: 45px

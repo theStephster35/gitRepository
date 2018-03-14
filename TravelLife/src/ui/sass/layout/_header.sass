@@ -1,14 +1,16 @@
 .gameTitle
-	height: 37px
+	height: 40px
 	text-align: center
-	background-color: white
+	background-color: $color-lightest
 	border-bottom: $border
 
-.menuLink
-	+header-link(36px $font-family-symbol, left, 0 5px 0)
+.navMenuLink
+	float: left
+	+header-nav-link(40px $font-family-menu, 0 5px 0, $color-lightest)
 
 .mapMenu
 	visibility: hidden
 
 .mapLink
-	+header-link(24px $font-family-symbol, right, 6px)
+	float: right
+	+header-nav-link(30px $font-family-menu, 5px, $color-lightest)

@@ -141,7 +141,7 @@ function initData(tileTypes, playerData, actionData, treasureData)
 			createMapTile(i, j, getTileByCode(tileTypes[i][j]));
 	}
 
-	player.stats.tilesTraveled = 1;
+	player.statsMap.set(StatsEnum.TILES_TRAVELED, 1);
 	mapTiles.children[player.position.row].children[player.position.col].traveled = true;
 
 	confirmAction = document.createElement("button");

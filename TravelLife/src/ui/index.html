@@ -5,133 +5,192 @@
 		<meta charset="utf-8">
 		<title>Travel Life</title>
 		<link rel="stylesheet" href="sass/main.css">
+		<link rel="import" href="menu.html">
 	</head>
 	<body>
 		<header id="gameTitle" class="gameTitle">
-			<a class="menuLink" onclick="showHideMenu()" href="javascript:void(0);">&#119650;</a>
+			<a class="navMenuLink" onclick="showHideMenu()" href="javascript:void(0);">&#61641;</a>
 			<div id="mapMenu" class="mapMenu">
-				<a class="mapLink" onclick="zoomMapInOut('zoomOut')" href="javascript:void(0);">&#9473;</a>
-				<a class="mapLink" onclick="zoomMapInOut('zoomIn')" href="javascript:void(0);">&#9547;</a>
+				<a class="mapLink" onclick="zoomMapInOut('zoomOut')" href="javascript:void(0);">&#61456;</a>
+				<a class="mapLink" onclick="zoomMapInOut('zoomIn')" href="javascript:void(0);">&#61454;</a>
 			</div>
 			<h1>Travel Life</h1>
 		</header>
 		<div class="gameContent">
-			<div id="menu" class="menu">
-				<div id="startMenu">
-					<div>
-						<form id="userInput" accept-charset=utf-8>
-							<h3>Name:</h3>
-							<input id="name" class="userInput" type="text" maxlength="16" required>
+			<div id="navMenu" class="navMenu">
+				<nav id="nav" class="nav">
+					<ul>
+						<li>
+							<a id="home" class="navLink" onclick="openMenu('home')" href="javascript:void(0);">&#61461;</a>
+						</li>
+						<li>
+							<a id="stats" class="navLink" onclick="openMenu('stats')" href="javascript:void(0);">&#61568;</a>
+						</li>
+						<li>
+							<a id="settings" class="navLink" onclick="openMenu('settings')" href="javascript:void(0);">&#61459;</a>
+						</li>				
+					</ul>
+				</nav>
+				<div class="menu">
+
+					<!-- Home -->
+					<div id="startMenu" class="startMenu">
+						<div>
+							<form id="userInput" accept-charset=utf-8>
+								<br>
+								<h3>Name:</h3>
+								<input id="name" class="userInput" type="text" maxlength="16" required>
+								<br>
+								<br>
+								<h3>Species:</h3>
+								<select id="species" class="userInput" onchange="getSpecies()" required>
+									<option class="forcedOption" value="">-- Select Species --</option>
+									<option value="Human">Human</option>
+									<option value="Dog">Dog</option>
+									<option value="Cat">Cat</option>
+								</select>
+								<br>
+								<br>
+								<div>
+									<input id="rememberMe" type="checkbox">
+									<label>Remember Me</label>
+								</div>
+								<input class="menuButton" type="submit" value="Start Traveling">
+							</form>
+							<hr>
+						</div>
+						<div class="details">
+							<a id="speciesLink" class="detailsLink" onclick="showHideDetails('species')" href="javascript:void(0);">&#9660; Hide Species Details</a>
 							<br>
-							<br>
-							<h3>Species:</h3>
-							<select id="species" class="userInput" onchange="getSpecies()" required>
-								<option class="forcedOption" value="">-- Select Species --</option>
-								<option value="Human">Human</option>
-								<option value="Dog">Dog</option>
-								<option value="Cat">Cat</option>
-							</select>
-							<br>
-							<br>
-							<div>
-								<input id="rememberMe" type="checkbox">
-								<label>Remember Me</label>
+							<div id="speciesDetails">
+								<br>
+								<div id="speciesTitle" class="detailsTitle">
+									<img id="speciesImage" class="speciesImage" src="#" alt="Species">
+									<h3 id="speciesLabel" class="detailsLabel"></h3>
+								</div>
+								<p id="speciesInfo">Select a species to get information.</p>
+								<table id="speciesAttributes" class="tableData"></table>
 							</div>
-							<input class="menuButton" type="submit" value="Start Traveling">
-						</form>
-						<hr>
-					</div>
-					<div class="details">
-						<a id="speciesLink" class="detailsLink" onclick="showHideDetails('species')" href="javascript:void(0);">&#9660; Hide Details</a>
-						<br>
-						<div id="speciesDetails">
-							<br>
-							<div id="speciesTitle" class="detailsTitle">
-								<img id="speciesImage" class="speciesImage" src="#" alt="Species">
-								<h3 id="speciesLabel" class="detailsLabel">Species</h3>
-							</div>
-							<p id="speciesInfo">Select a species to get information.</p>
-							<table id="speciesAttributes" class="attributes"></table>
 						</div>
 					</div>
-				</div>
-				<div id="gameMenu" class="gameMenu">
-					<div>
+					<div id="gameMenu" class="notStartMenu">
 						<div>
-							<div id="playerTitle" class="detailsTitle">
+							<div class="detailsTitle">
 								<img id="playerSpecies" class="speciesImage" src="#" alt="Species">
 								<h3 id="playerName" class="detailsLabel"></h3>
 							</div>
 							<hr>
 							<div class="details">
-								<a id="attributeLink" class="detailsLink" onclick="showHideDetails('attribute')" href="javascript:void(0);">&#9660; Hide Details</a>
+								<a id="attributeLink" class="detailsLink" onclick="showHideDetails('attribute')" href="javascript:void(0);">&#9660; Hide Attribute Details</a>
 								<br>
 								<div id="attributeDetails">
 									<br>
-									<div id="attributeTitle" class="detailsTitle">
-										<h3 id="attributeLabel" class="detailsLabel">Attributes</h3>
+									<div class="detailsTitle">
+										<h3 class="detailsLabel">Attributes</h3>
 									</div>
-									<table id="playerAttributes" class="attributes"></table>
+									<table id="playerAttributes" class="tableData"></table>
 								</div>
+								<hr>
+							</div>
+						</div>
+						<div>
+							<p>What will you do?</p>
+							<br>
+							<div class="actionMenu">
+								<div class="actionButtons">
+									<div class="upLeft">
+										<button id="upLeft" class="actionButton" onclick="getAction('upLeft')"></button>
+									</div>
+									<div class="up">
+										<button id="up" class="actionButton" onclick="getAction('up')">&#8593;</button>
+									</div>
+									<div class="upRight">
+										<button id="upRight" class="actionButton" onclick="getAction('upRight')"></button>
+									</div>
+									<div class="left">
+										<button id="left" class="actionButton" onclick="getAction('left')"></button>
+									</div>
+									<div class="center">
+										<button id="center" class="actionButton" onclick="getAction('center')"></button>
+									</div>
+									<div class="right">
+										<button id="right" class="actionButton" onclick="getAction('right')"></button>
+									</div>
+									<div class="downLeft">
+										<button id="downLeft" class="actionButton" onclick="getAction('downLeft')"></button>
+									</div>
+									<div class="down">
+										<button id="down" class="actionButton" onclick="getAction('down')"></button>
+									</div>
+									<div class="downRight">
+										<button id="downRight" class="actionButton" onclick="getAction('downRight')"></button>
+									</div>
+								</div>
+							</div>
+							<br>
+							<br>
+							<div>
+								<input id="autoConfirm" type="checkbox" onchange="updateAutoConfirm()">
+								<label>Auto-Confirm</label>
+							</div>
+							<button id="confirmAction" class="menuButton" onclick="takeAction()" disabled>Choose Action</button>
+							<hr>
+							<div id="actionLinkDetails" class="details">
+								<a id="actionLink" class="detailsLink" onclick="showHideDetails('action')" href="javascript:void(0)">&#9660; Hide Action Details</a>
+								<br>
+								<div id="actionDetails">
+								<br>
+									<div id="actionTitle" class="detailsTitle">
+										<h3 id="actionSymbol" class="actionSymbol"></h3>
+										<h3 id="actionLabel" class="detailsLabel"></h3>
+									</div>
+									<p id="actionInfo">Select an action to get information.</p>
+								</div>
+								<hr>
+							</div>
+						</div>
+						<button class="menuButton" onclick="startEndGame()">Give Up</button>
+					</div>
+
+					<!-- Stats -->
+					<div id="statsMenu" class="notStartMenu">
+						<div class="detailsTitle">
+							<h3 class="detailsLabel">Statistics</h3>
+						</div>
+						<hr>
+						<div id="gameStats" class="details">
+							<a id="gameStatsLink" class="detailsLink" onclick="showHideDetails('gameStats')" href="javascript:void(0);">&#9660; Hide Game Stats Details</a>
+							<br>
+							<div id="gameStatsDetails">
+								<br>
+								<div class="detailsTitle">
+									<h3 class="detailsLabel">Game Statistics</h3>
+								</div>
+								<table id="gameStatsData" class="tableData"></table>
 							</div>
 							<hr>
 						</div>
-						<p>What will you do?</p>
-						<br>
-						<div class="actionMenu">
-							<div class="actionButtons">
-								<div class="upLeft">
-									<button id="upLeft" class="actionButton" onclick="getAction('upLeft')"></button>
+						<div class="details">
+							<a id="playerStatsLink" class="detailsLink" onclick="showHideDetails('playerStats')" href="javascript:void(0);">&#9660; Hide Player Stats Details</a>
+							<br>
+							<div id="playerStatsDetails">
+								<br>
+								<div class="detailsTitle">
+									<h3 class="detailsLabel">Player Statistics</h3>
 								</div>
-								<div class="up">
-									<button id="up" class="actionButton" onclick="getAction('up')">&#8593;</button>
-								</div>
-								<div class="upRight">
-									<button id="upRight" class="actionButton" onclick="getAction('upRight')"></button>
-								</div>
-								<div class="left">
-									<button id="left" class="actionButton" onclick="getAction('left')"></button>
-								</div>
-								<div class="center">
-									<button id="center" class="actionButton" onclick="getAction('center')"></button>
-								</div>
-								<div class="right">
-									<button id="right" class="actionButton" onclick="getAction('right')"></button>
-								</div>
-								<div class="downLeft">
-									<button id="downLeft" class="actionButton" onclick="getAction('downLeft')"></button>
-								</div>
-								<div class="down">
-									<button id="down" class="actionButton" onclick="getAction('down')"></button>
-								</div>
-								<div class="downRight">
-									<button id="downRight" class="actionButton" onclick="getAction('downRight')"></button>
-								</div>
+								<table id="playerStatsData" class="tableData"></table>
 							</div>
 						</div>
-						<br>
-						<br>
-						<div>
-							<input id="autoConfirm" type="checkbox" onchange="updateAutoConfirm()">
-							<label>Auto-Confirm</label>
-						</div>
-						<button id="confirmAction" class="menuButton" onclick="takeAction()" disabled>Choose Action</button>
-						<hr>
 					</div>
-					<div id="actionLinkDetails" class="details">
-						<a id="actionLink" class="detailsLink" onclick="showHideDetails('action')" href="javascript:void(0)">&#9660; Hide Details</a>
-						<br>
-						<div id="actionDetails">
-						<br>
-							<div id="actionTitle" class="detailsTitle">
-								<h3 id="actionSymbol" class="actionSymbol"></h3>
-								<h3 id="actionLabel" class="detailsLabel"></h3>
-							</div>
-							<p id="actionInfo">Select an action to get information.</p>
+
+					<!-- Settings -->
+					<div id="settingsMenu" class="notStartMenu">
+						<div class="detailsTitle">
+							<h3 class="detailsLabel">Settings</h3>
 						</div>
 						<hr>
+						<p>There are currently no settings.</p>
 					</div>
-					<button class="menuButton" onclick="startEndGame()">Give Up</button>
 				</div>
 			</div>
 			<div id="map" class="map">
@@ -142,6 +201,7 @@
 		</div>
 
 		<script src="enums/gameEnum.js"></script>
+		<script src="enums/actionEnum.js"></script>
 
 		<script src="objects/species.js"></script>
 		<script src="objects/player.js"></script>

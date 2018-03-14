@@ -36,9 +36,9 @@ function validateTakeAction(results)
 			player.species.attributeMap.get(AttributeEnum.SWIM), results.swim);
 	validateTakeActionData("dig", player.attributeMap.get(AttributeEnum.DIG),
 			player.species.attributeMap.get(AttributeEnum.DIG), results.dig);
-	validateTakeActionData("tilesExposed", player.stats.tilesExposed, 0, results.tilesExposed);
-	validateTakeActionData("tilesTraveled", player.stats.tilesTraveled, 0, results.tilesTraveled);
-	validateTakeActionData("treasuresCollected", player.stats.treasuresCollected, 0, results.treasuresCollected);
+	validateTakeActionData("tilesExposed", player.statsMap.get(StatsEnum.TILES_EXPOSED), 0, results.tilesExposed);
+	validateTakeActionData("tilesTraveled", player.statsMap.get(StatsEnum.TILES_TRAVELED), 0, results.tilesTraveled);
+	validateTakeActionData("treasuresCollected", player.statsMap.get(StatsEnum.TREASURES_COLLECTED), 0, results.treasuresCollected);
 }
 
 function validateTakeActionData(dataType, actualData, defaultData, resultData)

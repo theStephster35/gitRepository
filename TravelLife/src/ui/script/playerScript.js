@@ -1,6 +1,11 @@
 var player;
 var playerIcon = document.getElementById("playerIcon");
 
+var playerStatsMap = new Map();
+playerStatsMap.set(StatsEnum.TILES_EXPOSED, 0);
+playerStatsMap.set(StatsEnum.TILES_TRAVELED, 0);
+playerStatsMap.set(StatsEnum.TREASURES_COLLECTED, 0);
+
 var actionFunctionMap = new Map();
 actionFunctionMap.set(ActionEnum.UP_LEFT,    moveUpLeft);
 actionFunctionMap.set(ActionEnum.UP,         moveUp);
@@ -51,11 +56,8 @@ function initPlayer()
 	playerSpecies.src = player.species.image;
 	playerSpecies.alt = player.species.type;
 	document.getElementById("playerName").innerText = player.name;
-	document.getElementById("playerTitle").style.display = "block";
 
 	// Player Attributes
-	var playerAttributes = document.getElementById("playerAttributes");
-	document.getElementById("attributeTitle").style.display = "block";
 	getAttributes(document.getElementById("playerAttributes"),
 			player.attributeMap, player.species.attributeMap);
 }

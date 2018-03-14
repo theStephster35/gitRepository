@@ -146,7 +146,7 @@ function createMapTile(row, col, tile)
 		mapTile.style.setProperty("background", tile.color);
 		mapTile.traveled = false;
 
-		player.stats.tilesExposed++;
+		player.statsMap.set(StatsEnum.TILES_EXPOSED, (player.statsMap.get(StatsEnum.TILES_EXPOSED)+1));
 
 		if (col < 0)
 		{
@@ -205,7 +205,7 @@ function createMapTile(row, col, tile)
 		mapTile.style.visibility = "visible";
 		mapTile.className = mapTile.className.replace(" hidden", "");
 
-		player.stats.tilesExposed++;
+		player.statsMap.set(StatsEnum.TILES_EXPOSED, (player.statsMap.get(StatsEnum.TILES_EXPOSED)+1));
 
 		tile = getTileByTileType(mapTile.type);
 		if (!tile.solid || tile.durability > 0)
@@ -330,7 +330,7 @@ function exposeMapTiles()
 	if (!playerTile.traveled)
 	{
 		playerTile.traveled = true;
-		player.stats.tilesTraveled++;
+		player.statsMap.set(StatsEnum.TILES_TRAVELED, (player.statsMap.get(StatsEnum.TILES_TRAVELED)+1));
 	}
 
 	// Expose up column

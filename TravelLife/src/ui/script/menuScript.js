@@ -1,3 +1,5 @@
+var openNavLink;
+
 var upLeftButton = document.getElementById(ActionEnum.UP_LEFT);
 var upButton = document.getElementById(ActionEnum.UP);
 var upRightButton = document.getElementById(ActionEnum.UP_RIGHT);
@@ -12,36 +14,90 @@ var autoConfirm = document.getElementById("autoConfirm");
 
 function showHideMenu()
 {
-	var menu = document.getElementById("menu");
+	var navMenu = document.getElementById("navMenu");
 
 	// Hide Menu
-	if (menu.style.display === ""
-	 || menu.style.display === "block")
-		menu.style.display = "none";
+	if (navMenu.style.display === ""
+	 || navMenu.style.display === "flex")
+		navMenu.style.display = "none";
 	else // Show Menu
-		menu.style.display = "block";
+		navMenu.style.display = "flex";
 
 	adjustContents();
 }
 
+function openMenu(navLink)
+{
+	if (openNavLink != null)
+	{
+		var closeNavLink = openNavLink.id;
+		if (navLink === closeNavLink)
+			return;
+
+		getMenuByNavLink(closeNavLink).style.display = "none";
+		openNavLink.className = openNavLink.className.replace(" open", "");
+	}
+
+	getMenuByNavLink(navLink).style.display = "inline-block";
+	openNavLink = document.getElementById(navLink);
+	openNavLink.className += " open";
+
+	// Get updated attributes/stats
+	switch (openNavLink.id)
+	{
+		case MenuEnum.HOME:
+			if (gameOn)
+				getAttributes(document.getElementById("playerAttributes"),
+						player.attributeMap, player.species.attributeMap);
+			break;
+		case MenuEnum.STATS:
+			getStatistics();
+			break;
+	}
+}
+
+function getMenuByNavLink(navLink)
+{
+	var menu;
+
+	switch (navLink)
+	{
+		case MenuEnum.HOME:
+			menu = (gameOn ? MenuEnum.GAME_MENU : MenuEnum.START_MENU);
+			break;
+		case MenuEnum.STATS:
+			menu = MenuEnum.STATS_MENU;
+			break;
+		case MenuEnum.SETTINGS:
+			menu = MenuEnum.SETTINGS_MENU;
+			break;
+		default:
+			if (openNavLink != null && openNavLink.id !== MenuEnum.HOME)
+				menu = openNavLink.id;
+			else
+				menu = (gameOn ? MenuEnum.GAME_MENU : MenuEnum.START_MENU);
+	}
+
+	return document.getElementById(menu);
+}
+
 function startEndGame(event)
 {
-	var startMenu = document.getElementById("startMenu");
-	var gameMenu = document.getElementById("gameMenu");
+	var startMenu = document.getElementById(MenuEnum.START_MENU);
+	var gameMenu = document.getElementById(MenuEnum.GAME_MENU);
 
 	// Start game
-	if (startMenu.style.display === ""
-	 || startMenu.style.display === "block")
+	if (!gameOn)
 	{
 		startMenu.style.display = "none";
-		gameMenu.style.display = "block";
+		gameMenu.style.display = "inline-block";
 
 		initGame();
 	}
 	else if (player.attributeMap.get(AttributeEnum.HEALTH) === 0
 		  || confirm("Are you sure you want to give up?"))
 	{
-		startMenu.style.display = "block";
+		startMenu.style.display = "inline-block";
 		gameMenu.style.display = "none";
 
 		endGame();
@@ -51,22 +107,43 @@ function startEndGame(event)
 		event.preventDefault();
 }
 
-function showHideDetails(value)
+function showHideDetails(details)
 {
-	var infoLink = document.getElementById(value + "Link");
+	var infoLink = document.getElementById(details + "Link");
 
 	if (infoLink != null)
 	{
-		// Hide Details
-		if (infoLink.innerText === "\u25BC Hide Details")
+		var detailsDisplay = "";
+
+		switch (details)
 		{
-			infoLink.innerText = "\u25BA Show Details";
-			document.getElementById(value + "Details").style.display = "none";
+			case MenuEnum.SPECIES:
+				detailsDisplay = "Species ";
+				break;
+			case MenuEnum.ATTRIBUTE:
+				detailsDisplay = "Attribute ";
+				break;
+			case MenuEnum.ACTION:
+				detailsDisplay = "Action ";
+				break;
+			case MenuEnum.GAME_STATS:
+				detailsDisplay = "Game Stats ";
+				break;
+			case MenuEnum.PLAYER_STATS:
+				detailsDisplay = "Player Stats ";
+				break;
+		}
+
+		// Hide Details
+		if (infoLink.innerText === "\u25BC Hide " + detailsDisplay + "Details")
+		{
+			infoLink.innerText = "\u25BA Show " + detailsDisplay + "Details";
+			document.getElementById(details + "Details").style.display = "none";
 		}
 		else // Show Details
 		{
-			infoLink.innerText = "\u25BC Hide Details";
-			document.getElementById(value + "Details").style.display = "block";
+			infoLink.innerText = "\u25BC Hide " + detailsDisplay + "Details";
+			document.getElementById(details + "Details").style.display = "block";
 		}
 	}
 }
@@ -117,14 +194,14 @@ function getAttributes(attributeTable, playerAttributeMap, speciesAttributeMap)
 	{
 		var playerData = playerAttributeMap.get(label);
 		if (speciesAttributeMap != null && speciesAttributeMap.has(label))
-			attributeTable.appendChild(createAttribute(label,
+			attributeTable.appendChild(createTableData(label,
 					playerData, speciesAttributeMap.get(label)));
 		else
-			attributeTable.appendChild(createAttribute(label, playerData));
+			attributeTable.appendChild(createTableData(label, playerData));
 	}
 }
 
-function createAttribute(label, playerData, speciesData)
+function createTableData(label, playerData, speciesData)
 {
 	var attribute = document.createElement("tr");
 
@@ -132,29 +209,29 @@ function createAttribute(label, playerData, speciesData)
 	if (speciesData != null)
 		color = "rgb(" + (255-((playerData/speciesData)*255)) + ", 0, 0)";
 
-	// Attribute Label
-	var attributeLabelData = document.createElement("td");
-	attributeLabelData.innerText = label + ":";
-	attributeLabelData.style.color = color;
-	attribute.appendChild(attributeLabelData);
+	// Label
+	var tableLabelData = document.createElement("td");
+	tableLabelData.innerText = label + ":";
+	tableLabelData.style.color = color;
+	attribute.appendChild(tableLabelData);
 
-	// Attribute Data
-	attributeLabelData = document.createElement("td");
-	attributeLabelData.style.textAlign = "right";
-	attributeLabelData.innerText = playerData;
-	attributeLabelData.style.color = color;
-	attribute.appendChild(attributeLabelData);
+	// Data
+	tableLabelData = document.createElement("td");
+	tableLabelData.style.textAlign = "right";
+	tableLabelData.innerText = playerData;
+	tableLabelData.style.color = color;
+	attribute.appendChild(tableLabelData);
 
 	if (speciesData != null)
 	{
-		attributeLabelData = document.createElement("td");
-		attributeLabelData.innerText = " / ";
-		attribute.appendChild(attributeLabelData);
+		tableLabelData = document.createElement("td");
+		tableLabelData.innerText = " / ";
+		attribute.appendChild(tableLabelData);
 
-		attributeLabelData = document.createElement("td");
-		attributeLabelData.style.textAlign = "right";
-		attributeLabelData.innerText = speciesData;
-		attribute.appendChild(attributeLabelData);
+		tableLabelData = document.createElement("td");
+		tableLabelData.style.textAlign = "right";
+		tableLabelData.innerText = speciesData;
+		attribute.appendChild(tableLabelData);
 	}
 
 	return attribute;
@@ -917,4 +994,30 @@ function disableButton(button)
 	button.label = "";
 	button.disabled = true;
 	button.innerText = "\u2BBE";
+}
+
+function getStatistics()
+{
+	var statsTable;
+
+	if (gameOn)
+	{
+		statsTable = document.getElementById("gameStatsData");
+		statsTable.innerHTML = "";
+		for (var label of player.statsMap.keys())
+		{
+			var playerData = player.statsMap.get(label);
+			if (playerStatsMap.get(label) < playerData)
+				playerStatsMap.set(label, playerData);
+
+			statsTable.appendChild(createTableData(label, player.statsMap.get(label)));
+		}
+
+		document.getElementById(MenuEnum.GAME_STATS).style.display = "block";
+	}
+
+	statsTable = document.getElementById("playerStatsData");
+	statsTable.innerHTML = "";
+	for (var label of playerStatsMap.keys())
+		statsTable.appendChild(createTableData(label, playerStatsMap.get(label)));
 }
