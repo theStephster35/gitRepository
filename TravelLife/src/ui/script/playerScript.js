@@ -77,6 +77,12 @@ function placePlayer()
 	playerIcon.style.left = playerTile.offsetLeft + "px";
 }
 
+function locatePlayer()
+{
+	jumpToLocation((playerIcon.offsetTop-(map.style.minHeight.replace("px","")/2)),
+				   (playerIcon.offsetLeft-(map.style.minWidth.replace("px","")/2)));
+}
+
 function playerIsInStatus(status, direction)
 {
 	var playerIsInStatus = true;

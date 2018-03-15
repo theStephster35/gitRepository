@@ -7,8 +7,7 @@ function getRandomNumber(min, max)
 
 function initAction()
 {
-	placePlayer();
-	placeTreasures();
+	adjustMapTilesContents()
 
 	var row = player.position.row;
 	var col = player.position.col;

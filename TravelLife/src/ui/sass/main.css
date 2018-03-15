@@ -41,11 +41,20 @@ ul {
 .mapMenu {
   visibility: hidden; }
 
-.mapLink {
+.locateLink {
+  float: right;
+  margin-right: 30px;
+  font: 30px FontAwesome;
+  padding: 5px; }
+  .locateLink:hover {
+    color: white;
+    background-color: black; }
+
+.zoomLink {
   float: right;
   font: 30px FontAwesome;
   padding: 5px; }
-  .mapLink:hover {
+  .zoomLink:hover {
     color: white;
     background-color: black; }
 

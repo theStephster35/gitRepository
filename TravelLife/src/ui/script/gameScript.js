@@ -18,23 +18,15 @@ function init()
 
 function adjustContents()
 {
-	var height = window.innerHeight;
-
 	var navMenu = document.getElementById("navMenu");
 	if (navMenu.style.display === ""
 	 || navMenu.style.display === "flex")
 	{
-		navMenu.style.minHeight = (height - getHeightOffset(navMenu)) + "px";
+		navMenu.style.minHeight = (window.innerHeight - getHeightOffset(navMenu)) + "px";
 		navMenu.style.maxHeight = navMenu.style.minHeight;
 	}
 
-	adjustMapContents(height);
-
-	if (gameOn)
-	{
-		placePlayer();
-		placeTreasures();
-	}
+	adjustMapContents();
 }
 
 function getHeightOffset(element)
@@ -186,6 +178,9 @@ function takeAction()
 			getStatistics();
 			break;
 	}
+
+	if (document.getElementById("autoLocatePlayer").checked)
+		locatePlayer();
 
 	// Check if player is alive
 	if (player.attributeMap.get(AttributeEnum.HEALTH) === 0)

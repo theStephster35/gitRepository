@@ -4,12 +4,37 @@ var zoom = 3;
 var tileWidth = 15;
 var tileHeight = 16;
 
-function adjustMapContents(height)
+function adjustMapContents()
 {
-	map.style.minHeight = (height - getHeightOffset(map)) + "px";
+	map.style.minHeight = (window.innerHeight - getHeightOffset(map)) + "px";
 	map.style.maxHeight = map.style.minHeight;
 	map.style.minWidth = (window.innerWidth - getWidthOffset(map)) + "px";
 	map.style.maxWidth = map.style.minWidth;
+
+	adjustMapTilesContents();
+}
+
+function adjustMapTilesContents()
+{
+	if (gameOn)
+	{
+		var playerTile = mapTiles.children[player.position.row].children[player.position.col];
+		while (playerIcon.style.top !== playerTile.offsetTop + "px"
+			|| playerIcon.style.left !== playerTile.offsetLeft + "px")
+		{
+			placePlayer();
+			placeTreasures();
+		}
+
+		if (document.getElementById("autoLocatePlayer").checked)
+			locatePlayer();
+	}
+}
+
+function jumpToLocation(offsetTop, offsetLeft)
+{
+	map.scrollTop = offsetTop;
+	map.scrollLeft = offsetLeft;
 }
 
 function zoomMapInOut(zoomType)
@@ -39,23 +64,6 @@ function zoomMapInOut(zoomType)
 		var zoomWidth = (tileWidth*zoom) + "px";
 		var zoomHeight = (tileHeight*zoom) + "px";
 
-		playerIcon.style.width = zoomWidth;
-		playerIcon.style.height = zoomHeight;
-
-		for (var treasureColMap of treasureMap.values())
-		{
-			for (var treasure of treasureColMap.values())
-			{
-				var treasureTile = mapTiles.children[treasure.row].children[treasure.col];
-				var treasureIcon = document.getElementById(treasure.count);
-				if (treasureIcon != null)
-				{
-					treasureIcon.style.width = zoomWidth;
-					treasureIcon.style.height = zoomHeight;
-				}
-			}
-		}
-
 		for (var row = 0; row < mapTiles.children.length; row++)
 		{
 			var mapRow = mapTiles.children[row];
@@ -71,8 +79,24 @@ function zoomMapInOut(zoomType)
 			}
 		}
 
-		adjustContents();
+		for (var treasureColMap of treasureMap.values())
+		{
+			for (var treasure of treasureColMap.values())
+			{
+				var treasureIcon = document.getElementById(treasure.count);
+				if (treasureIcon != null)
+				{
+					treasureIcon.style.width = zoomWidth;
+					treasureIcon.style.height = zoomHeight;
+				}
+			}
+		}
+
+		playerIcon.style.width = zoomWidth;
+		playerIcon.style.height = zoomHeight;
 	}
+
+	adjustMapTilesContents();
 }
 
 function initMapTiles()

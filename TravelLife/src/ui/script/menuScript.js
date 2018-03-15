@@ -23,7 +23,7 @@ function showHideMenu()
 	else // Show Menu
 		navMenu.style.display = "flex";
 
-	adjustContents();
+	adjustMapContents();
 }
 
 function openMenu(navLink)

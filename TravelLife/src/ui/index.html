@@ -11,8 +11,9 @@
 		<header id="gameTitle" class="gameTitle">
 			<a class="navMenuLink" onclick="showHideMenu()" href="javascript:void(0);">&#61641;</a>
 			<div id="mapMenu" class="mapMenu">
-				<a class="mapLink" onclick="zoomMapInOut('zoomOut')" href="javascript:void(0);">&#61456;</a>
-				<a class="mapLink" onclick="zoomMapInOut('zoomIn')" href="javascript:void(0);">&#61454;</a>
+				<a class="zoomLink" onclick="zoomMapInOut('zoomOut')" href="javascript:void(0);">&#61456;</a>
+				<a class="zoomLink" onclick="zoomMapInOut('zoomIn')" href="javascript:void(0);">&#61454;</a>
+				<a class="locateLink" onclick="locatePlayer()" href="javascript:void(0);">&#61505;</a>
 			</div>
 			<h1>Travel Life</h1>
 		</header>
@@ -189,7 +190,12 @@
 							<h3 class="detailsLabel">Settings</h3>
 						</div>
 						<hr>
-						<p>There are currently no settings.</p>
+						<form>
+							<div>
+								<input id="autoLocatePlayer" type="checkbox" checked>
+								<label>Auto-Locate Player</label>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
