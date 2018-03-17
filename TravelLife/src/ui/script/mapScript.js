@@ -129,7 +129,7 @@ function createMapTile(row, col, tile)
 			row++;
 			player.position.row++;
 			adjustTreasures(1, 0);
-			mapTiles.prepend(mapRow);
+			mapTiles.insertBefore(mapRow, mapTiles.children[0]);
 		}
 		else
 			mapTiles.appendChild(mapRow);
@@ -176,7 +176,7 @@ function createMapTile(row, col, tile)
 		{
 			player.position.col++;
 			adjustTreasures(0, 1);
-			mapRow.prepend(mapTile);
+			mapRow.insertBefore(mapTile, mapRow.children[0]);
 
 			// Shift columns left going up
 			for (var i = row-1; i >= 0; i--)
@@ -194,7 +194,7 @@ function createMapTile(row, col, tile)
 				mapTile.style.setProperty("background", hiddenTile.color);
 				mapTile.traveled = false;
 
-				mapRows[i].prepend(mapTile);
+				mapRows[i].insertBefore(mapTile, mapRows[i].children[0]);
 			}
 
 			// Shift columns left going down
@@ -213,7 +213,7 @@ function createMapTile(row, col, tile)
 				mapTile.style.setProperty("background", hiddenTile.color);
 				mapTile.traveled = false;
 
-				mapRows[i].prepend(mapTile);
+				mapRows[i].insertBefore(mapTile, mapRows[i].children[0]);
 			}
 
 			col++;

@@ -1,3 +1,5 @@
+var gameOn = false
+
 var openNavLink;
 
 var upLeftButton = document.getElementById(ActionEnum.UP_LEFT);

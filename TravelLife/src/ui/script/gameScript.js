@@ -5,8 +5,6 @@ window.addEventListener("keypress", handleKeypress)
 var userInput = document.getElementById("userInput");
 userInput.addEventListener('submit', startEndGame);
 
-var gameOn = false
-
 function init()
 {
 	endGame();

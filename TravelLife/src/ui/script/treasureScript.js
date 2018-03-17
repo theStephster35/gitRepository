@@ -37,7 +37,7 @@ function initTreasure(row, col)
 		treasureIcon.style.height = (tileHeight*zoom) + "px";
 		treasureIcon.className = "treasureIcon";
 
-		map.prepend(treasureIcon);
+		map.append(treasureIcon);
 	}
 }
 
