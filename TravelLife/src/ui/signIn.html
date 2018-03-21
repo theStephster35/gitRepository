@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Travel Life - Sign In</title>
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+	<body class="signIn">
+		<h1 class="gameTitle">Travel Life</h1>
+		<div>
+			<form id="userInput" class="signIn" accept-charset=utf-8>
+				<br>
+				<h3>Username:</h3>
+				<input id="username" class="userInput" type="text" maxlength="16" required>
+				<br>
+				<br>
+				<h3>Password:</h3>
+				<input id="password" class="userInput" type="password" maxlength="16" required>
+				<br>
+				<br>
+				<input class="menuButton" type="submit" value="Sign In">
+			</form>
+			<p id=signInStatus>Enter credentials.</p>
+			<hr>
+			<p id=signInStatus>Continue without signing in.</p>
+			<button class="menuButton" onclick="goToGame()">Travel Life</button>
+			<p>If you don't sign in,<br>
+			   you cannot save progress<br>
+			   or place rank in statistics.
+			</p>
+		</div>
+
+		<script src="enums/configEnum.js"></script>
+
+		<script src="objects/user.js"></script>
+
+		<script src="script/signInScript.js"></script>
+	</body>
+</html>

@@ -5,15 +5,14 @@
   font-family: "Symbola";
   src: url("../fonts/Symbola_hint.ttf"); }
 body,
-img,
 h1,
 h3,
 p {
-  margin: 0; }
-
-body {
-  background-color: black;
+  margin: 0;
   font-family: Times, serif; }
+
+img {
+  margin: 0; }
 
 a {
   color: black;
@@ -38,6 +37,12 @@ ul {
     color: white;
     background-color: black; }
 
+.welcome {
+  float: left;
+  text-align: left;
+  margin-left: 5px;
+  visibility: hidden; }
+
 .mapMenu {
   visibility: hidden; }
 
@@ -58,12 +63,21 @@ ul {
     color: white;
     background-color: black; }
 
+.signIn {
+  text-align: center;
+  min-width: 100%;
+  max-width: 100%;
+  padding: 0;
+  overflow: hidden;
+  background-color: #cccccc; }
+
 .navMenu {
   float: left;
   display: flex; }
 
 .gameContent {
-  display: flex; }
+  display: flex;
+  background-color: black; }
 
 .nav {
   text-align: center;
@@ -91,7 +105,7 @@ ul {
   text-align: center;
   min-width: 200px;
   max-width: 200px;
-  padding: 0 5px 0;
+  padding: 0 5px;
   overflow: auto;
   background-color: #cccccc;
   border-right: 2px solid black; }
@@ -115,7 +129,8 @@ ul {
   width: 150px;
   height: 45px;
   border-radius: 10px;
-  display: inline-block; }
+  display: inline-block;
+  margin: 5px 0; }
 
 .details {
   text-align: left; }

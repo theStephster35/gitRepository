@@ -1,5 +1,5 @@
 .menu
-	+nav-menu($menu-width, 0 5px 0, auto, $color-light)
+	+nav-menu($menu-width, 0 5px, auto, $color-light)
 	border-right: $border
 
 .startMenu
@@ -19,6 +19,7 @@
 .menuButton
 	+button(15px $font-family-sans, $input-width, $button-size, $menu-btn-radius)
 	display: inline-block
+	margin: 5px 0
 
 .details
 	text-align: left
@@ -54,31 +55,31 @@
 	grid-template-columns: repeat(3, $grid-size)
 
 .upLeft
-	+grid-auto(1/2, 1/2)
+	+grid-auto((1/2), (1/2))
 
 .up
-	+grid-auto(2/3, 1/2)
+	+grid-auto((2/3), (1/2))
 
 .upRight
-	+grid-auto(3/4, 1/2)
+	+grid-auto((3/4), (1/2))
 
 .left
-	+grid-auto(1/2, 2/3)
+	+grid-auto((1/2), (2/3))
 
 .center
-	+grid-auto(2/3, 2/3)
+	+grid-auto((2/3), (2/3))
 
 .right
-	+grid-auto(3/4, 2/3)
+	+grid-auto((3/4), (2/3))
 
 .downLeft
-	+grid-auto(1/2, 3/4)
+	+grid-auto((1/2), (3/4))
 
 .down
-	+grid-auto(2/3, 3/4)
+	+grid-auto((2/3), (3/4))
 
 .downRight
-	+grid-auto(3/4, 3/4)
+	+grid-auto((3/4), (3/4))
 
 .actionButton
 	+button(20px $font-family-action, $button-size, $button-size, 0)

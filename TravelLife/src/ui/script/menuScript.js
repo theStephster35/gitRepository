@@ -70,6 +70,9 @@ function getMenuByNavLink(navLink)
 		case MenuEnum.STATS:
 			menu = MenuEnum.STATS_MENU;
 			break;
+		case MenuEnum.USER:
+			menu = MenuEnum.USER_MENU;
+			break;
 		case MenuEnum.SETTINGS:
 			menu = MenuEnum.SETTINGS_MENU;
 			break;

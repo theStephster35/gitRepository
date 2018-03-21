@@ -4,12 +4,15 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Travel Life</title>
-		<link rel="stylesheet" href="sass/main.css">
-		<link rel="import" href="menu.html">
+		<link rel="stylesheet" href="css/main.css">
 	</head>
 	<body>
 		<header id="gameTitle" class="gameTitle">
 			<a class="navMenuLink" onclick="showHideMenu()" href="javascript:void(0);">&#61641;</a>
+			<div id="welcome" class="welcome">
+				<p>Welcome,</p>
+				<p id="username"></p>
+			</div>
 			<div id="mapMenu" class="mapMenu">
 				<a class="zoomLink" onclick="zoomMapInOut('zoomOut')" href="javascript:void(0);">&#61456;</a>
 				<a class="zoomLink" onclick="zoomMapInOut('zoomIn')" href="javascript:void(0);">&#61454;</a>
@@ -23,6 +26,9 @@
 					<ul>
 						<li>
 							<a id="home" class="navLink" onclick="openMenu('home')" href="javascript:void(0);">&#61461;</a>
+						</li>
+						<li>
+							<a id="user" class="navLink" onclick="openMenu('user')" href="javascript:void(0);">&#61447;</a>
 						</li>
 						<li>
 							<a id="stats" class="navLink" onclick="openMenu('stats')" href="javascript:void(0);">&#61568;</a>
@@ -185,6 +191,15 @@
 					</div>
 
 					<!-- Settings -->
+					<div id="userMenu" class="notStartMenu">
+						<div class="detailsTitle">
+							<h3 class="detailsLabel">User Profile</h3>
+						</div>
+						<hr>
+						<button class="menuButton" onclick="deleteUser()">Delete User</button>
+					</div>
+
+					<!-- Settings -->
 					<div id="settingsMenu" class="notStartMenu">
 						<div class="detailsTitle">
 							<h3 class="detailsLabel">Settings</h3>
@@ -206,14 +221,17 @@
 			</div>
 		</div>
 
+		<script src="enums/configEnum.js"></script>
 		<script src="enums/gameEnum.js"></script>
 		<script src="enums/actionEnum.js"></script>
 
+		<script src="objects/user.js"></script>
 		<script src="objects/species.js"></script>
 		<script src="objects/player.js"></script>
 		<script src="objects/mapTile.js"></script>
 		<script src="objects/treasure.js"></script>
 
+		<script src="script/userScript.js"></script>
 		<script src="script/menuScript.js"></script>
 		<script src="script/playerScript.js"></script>
 		<script src="script/mapScript.js"></script>

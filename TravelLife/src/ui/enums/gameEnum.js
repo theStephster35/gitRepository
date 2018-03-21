@@ -1,3 +1,8 @@
+var ConfigEnum = 
+{
+	API_ROOT: "http://localhost:8080"
+};
+
 var MenuEnum =
 {
 	HOME: "home",
@@ -7,6 +12,9 @@ var MenuEnum =
 	ATTRIBUTE: "attribute",
 	ACTION: "action",
 
+	USER: "user",
+	USER_MENU: "userMenu",
+
 	STATS: "stats",
 	STATS_MENU: "statsMenu",
 	GAME_STATS: "gameStats",
@@ -14,7 +22,7 @@ var MenuEnum =
 
 	SETTINGS: "settings",
 	SETTINGS_MENU: "settingsMenu"
-}
+};
 
 var SpeciesEnum =
 {

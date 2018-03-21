@@ -7,6 +7,12 @@ userInput.addEventListener('submit', startEndGame);
 
 function init()
 {
+	if (window.opener != null
+	 && window.opener.user != null)
+		initUser();
+	else // User signed in
+		resetUser();
+
 	endGame();
 	adjustContents();
 	updateAutoConfirm();
@@ -165,7 +171,7 @@ function takeAction()
 
 	resetAction();
 
-	// Get updated attributes/stats1
+	// Get updated attributes/stats
 	switch (openNavLink.id)
 	{
 		case MenuEnum.HOME:
