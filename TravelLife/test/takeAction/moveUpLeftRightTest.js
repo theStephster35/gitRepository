@@ -54,7 +54,7 @@ function testClimb_Left()
 						image: "images/Species/" + player.species.type + "/" + ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png",
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.CLIMB,
+						status: StatusEnum.CLIMBING,
 						left: 1,
 						sight: testSight,
 						tilesExposed: 9,
@@ -74,7 +74,7 @@ function testClimbOver_Left_Climb()
 	initData(tileTypes,
 			 {image: "",
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  sight: testSight, endurance: testEndurance, climb: 1},
 			 {innerText: ActionEnum.CLIMB_OVER});
@@ -86,7 +86,7 @@ function testClimbOver_Left_Climb()
 						image: "images/Species/" + player.species.type + "/Species.png",
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.STOP,
+						status: StatusEnum.STOPPED,
 						left: 0,
 						right: 0,
 						sight: testSight,
@@ -109,7 +109,7 @@ function testClimbOver_Left_Climb_NoEndurance()
 	initData(tileTypes,
 			 {image: "",
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  health: testHealth, sight: 1, endurance: 1, climb: 1},
 			 {innerText: ActionEnum.CLIMB_OVER});
@@ -121,7 +121,7 @@ function testClimbOver_Left_Climb_NoEndurance()
 						image: "images/Species/" + player.species.type + "/Species.png",
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.STOP,
+						status: StatusEnum.STOPPED,
 						left: 0,
 						right: 0,
 						health: (testHealth-1),
@@ -145,7 +145,7 @@ function testClimbOver_Left_Swim()
 	initData(tileTypes,
 			 {image: "",
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  sight: testSight, endurance: testEndurance, swim: 1},
 			 {innerText: ActionEnum.CLIMB_OVER});
 
@@ -156,7 +156,7 @@ function testClimbOver_Left_Swim()
 						image: "images/Species/" + player.species.type + "/Species.png",
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.STOP,
+						status: StatusEnum.STOPPED,
 						left: 0,
 						right: 0,
 						sight: testSight,
@@ -179,7 +179,7 @@ function testClimbOver_Left_Swim_NoEndurance()
 	initData(tileTypes,
 			 {image: "",
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: testHealth, sight: 1, endurance: 1, swim: 1},
 			 {innerText: ActionEnum.CLIMB_OVER});
 
@@ -190,7 +190,7 @@ function testClimbOver_Left_Swim_NoEndurance()
 						image: "images/Species/" + player.species.type + "/Species.png",
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.STOP,
+						status: StatusEnum.STOPPED,
 						left: 0,
 						right: 0,
 						health: (testHealth-1),
@@ -223,7 +223,7 @@ function testClimbOut_Left()
 						image: "images/Species/" + player.species.type + "/" + ActionEnum.CLIMB_LEFT.replace(" ", "") + ".png",
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.CLIMB,
+						status: StatusEnum.CLIMBING,
 						left: 1,
 						sight: testSight,
 						endurance: (testEndurance-1),
@@ -254,7 +254,7 @@ function testClimbOut_Left_NoEndurance()
 						image: "images/Species/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL_DOWN,
+						status: StatusEnum.FALLING,
 						health: (testHealth-1),
 						sight: testSight,
 						endurance: 0,
@@ -290,7 +290,7 @@ function testJump_Left()
 						image: "images/Species/" + player.species.type + "/" + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png",
 						row: testRow,
 						col: testCol,
-						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						status: (falling ? StatusEnum.FALLING : StatusEnum.JUMPING),
 						up: (falling ? 0 : 1),
 						left: ((testLeft+speciesJump)-1),
 						sight: testSight,
@@ -313,7 +313,7 @@ function testJump_Left_Climb()
 
 	initData(tileTypes,
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: testLeft, right: 1,
 			  sight: testSight, endurance: testEndurance, climb: 1},
 			 {innerText: ActionEnum.JUMP_LEFT});
@@ -328,7 +328,7 @@ function testJump_Left_Climb()
 						image: "images/Species/" + player.species.type + "/" + ActionEnum.JUMP_LEFT.replace(" ", "") + ".png",
 						row: testRow,
 						col: testCol,
-						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						status: (falling ? StatusEnum.FALLING : StatusEnum.JUMPING),
 						up: (falling ? 0 : 1),
 						left: ((testLeft+speciesJump)-1),
 						right: 0,
@@ -366,7 +366,7 @@ function testRise_Left()
 						image: "images/Species/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						status: (falling ? StatusEnum.FALLING : StatusEnum.JUMPING),
 						up: (falling ? 0 : 1),
 						left: 0,
 						sight: testSight,
@@ -390,7 +390,7 @@ function testSwim_UpLeft()
 	initData(tileTypes,
 			 {image: testImage,
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  sight: testSight, endurance: testEndurance},
 			 {innerText: ActionEnum.SWIM_UP_LEFT});
 
@@ -403,7 +403,7 @@ function testSwim_UpLeft()
 						image: testImage,
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.SWIM,
+						status: StatusEnum.SWIMMING,
 						sight: testSight,
 						endurance: (player.attributeMap.get(AttributeEnum.SWIM) === speciesSwim
 									? (testEndurance-1) : testEndurance),
@@ -426,7 +426,7 @@ function testSwim_UpLeft_NoSwim()
 	initData(tileTypes,
 			 {image: testImage,
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: testHealth, sight: testSight, endurance: 1, swim: 1},
 			 {innerText: ActionEnum.SWIM_UP_LEFT});
 
@@ -437,7 +437,7 @@ function testSwim_UpLeft_NoSwim()
 						image: testImage,
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.SWIM,
+						status: StatusEnum.SWIMMING,
 						health: (testHealth-1),
 						sight: testSight,
 						endurance: 0,
@@ -460,7 +460,7 @@ function testSwim_UpLeft_NoEndurance()
 	initData(tileTypes,
 			 {image: testImage,
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: testHealth, sight: testSight, endurance: 0},
 			 {innerText: ActionEnum.SWIM_UP_LEFT});
 
@@ -471,7 +471,7 @@ function testSwim_UpLeft_NoEndurance()
 						image: testImage,
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.SWIM,
+						status: StatusEnum.SWIMMING,
 						health: (player.attributeMap.get(AttributeEnum.SWIM) === 0
 								 ? (testHealth-1) : testHealth),
 						sight: testSight,
@@ -495,7 +495,7 @@ function testSwim_UpLeft_NoEnduranceSwim()
 	initData(tileTypes,
 			 {image: testImage,
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: testHealth, sight: testSight, endurance: 0, swim: 0},
 			 {innerText: ActionEnum.SWIM_UP_LEFT});
 
@@ -506,7 +506,7 @@ function testSwim_UpLeft_NoEnduranceSwim()
 						image: testImage,
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.SWIM,
+						status: StatusEnum.SWIMMING,
 						health: (testHealth-1),
 						sight: testSight,
 						endurance: 0,
@@ -536,7 +536,7 @@ function testClimb_Right()
 						image: "images/Species/" + player.species.type + "/" + ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png",
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.CLIMB,
+						status: StatusEnum.CLIMBING,
 						right: 1,
 						sight: testSight,
 						tilesExposed: 9,
@@ -556,7 +556,7 @@ function testClimbOver_Right_Climb()
 	initData(tileTypes,
 			 {image: "",
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  sight: testSight, endurance: testEndurance, climb: 1},
 			 {innerText: ActionEnum.CLIMB_OVER});
@@ -568,7 +568,7 @@ function testClimbOver_Right_Climb()
 						image: "images/Species/" + player.species.type + "/Species.png",
 						row: testRow,
 						col: (testCol+1),
-						status: AttributeEnum.STOP,
+						status: StatusEnum.STOPPED,
 						left: 0,
 						right: 0,
 						sight: testSight,
@@ -591,7 +591,7 @@ function testClimbOver_Right_Climb_NoEndurance()
 	initData(tileTypes,
 			 {image: "",
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  health: testHealth, sight: testSight, endurance: 1, climb: 1},
 			 {innerText: ActionEnum.CLIMB_OVER});
@@ -603,7 +603,7 @@ function testClimbOver_Right_Climb_NoEndurance()
 						image: "images/Species/" + player.species.type + "/Species.png",
 						row: testRow,
 						col: (testCol+1),
-						status: AttributeEnum.STOP,
+						status: StatusEnum.STOPPED,
 						left: 0,
 						right: 0,
 						health: (testHealth-1),
@@ -627,7 +627,7 @@ function testClimbOver_Right_Swim()
 	initData(tileTypes,
 			 {image: "",
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  sight: testSight, endurance: testEndurance, swim: 1},
 			 {innerText: ActionEnum.CLIMB_OVER});
 
@@ -638,7 +638,7 @@ function testClimbOver_Right_Swim()
 						image: "images/Species/" + player.species.type + "/Species.png",
 						row: testRow,
 						col: (testCol+1),
-						status: AttributeEnum.STOP,
+						status: StatusEnum.STOPPED,
 						left: 0,
 						right: 0,
 						sight: testSight,
@@ -661,7 +661,7 @@ function testClimbOver_Right_Swim_NoEndurance()
 	initData(tileTypes,
 			 {image: "",
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: testHealth, sight: testSight, endurance: 1, swim: 1},
 			 {innerText: ActionEnum.CLIMB_OVER});
 
@@ -672,7 +672,7 @@ function testClimbOver_Right_Swim_NoEndurance()
 						image: "images/Species/" + player.species.type + "/Species.png",
 						row: testRow,
 						col: (testCol+1),
-						status: AttributeEnum.STOP,
+						status: StatusEnum.STOPPED,
 						left: 0,
 						right: 0,
 						health: (testHealth-1),
@@ -705,7 +705,7 @@ function testClimbOut_Right()
 						image: "images/Species/" + player.species.type + "/" + ActionEnum.CLIMB_RIGHT.replace(" ", "") + ".png",
 						row: testRow,
 						col: testCol,
-						status: AttributeEnum.CLIMB,
+						status: StatusEnum.CLIMBING,
 						right: 1,
 						sight: testSight,
 						endurance: (testEndurance-1),
@@ -736,7 +736,7 @@ function testClimbOut_Right_NoEndurance()
 						image: "images/Species/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: testCol,
-						status: ActionEnum.FALL_DOWN,
+						status: StatusEnum.FALLING,
 						health: (testHealth-1),
 						sight: testSight,
 						endurance: 0,
@@ -772,7 +772,7 @@ function testJump_Right()
 						image: "images/Species/" + player.species.type + "/" + ActionEnum.JUMP_RIGHT.replace(" ", "") + ".png",
 						row: testRow,
 						col: (testCol+1),
-						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						status: (falling ? StatusEnum.FALLING : StatusEnum.JUMPING),
 						up: (falling ? 0 : 1),
 						right: ((testRight+speciesJump)-1),
 						sight: testSight,
@@ -795,7 +795,7 @@ function testJump_Right_Climb()
 
 	initData(tileTypes,
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1, right: testRight,
 			  sight: testSight, endurance: testEndurance, climb: 1},
 			 {innerText: ActionEnum.JUMP_RIGHT});
@@ -810,7 +810,7 @@ function testJump_Right_Climb()
 						image: "images/Species/" + player.species.type + "/" + ActionEnum.JUMP_RIGHT.replace(" ", "") + ".png",
 						row: testRow,
 						col: (testCol+1),
-						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						status: (falling ? StatusEnum.FALLING : StatusEnum.JUMPING),
 						up: (falling ? 0 : 1),
 						left: 0,
 						right: ((testRight+speciesJump)-1),
@@ -848,7 +848,7 @@ function testRise_Right()
 						image: "images/Species/" + player.species.type + "/Suspended.png",
 						row: testRow,
 						col: (testCol+1),
-						status: (falling ? ActionEnum.FALL_DOWN : AttributeEnum.JUMP),
+						status: (falling ? StatusEnum.FALLING : StatusEnum.JUMPING),
 						up: (falling ? 0 : 1),
 						right: 0,
 						sight: testSight,
@@ -872,7 +872,7 @@ function testSwim_UpRight()
 	initData(tileTypes,
 			 {image: testImage,
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  sight: testSight, endurance: testEndurance},
 			 {innerText: ActionEnum.SWIM_UP_RIGHT});
 
@@ -885,7 +885,7 @@ function testSwim_UpRight()
 						image: testImage,
 						row: testRow,
 						col: (testCol+1),
-						status: AttributeEnum.SWIM,
+						status: StatusEnum.SWIMMING,
 						sight: testSight,
 						endurance: (player.attributeMap.get(AttributeEnum.SWIM) === speciesSwim
 									? (testEndurance-1) : testEndurance),
@@ -908,7 +908,7 @@ function testSwim_UpRight_NoSwim()
 	initData(tileTypes,
 			 {image: testImage,
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: testHealth, sight: testSight, endurance: 1, swim: 1},
 			 {innerText: ActionEnum.SWIM_UP_RIGHT});
 
@@ -919,7 +919,7 @@ function testSwim_UpRight_NoSwim()
 						image: testImage,
 						row: testRow,
 						col: (testCol+1),
-						status: AttributeEnum.SWIM,
+						status: StatusEnum.SWIMMING,
 						health: (testHealth-1),
 						sight: testSight,
 						endurance: 0,
@@ -942,7 +942,7 @@ function testSwim_UpRight_NoEndurance()
 	initData(tileTypes,
 			 {image: testImage,
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: testHealth, sight: testSight, endurance: 0},
 			 {innerText: ActionEnum.SWIM_UP_RIGHT});
 
@@ -953,7 +953,7 @@ function testSwim_UpRight_NoEndurance()
 						image: testImage,
 						row: testRow,
 						col: (testCol+1),
-						status: AttributeEnum.SWIM,
+						status: StatusEnum.SWIMMING,
 						health: (player.attributeMap.get(AttributeEnum.SWIM) === 0
 								 ? (testHealth-1) : testHealth),
 						sight: testSight,
@@ -977,7 +977,7 @@ function testSwim_UpRight_NoEnduranceSwim()
 	initData(tileTypes,
 			 {image: testImage,
 			  row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: testHealth, sight: testSight, endurance: 0, swim: 0},
 			 {innerText: ActionEnum.SWIM_UP_RIGHT});
 
@@ -988,7 +988,7 @@ function testSwim_UpRight_NoEnduranceSwim()
 						image: testImage,
 						row: testRow,
 						col: (testCol+1),
-						status: AttributeEnum.SWIM,
+						status: StatusEnum.SWIMMING,
 						health: (testHealth-1),
 						sight: testSight,
 						endurance: 0,

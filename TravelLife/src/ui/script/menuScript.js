@@ -2,15 +2,15 @@ var gameOn = false
 
 var openNavLink;
 
-var upLeftButton = document.getElementById(ActionEnum.UP_LEFT);
-var upButton = document.getElementById(ActionEnum.UP);
-var upRightButton = document.getElementById(ActionEnum.UP_RIGHT);
-var leftButton = document.getElementById(ActionEnum.LEFT);
-var centerButton = document.getElementById(ActionEnum.CENTER);
-var rightButton = document.getElementById(ActionEnum.RIGHT);
-var downLeftButton = document.getElementById(ActionEnum.DOWN_LEFT);
-var downButton = document.getElementById(ActionEnum.DOWN);
-var downRightButton	= document.getElementById(ActionEnum.DOWN_RIGHT);
+var upLeftButton = document.getElementById(DirectionEnum.UP_LEFT);
+var upButton = document.getElementById(DirectionEnum.UP);
+var upRightButton = document.getElementById(DirectionEnum.UP_RIGHT);
+var leftButton = document.getElementById(DirectionEnum.LEFT);
+var centerButton = document.getElementById(DirectionEnum.CENTER);
+var rightButton = document.getElementById(DirectionEnum.RIGHT);
+var downLeftButton = document.getElementById(DirectionEnum.DOWN_LEFT);
+var downButton = document.getElementById(DirectionEnum.DOWN);
+var downRightButton	= document.getElementById(DirectionEnum.DOWN_RIGHT);
 
 var autoConfirm = document.getElementById("autoConfirm");
 
@@ -88,22 +88,14 @@ function getMenuByNavLink(navLink)
 
 function startEndGame(event)
 {
-	var startMenu = document.getElementById(MenuEnum.START_MENU);
-	var gameMenu = document.getElementById(MenuEnum.GAME_MENU);
-
 	// Start game
 	if (!gameOn)
-	{
-		startMenu.style.display = "none";
-		gameMenu.style.display = "inline-block";
-
 		initGame();
-	}
 	else if (player.attributeMap.get(AttributeEnum.HEALTH) === 0
 		  || confirm("Are you sure you want to give up?"))
 	{
-		startMenu.style.display = "inline-block";
-		gameMenu.style.display = "none";
+		document.getElementById(MenuEnum.START_MENU).style.display = "inline-block";
+		document.getElementById(MenuEnum.GAME_MENU).style.display = "none";
 
 		endGame();
 	}
@@ -265,7 +257,7 @@ function checkUpLeft(row, col)
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
 		// If player is swimming and is on a tile down-right a water tile
-		if (playerIsInStatus(AttributeEnum.SWIM)
+		if (playerIsInStatus(StatusEnum.SWIMMING)
 		 && getTileByPosition((row-1), (col-1)).type === TileTypeEnum.WATER)
 		{
 			// If player is on a tile below or right of a water tile
@@ -281,7 +273,7 @@ function checkUpLeft(row, col)
 		{
 			// If player has endurance...
 			// ... and is not moving
-			if (playerIsInStatus(ActionEnum.STOP))
+			if (playerIsInStatus(StatusEnum.STOPPED))
 			{
 				// If player is on a tile right of a solid tile
 				if (getTileByPosition(row, (col-1)).solid)
@@ -301,7 +293,7 @@ function checkUpLeft(row, col)
 					upLeftButton.disabled = false;
 				}
 			}
-			else if (playerIsInStatus(AttributeEnum.SWIM))
+			else if (playerIsInStatus(StatusEnum.SWIMMING))
 			{
 				// ... and is swimming
 				// If player is on a tile below a not solid/water tile
@@ -325,7 +317,7 @@ function checkUpLeft(row, col)
 					}
 				}
 			}
-			else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT))
+			else if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.LEFT))
 			{
 				// ... and is climbing left
 				// If player is on a tile below and down-right a not solid tile
@@ -341,8 +333,8 @@ function checkUpLeft(row, col)
 			{
 				// ... and is on a tile below and down-right a not solid tile
 				// If player is climbing right or running left
-				if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
-				 || playerIsInStatus(AttributeEnum.RUN, ActionEnum.LEFT))
+				if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.RIGHT)
+				 || playerIsInStatus(StatusEnum.RUNNING, DirectionEnum.LEFT))
 				{
 					// If player is on a tile below or right of a not solid tile
 					if (!getTileByPosition((row-1), col).solid
@@ -353,7 +345,7 @@ function checkUpLeft(row, col)
 						upLeftButton.disabled = false;
 					}
 				}
-				else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.LEFT)
+				else if (playerIsInStatus(StatusEnum.JUMPING, DirectionEnum.LEFT)
 					  && (!getTileByPosition((row-1), col).solid
 					   || !getTileByPosition(row, (col-1)).solid))
 				{
@@ -378,7 +370,7 @@ function checkUp(row, col)
 		if (!getTileByPosition((row-1), col).solid)
 		{
 			// If player is swimming
-			if (playerIsInStatus(AttributeEnum.SWIM))
+			if (playerIsInStatus(StatusEnum.SWIMMING))
 			{
 				// If player is on a tile below a water tile
 				if (getTileByPosition((row-1), col).type === TileTypeEnum.WATER)
@@ -392,8 +384,8 @@ function checkUp(row, col)
 			{
 				// If player has endurance...
 				// If player is not moving or is running
-				if (playerIsInStatus(ActionEnum.STOP)
-				 || playerIsInStatus(AttributeEnum.RUN))
+				if (playerIsInStatus(StatusEnum.STOPPED)
+				 || playerIsInStatus(StatusEnum.RUNNING))
 				{
 					// If player is on a tile above a solid tile
 					if (getTileByPosition((row+1), col).solid)
@@ -403,14 +395,14 @@ function checkUp(row, col)
 						upButton.disabled = false;
 					}
 				}
-				else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.UP))
+				else if (playerIsInStatus(StatusEnum.JUMPING, DirectionEnum.UP))
 				{
 					// ... and is jumping up
 					upButton.label = ActionEnum.RISE_UP;
 					upButton.innerText = "\u21D1";
 					upButton.disabled = false;
 				}
-				else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
+				else if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.LEFT)
 					  && getTileByPosition((row-1), (col-1)).solid)
 				{
 					// ... and is climbing left on a tile down-right a solid tile
@@ -418,7 +410,7 @@ function checkUp(row, col)
 					upButton.innerText = "\u21BE";
 					upButton.disabled = false;
 				}
-				else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
+				else if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.RIGHT)
 					  && getTileByPosition((row-1), (col+1)).solid)
 				{
 					// ... and is climbing right on a tile down-left a solid tile
@@ -432,7 +424,7 @@ function checkUp(row, col)
 		{
 			// Player is on a tile below a tile with durability
 			// ... and is climbing
-			if (playerIsInStatus(AttributeEnum.CLIMB))
+			if (playerIsInStatus(StatusEnum.CLIMBING))
 			{
 				upButton.label = ActionEnum.DIG_UP;
 				upButton.innerText = "\u234F";
@@ -451,7 +443,7 @@ function checkUpRight(row, col)
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
 		// If player is swimming and is on a tile down-left a water tile
-		if (playerIsInStatus(AttributeEnum.SWIM)
+		if (playerIsInStatus(StatusEnum.SWIMMING)
 		 && getTileByPosition((row-1), (col+1)).type === TileTypeEnum.WATER)
 		{
 			// If player is on a tile below or left of a water tile
@@ -467,7 +459,7 @@ function checkUpRight(row, col)
 		{
 			// If player has endurance...
 			// ... and is not moving
-			if (playerIsInStatus(ActionEnum.STOP))
+			if (playerIsInStatus(StatusEnum.STOPPED))
 			{
 				// If player is on a tile left of a solid tile
 				if (getTileByPosition(row, (col+1)).solid)
@@ -487,7 +479,7 @@ function checkUpRight(row, col)
 					upRightButton.disabled = false;
 				}
 			}
-			else if (playerIsInStatus(AttributeEnum.SWIM))
+			else if (playerIsInStatus(StatusEnum.SWIMMING))
 			{
 				// ... and is swimming
 				// If player is on a tile below a not solid/water tile
@@ -511,7 +503,7 @@ function checkUpRight(row, col)
 					}
 				}
 			}
-			else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT))
+			else if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.RIGHT))
 			{
 				// ... and is climbing right
 				// If player is on a tile below and down-left a not solid tile
@@ -527,8 +519,8 @@ function checkUpRight(row, col)
 			{
 				// ... and is on a tile below and down-left a not solid tile
 				// If player is climbing left or running right
-				if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
-				 || playerIsInStatus(AttributeEnum.RUN, ActionEnum.RIGHT))
+				if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.LEFT)
+				 || playerIsInStatus(StatusEnum.RUNNING, DirectionEnum.RIGHT))
 				{
 					// If player is on a tile below or right of a not solid tile
 					if (!getTileByPosition((row-1), col).solid
@@ -539,7 +531,7 @@ function checkUpRight(row, col)
 						upRightButton.disabled = false;
 					}
 				}
-				else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.RIGHT)
+				else if (playerIsInStatus(StatusEnum.JUMPING, DirectionEnum.RIGHT)
 					  && (!getTileByPosition((row-1), col).solid
 					   || !getTileByPosition(row, (col+1)).solid))
 				{
@@ -561,7 +553,7 @@ function checkLeft(row, col)
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
 		// If player is falling
-		if (playerIsInStatus(ActionEnum.FALL_DOWN))
+		if (playerIsInStatus(StatusEnum.FALLING))
 		{
 			// If player is on a tile right of a solid tile
 			if (getTileByPosition(row, (col-1)).solid)
@@ -571,7 +563,7 @@ function checkLeft(row, col)
 				leftButton.disabled = false;
 			}
 		}
-		else if (playerIsInStatus(AttributeEnum.SWIM))
+		else if (playerIsInStatus(StatusEnum.SWIMMING))
 		{
 			// If player is swimming...
 			// ... and is on a tile right of a water tile
@@ -582,14 +574,14 @@ function checkLeft(row, col)
 				leftButton.disabled = false;
 			}
 		}
-		else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT))
+		else if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.RIGHT))
 		{
 			// If player is climbing right
 			leftButton.label = ActionEnum.LET_GO;
 			leftButton.innerText = "\u21A9";
 			leftButton.disabled = false;
 		}
-		else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.LEFT))
+		else if (playerIsInStatus(StatusEnum.JUMPING, DirectionEnum.LEFT))
 		{
 			// If player is jumping left...
 			// ... and is on a tile right of a not solid tile
@@ -605,17 +597,17 @@ function checkLeft(row, col)
 			// If player has endurance...
 			// ... and is not moving or is digging/climbing left...
 			// ... and is on a tile right of a tile with durability
-			if ((playerIsInStatus(ActionEnum.STOP)
-			  || playerIsInStatus(AttributeEnum.DIG, ActionEnum.LEFT)
-			  || playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT))
+			if ((playerIsInStatus(StatusEnum.STOPPED)
+			  || playerIsInStatus(StatusEnum.DIGGING, DirectionEnum.LEFT)
+			  || playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.LEFT))
 			 && getTileByPosition(row, (col-1)).durability > 0)
 			{
 				leftButton.label = ActionEnum.DIG_LEFT;
 				leftButton.innerText = "\u2345";
 				leftButton.disabled = false;
 			}
-			else if ((playerIsInStatus(ActionEnum.STOP)
-				   || playerIsInStatus(AttributeEnum.RUN, ActionEnum.LEFT))
+			else if ((playerIsInStatus(StatusEnum.STOPPED)
+				   || playerIsInStatus(StatusEnum.RUNNING, DirectionEnum.LEFT))
 				  && !getTileByPosition(row, (col-1)).solid
 				  && getTileByPosition((row+1), (col-1)).solid)
 			{
@@ -665,21 +657,21 @@ function checkCenter(row, col)
 			centerButton.innerText = "\u27E1";
 			centerButton.disabled = false;
 		}
-		else if (playerIsInStatus(AttributeEnum.JUMP))
+		else if (playerIsInStatus(StatusEnum.JUMPING))
 		{
 			// If player is jumping
 			centerButton.label = ActionEnum.STOP;
 			centerButton.innerText = "\u2B1C";
 			centerButton.disabled = false;
 		}
-		else if (playerIsInStatus(AttributeEnum.RUN))
+		else if (playerIsInStatus(StatusEnum.RUNNING))
 		{
 			// If player is running
 			centerButton.label = ActionEnum.STOP;
 			centerButton.innerText = "\u2B1B";
 			centerButton.disabled = false;
 		}
-		else if (playerIsInStatus(AttributeEnum.DIG))
+		else if (playerIsInStatus(StatusEnum.DIGGING))
 		{
 			// If player is digging
 			centerButton.label = ActionEnum.STOP;
@@ -691,13 +683,13 @@ function checkCenter(row, col)
 		{
 			// If player has recovery and not max endurance...
 			// ... and is not moving
-			if (playerIsInStatus(ActionEnum.STOP))
+			if (playerIsInStatus(StatusEnum.STOPPED))
 			{
 				centerButton.label = ActionEnum.REST;
 				centerButton.innerText = "\u21BB";
 				centerButton.disabled = false;
 			}
-			else if (playerIsInStatus(AttributeEnum.SWIM))
+			else if (playerIsInStatus(StatusEnum.SWIMMING))
 			{
 				// ... and is swimming
 				// If player is on a tile below a not solid/water tile
@@ -722,7 +714,7 @@ function checkRight(row, col)
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
 		// If player is falling
-		if (playerIsInStatus(ActionEnum.FALL_DOWN))
+		if (playerIsInStatus(StatusEnum.FALLING))
 		{
 			// If player is on a tile left of a solid tile
 			if (getTileByPosition(row, (col+1)).solid)
@@ -732,7 +724,7 @@ function checkRight(row, col)
 				rightButton.disabled = false;
 			}
 		}
-		else if (playerIsInStatus(AttributeEnum.SWIM))
+		else if (playerIsInStatus(StatusEnum.SWIMMING))
 		{
 			// If player is swimming...
 			// ... and is on a tile left of a water tile
@@ -743,14 +735,14 @@ function checkRight(row, col)
 				rightButton.disabled = false;
 			}
 		}
-		else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT))
+		else if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.LEFT))
 		{
 			// If player is climbing left
 			rightButton.label = ActionEnum.LET_GO;
 			rightButton.innerText = "\u21AA";
 			rightButton.disabled = false;
 		}
-		else if (playerIsInStatus(AttributeEnum.JUMP, ActionEnum.RIGHT))
+		else if (playerIsInStatus(StatusEnum.JUMPING, DirectionEnum.RIGHT))
 		{
 			// If player is jumping right...
 			// ... and is on a tile left of a not solid tile
@@ -766,17 +758,17 @@ function checkRight(row, col)
 			// If player has endurance...
 			// ... and is not moving or is digging/climbing right...
 			// ... and is on a tile left of a tile with durability
-			if ((playerIsInStatus(ActionEnum.STOP)
-			  || playerIsInStatus(AttributeEnum.DIG, ActionEnum.RIGHT)
-			  || playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT))
+			if ((playerIsInStatus(StatusEnum.STOPPED)
+			  || playerIsInStatus(StatusEnum.DIGGING, DirectionEnum.RIGHT)
+			  || playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.RIGHT))
 			 && getTileByPosition(row, (col+1)).durability > 0)
 			{
 				rightButton.label = ActionEnum.DIG_RIGHT;
 				rightButton.innerText = "\u2346";
 				rightButton.disabled = false;
 			}
-			else if ((playerIsInStatus(ActionEnum.STOP)
-				   || playerIsInStatus(AttributeEnum.RUN, ActionEnum.RIGHT))
+			else if ((playerIsInStatus(StatusEnum.STOPPED)
+				   || playerIsInStatus(StatusEnum.RUNNING, DirectionEnum.RIGHT))
 				  && !getTileByPosition(row, (col+1)).solid
 				  && getTileByPosition((row+1), (col+1)).solid)
 			{
@@ -798,7 +790,7 @@ function checkDownLeft(row, col)
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
 		// If player is falling left
-		if (playerIsInStatus(ActionEnum.FALL_DOWN, ActionEnum.LEFT))
+		if (playerIsInStatus(StatusEnum.FALLING, DirectionEnum.LEFT))
 		{
 			// If player is on a tile up-right a not solid/water tile...
 			// ... and right of or above a not solid tile
@@ -813,7 +805,7 @@ function checkDownLeft(row, col)
 				downLeftButton.disabled = false;
 			}
 		}
-		else if (playerIsInStatus(AttributeEnum.SWIM))
+		else if (playerIsInStatus(StatusEnum.SWIMMING))
 		{
 			// ... and is swimming
 			// If player is on a tile up-right a water tile, and right of or above a water tile
@@ -830,7 +822,7 @@ function checkDownLeft(row, col)
 		{
 			// If player has endurance...
 			// ... and is not moving
-			if (playerIsInStatus(ActionEnum.STOP))
+			if (playerIsInStatus(StatusEnum.STOPPED))
 			{
 				// If player is on a tile right and up-right a not solid tile
 				if (!getTileByPosition(row, (col-1)).solid
@@ -841,7 +833,7 @@ function checkDownLeft(row, col)
 					downLeftButton.disabled = false;
 				}
 			}
-			else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
+			else if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.RIGHT)
 				  && getTileByPosition((row+1), col).solid)
 			{
 				// ... and is climbing right on a tile above a solid tile
@@ -861,7 +853,7 @@ function checkDown(row, col)
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
 		// If player is falling
-		if (playerIsInStatus(ActionEnum.FALL_DOWN))
+		if (playerIsInStatus(StatusEnum.FALLING))
 		{
 			// If player is on a tile above a solid tile
 			if (getTileByPosition((row+1), col).solid)
@@ -883,7 +875,7 @@ function checkDown(row, col)
 
 			downButton.disabled = false;
 		}
-		else if (playerIsInStatus(AttributeEnum.SWIM))
+		else if (playerIsInStatus(StatusEnum.SWIMMING))
 		{
 			// If player is swimming...
 			// ... and is on a tile above a water tile
@@ -899,14 +891,14 @@ function checkDown(row, col)
 		{
 			// If player is on a tile above a not solid/water tile
 			// ... and is climbing left on a tile up-right a solid tile
-			if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
+			if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.LEFT)
 			 && getTileByPosition((row+1), (col-1)).solid)
 			{
 				downButton.label = ActionEnum.CLIMB_DOWN;
 				downButton.innerText = "\u21C2";
 				downButton.disabled = false;
 			}
-			else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.RIGHT)
+			else if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.RIGHT)
 				  && getTileByPosition((row+1), (col+1)).solid)
 			{
 				// ... and is climbing right on a tile up-left a solid tile
@@ -919,8 +911,8 @@ function checkDown(row, col)
 		{
 			// If player has endurance...
 			// ... and is digging down or not moving above a tile with durability
-			if (playerIsInStatus(AttributeEnum.DIG, ActionEnum.DOWN)
-			 || (playerIsInStatus(ActionEnum.STOP)
+			if (playerIsInStatus(StatusEnum.DIGGING, DirectionEnum.DOWN)
+			 || (playerIsInStatus(StatusEnum.STOPPED)
 			  && getTileByPosition((row+1), col).durability > 0))
 			{
 				downButton.label = ActionEnum.DIG_DOWN;
@@ -939,7 +931,7 @@ function checkDownRight(row, col)
 	if (player.attributeMap.get(AttributeEnum.HEALTH) > 0)
 	{
 		// If player is falling right
-		if (playerIsInStatus(ActionEnum.FALL_DOWN, ActionEnum.RIGHT))
+		if (playerIsInStatus(StatusEnum.FALLING, DirectionEnum.RIGHT))
 		{
 			// If player is on a tile up-left a not solid/water tile...
 			// ... and left of or above a not solid tile
@@ -954,7 +946,7 @@ function checkDownRight(row, col)
 				downRightButton.disabled = false;
 			}
 		}
-		else if (playerIsInStatus(AttributeEnum.SWIM))
+		else if (playerIsInStatus(StatusEnum.SWIMMING))
 		{
 			// ... and is swimming
 			// If player is on a tile up-left a water tile, and left of or above a water tile
@@ -971,7 +963,7 @@ function checkDownRight(row, col)
 		{
 			// If player has endurance...
 			// ... and is not moving
-			if (playerIsInStatus(ActionEnum.STOP))
+			if (playerIsInStatus(StatusEnum.STOPPED))
 			{
 				// If player is on a tile left and up-left a not solid tile
 				if (!getTileByPosition(row, (col+1)).solid
@@ -982,7 +974,7 @@ function checkDownRight(row, col)
 					downRightButton.disabled = false;
 				}
 			}
-			else if (playerIsInStatus(AttributeEnum.CLIMB, ActionEnum.LEFT)
+			else if (playerIsInStatus(StatusEnum.CLIMBING, DirectionEnum.LEFT)
 				  && getTileByPosition((row+1), col).solid)
 			{
 				// ... and is climbing left on a tile above a solid tile
@@ -1009,13 +1001,13 @@ function getStatistics()
 	{
 		statsTable = document.getElementById("gameStatsData");
 		statsTable.innerHTML = "";
-		for (var label of player.statsMap.keys())
+		for (var label of player.statisticsMap.keys())
 		{
-			var playerData = player.statsMap.get(label);
+			var playerData = player.statisticsMap.get(label);
 			if (playerStatsMap.get(label) < playerData)
 				playerStatsMap.set(label, playerData);
 
-			statsTable.appendChild(createTableData(label, player.statsMap.get(label)));
+			statsTable.appendChild(createTableData(label, player.statisticsMap.get(label)));
 		}
 
 		document.getElementById(MenuEnum.GAME_STATS).style.display = "block";

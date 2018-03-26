@@ -7,15 +7,193 @@ playerStatsMap.set(StatsEnum.TILES_TRAVELED, 0);
 playerStatsMap.set(StatsEnum.TREASURES_COLLECTED, 0);
 
 var actionFunctionMap = new Map();
-actionFunctionMap.set(ActionEnum.UP_LEFT,    moveUpLeft);
-actionFunctionMap.set(ActionEnum.UP,         moveUp);
-actionFunctionMap.set(ActionEnum.UP_RIGHT,   moveUpRight);
-actionFunctionMap.set(ActionEnum.LEFT,       moveLeft);
-actionFunctionMap.set(ActionEnum.CENTER,     stayCenter);
-actionFunctionMap.set(ActionEnum.RIGHT,      moveRight);
-actionFunctionMap.set(ActionEnum.DOWN_LEFT,  moveDownLeft);
-actionFunctionMap.set(ActionEnum.DOWN,       moveDown);
-actionFunctionMap.set(ActionEnum.DOWN_RIGHT, moveDownRight);
+actionFunctionMap.set(DirectionEnum.UP_LEFT,    moveUpLeft);
+actionFunctionMap.set(DirectionEnum.UP,         moveUp);
+actionFunctionMap.set(DirectionEnum.UP_RIGHT,   moveUpRight);
+actionFunctionMap.set(DirectionEnum.LEFT,       moveLeft);
+actionFunctionMap.set(DirectionEnum.CENTER,     stayCenter);
+actionFunctionMap.set(DirectionEnum.RIGHT,      moveRight);
+actionFunctionMap.set(DirectionEnum.DOWN_LEFT,  moveDownLeft);
+actionFunctionMap.set(DirectionEnum.DOWN,       moveDown);
+actionFunctionMap.set(DirectionEnum.DOWN_RIGHT, moveDownRight);
+
+// Server functions
+function loadActivePlayer()
+{
+	if (user == null)
+		return;
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function()
+	{
+		if (this.readyState === 4)
+		{
+			var activePlayerId;
+			if (this.status === 200)
+				activePlayerId = JSON.parse(this.responseText).playerId;
+
+			loadGame(activePlayerId);
+		}
+	};
+
+	xhttp.open("GET", ConfigEnum.API_ROOT + "/api/getActivePlayerId/" + user._id, true);
+	xhttp.setRequestHeader("Content-Type", "application/json");
+
+	xhttp.send();
+}
+
+function getPlayerDataToSave()
+{
+	if (user == null)
+		return null;
+
+	var playerData =
+	{
+		userId: user._id,
+		modifiedDate: new Date(),
+		name: player.name,
+		species: player.species.type,
+		status: player.status,
+		up: player.momentum.up,
+		left: player.momentum.left,
+		right: player.momentum.right,
+		down: player.momentum.down,
+		map: getMapDataToSave()
+	}
+
+	return playerData;
+}
+
+function getPlayerIconByStatus()
+{
+	var playerIcon;
+
+	switch (player.status)
+	{
+		case StatusEnum.CLIMBING:
+			playerIcon = (player.momentum.left > 0
+					? ActionEnum.CLIMB_LEFT : ActionEnum.CLIMB_RIGHT).replace(" ", "");
+			break;
+		case StatusEnum.JUMPING:
+		case StatusEnum.SWIMMING:
+		case StatusEnum.FALLING:
+			if (player.momentum.left > 0)
+				playerIcon = ActionEnum.JUMP_LEFT.replace(" ", "");
+			else if (player.momentum.right > 0)
+				playerIcon = ActionEnum.JUMP_RIGHT.replace(" ", "");
+			else
+				playerIcon = "Suspended";
+			break;
+		case StatusEnum.RUNNING:
+			playerIcon = (player.momentum.left > 0
+					? ActionEnum.RUN_LEFT : ActionEnum.RUN_RIGHT).replace(" ", "");
+			break;
+		case StatusEnum.DIGGING:
+			if (player.momentum.left > 0)
+				playerIcon = ActionEnum.DIG_LEFT.replace(" ", "");
+			else if (player.momentum.right > 0)
+				playerIcon = ActionEnum.DIG_RIGHT.replace(" ", "");
+			else
+				playerIcon = ActionEnum.DIG_DOWN.replace(" ", "");
+			break;
+		default:
+			playerIcon = "Species";
+	}
+
+	return "images/Species/" + player.species.type + "/" + playerIcon + ".png";
+}
+
+function getAttributeDataToSave()
+{
+	if (player == null)
+		return null;
+
+	var attributeData = [];
+	for (var attribute of player.attributeMap.keys())
+	{
+		attributeData.push(
+		{
+			playerId: player._id,
+			name: attribute,
+			value: player.attributeMap.get(attribute),
+			maxValue: player.species.attributeMap.get(attribute)
+		});
+	}
+
+	return attributeData;
+}
+
+function getStatisticDataToSave()
+{
+	if (player == null)
+		return null;
+
+	var statisticData = [];
+	for (var statistic of player.statisticsMap.keys())
+	{
+		statisticData.push(
+		{
+			playerId: player._id,
+			name: statistic,
+			value: player.statisticsMap.get(statistic),
+		});
+	}
+
+	return statisticData;
+}
+// Server functions end
+
+// Uses server functions
+function initPlayer(gameData)
+{
+	if (gameData == null)
+	{
+		var species = document.getElementById("species");
+		player = new Player(document.getElementById("name").value,
+				species.options[species.selectedIndex].value);
+	}
+	else // Loading player
+	{
+		var playerData = gameData.player;
+
+		player = new Player(playerData.name, playerData.species);
+
+		player._id = playerData._id;
+
+		player.status = playerData.status;
+		player.momentum.up = playerData.up;
+		player.momentum.left = playerData.left;
+		player.momentum.right = playerData.right;
+		player.momentum.down = playerData.down;
+
+		player.image = getPlayerIconByStatus();
+
+		for (var attribute of gameData.attributes)
+		{
+			player.attributeMap.set(attribute.name, attribute.value);
+			player.species.attributeMap.set(attribute.name, attribute.maxValue);
+		}
+
+		for (var statistic of gameData.statistics)
+			player.statisticsMap.set(statistic.name, statistic.value);
+	}
+
+	updatePlayerIcon(player.image);
+
+	playerIcon.style.width = (tileWidth*zoom) + "px";
+	playerIcon.style.height = (tileHeight*zoom) + "px";
+
+	// Player
+	var playerSpecies = document.getElementById("playerSpecies");
+	playerSpecies.src = player.species.image;
+	playerSpecies.alt = player.species.type;
+	document.getElementById("playerName").innerText = player.name;
+
+	// Player Attributes
+	getAttributes(document.getElementById("playerAttributes"),
+			player.attributeMap, player.species.attributeMap);
+}
+// Uses server functions end
 
 function getSpeciesByType(speciesType, getDefault)
 {
@@ -38,28 +216,6 @@ function getSpeciesByType(speciesType, getDefault)
 	}
 
 	return species;
-}
-
-function initPlayer()
-{
-	var species = document.getElementById("species");
-	player = new Player(document.getElementById("name").value,
-						species.options[species.selectedIndex].value);
-
-	updatePlayerIcon(player.image);
-
-	playerIcon.style.width = (tileWidth*zoom) + "px";
-	playerIcon.style.height = (tileHeight*zoom) + "px";
-
-	// Player
-	var playerSpecies = document.getElementById("playerSpecies");
-	playerSpecies.src = player.species.image;
-	playerSpecies.alt = player.species.type;
-	document.getElementById("playerName").innerText = player.name;
-
-	// Player Attributes
-	getAttributes(document.getElementById("playerAttributes"),
-			player.attributeMap, player.species.attributeMap);
 }
 
 function updatePlayerIcon(playerImage)
@@ -93,19 +249,19 @@ function playerIsInStatus(status, direction)
 	{
 		switch (direction)
 		{
-			case ActionEnum.UP:
+			case DirectionEnum.UP:
 				if (player.momentum.up === 0)
 					playerIsInStatus = false;
 				break;
-			case ActionEnum.LEFT:
+			case DirectionEnum.LEFT:
 				if (player.momentum.left === 0)
 					playerIsInStatus = false;
 				break;
-			case ActionEnum.RIGHT:
+			case DirectionEnum.RIGHT:
 				if (player.momentum.right === 0)
 					playerIsInStatus = false;
 				break;
-			case ActionEnum.DOWN:
+			case DirectionEnum.DOWN:
 				if (player.momentum.down === 0)
 					playerIsInStatus = false;
 				break;
@@ -115,6 +271,31 @@ function playerIsInStatus(status, direction)
 	}
 
 	return playerIsInStatus;
+}
+
+function getAttributeByStatus()
+{
+	var attribute;
+	switch (player.status)
+	{
+		case StatusEnum.CLIMBING:
+			attribute = AttributeEnum.CLIMB;
+			break;
+		case StatusEnum.JUMPING:
+			attribute = AttributeEnum.JUMP;
+			break;
+		case StatusEnum.RUNNING:
+			attribute = AttributeEnum.RUN;
+			break;
+		case StatusEnum.SWIMMING:
+			attribute = AttributeEnum.SWIM;
+			break;
+		case StatusEnum.DIGGING:
+			attribute = AttributeEnum.DIG;
+			break;
+	}
+
+	return attribute;
 }
 
 function moveUpLeft(doUpdate)
@@ -127,7 +308,7 @@ function moveUpLeft(doUpdate)
 			actionInfo = climb(doUpdate);
 			break;
 		case ActionEnum.CLIMB_OVER:
-			if (player.status === AttributeEnum.SWIM)
+			if (player.status === StatusEnum.SWIMMING)
 				player.momentum.left = 1;
 			actionInfo = climbOverOff(doUpdate);
 			break;
@@ -182,7 +363,7 @@ function moveUpRight(doUpdate)
 			actionInfo = climb(doUpdate);
 			break;
 		case ActionEnum.CLIMB_OVER:
-			if (player.status === AttributeEnum.SWIM)
+			if (player.status === StatusEnum.SWIMMING)
 				player.momentum.right = 1;
 			actionInfo = climbOverOff(doUpdate);
 			break;
@@ -400,7 +581,7 @@ function loseEndurance(actionName, actionInfo)
 		   || actionName === ActionEnum.GRAB_LEFT
 		   || actionName === ActionEnum.STOP
 		   || actionName === ActionEnum.GRAB_RIGHT
-		   || (player.status === AttributeEnum.CLIMB
+		   || (player.status === StatusEnum.CLIMBING
 			&& (actionName === ActionEnum.DIG_UP
 			 || actionName === ActionEnum.DIG_LEFT
 			 || actionName === ActionEnum.DIG_RIGHT))))
@@ -443,6 +624,8 @@ function gainSightRecovery()
 
 function resetPlayer()
 {
+	player = null;
+
 	playerIcon.style.display = "none";
 
 	if (!document.getElementById("rememberMe").checked)

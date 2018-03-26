@@ -54,7 +54,7 @@ function test_SGS_BSB_BGB_ClimbLeft()
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  endurance: 1});
 
@@ -71,7 +71,7 @@ function test_SGS_BSB_BGB_ClimbLeft_NoHealth()
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  health: 0});
 
@@ -86,7 +86,7 @@ function test_SGS_BSB_BGB_ClimbRight()
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  endurance: 1});
 
@@ -103,7 +103,7 @@ function test_SGS_BSB_BGB_ClimbRight_NoHealth()
 			  ["B", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  health: 0});
 
@@ -118,7 +118,7 @@ function test_BSB_BSB_BSB_ClimbLeft()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  endurance: 1});
 
@@ -135,7 +135,7 @@ function test_BSB_BSB_BSB_ClimbLeft_NoHealth()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  health: 0});
 
@@ -150,7 +150,7 @@ function test_BSB_BSB_BSB_ClimbRight()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  endurance: 1});
 
@@ -167,7 +167,7 @@ function test_BSB_BSB_BSB_ClimbRight_NoHealth()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  health: 0});
 
@@ -182,7 +182,7 @@ function test_SSS_BSB_BSB_ClimbLeft()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  endurance: 1});
 
@@ -200,7 +200,7 @@ function test_SSS_BSB_BSB_ClimbLeft_NoHealth()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  health: 0});
 
@@ -215,7 +215,7 @@ function test_SSS_BSB_BSB_ClimbRight()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  endurance: 1});
 
@@ -233,7 +233,7 @@ function test_SSS_BSB_BSB_ClimbRight_NoHealth()
 			  ["B", "S", "B"],
 			  ["B", "S", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  health: 0});
 
@@ -248,7 +248,7 @@ function test_SSS_BSB_BWB_ClimbLeft()
 			  ["B", "S", "B"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  endurance: 1});
 
@@ -265,7 +265,7 @@ function test_SSS_BSB_BWB_ClimbLeft_NoHealth()
 			  ["B", "S", "B"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  health: 0});
 
@@ -280,7 +280,7 @@ function test_SSS_BSB_BWB_ClimbRight()
 			  ["B", "S", "B"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  endurance: 1});
 
@@ -297,7 +297,7 @@ function test_SSS_BSB_BWB_ClimbRight_NoHealth()
 			  ["B", "S", "B"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  health: 0});
 
@@ -312,7 +312,7 @@ function test_SSS_GSG_BWB_ClimbLeft()
 			  ["G", "S", "G"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  endurance: 1});
 
@@ -330,7 +330,7 @@ function test_SSS_GSG_BWB_ClimbLeft_NoHealth()
 			  ["G", "S", "G"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  health: 0});
 
@@ -345,7 +345,7 @@ function test_SSS_GSG_BWB_ClimbRight()
 			  ["G", "S", "G"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  endurance: 1});
 
@@ -363,7 +363,7 @@ function test_SSS_GSG_BWB_ClimbRight_NoHealth()
 			  ["G", "S", "G"],
 			  ["B", "W", "B"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  health: 0});
 
@@ -381,7 +381,7 @@ function test_SBS_BSS_BGB_ClimbLeft_Treasure()
 			  ["B", "S", "S"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  endurance: 1},
 			 null,
@@ -405,7 +405,7 @@ function test_SBS_BSS_BGB_ClimbLeft_FullHTreasure()
 			  ["B", "S", "S"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  endurance: 1},
 			 null,
@@ -429,7 +429,7 @@ function test_SBS_BSS_BGB_ClimbLeft_NeedHTreasure()
 			  ["B", "S", "S"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  health: 1, endurance: 1},
 			 null,
@@ -454,7 +454,7 @@ function test_SBS_BSS_BGB_ClimbLeft_FullSTreasure()
 			  ["B", "S", "S"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  endurance: 1},
 			 null,
@@ -478,7 +478,7 @@ function test_SBS_BSS_BGB_ClimbLeft_NeedSTreasure()
 			  ["B", "S", "S"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  sight: 1, endurance: 1},
 			 null,
@@ -503,7 +503,7 @@ function test_SBS_BSS_BGB_ClimbLeft_FullRTreasure()
 			  ["B", "S", "S"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  endurance: 1},
 			 null,
@@ -527,7 +527,7 @@ function test_SBS_BSS_BGB_ClimbLeft_NeedRTreasure()
 			  ["B", "S", "S"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  recovery: 1, endurance: 1},
 			 null,
@@ -552,7 +552,7 @@ function test_SBS_BSS_BGB_ClimbLeft_FullETreasure()
 			  ["B", "S", "S"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -575,7 +575,7 @@ function test_SBS_BSS_BGB_ClimbLeft_NeedETreasure()
 			  ["B", "S", "S"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  recovery: 1, endurance: 1},
 			 null,
@@ -600,7 +600,7 @@ function test_SBS_BSS_BGB_ClimbLeft_NoHealth()
 			  ["B", "S", "S"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  left: 1,
 			  health: 0},
 			 null,
@@ -621,7 +621,7 @@ function test_SBS_SSB_BGB_ClimbRight_Treasure()
 			  ["S", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  endurance: 1},
 			  null,
@@ -645,7 +645,7 @@ function test_SBS_SSB_BGB_ClimbRight_FullHTreasure()
 			  ["S", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  endurance: 1},
 			  null,
@@ -669,7 +669,7 @@ function test_SBS_SSB_BGB_ClimbRight_NeedHTreasure()
 			  ["S", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  health: 1, endurance: 1},
 			  null,
@@ -694,7 +694,7 @@ function test_SBS_SSB_BGB_ClimbRight_FullSTreasure()
 			  ["S", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  endurance: 1},
 			  null,
@@ -718,7 +718,7 @@ function test_SBS_SSB_BGB_ClimbRight_NeedSTreasure()
 			  ["S", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  sight: 1, endurance: 1},
 			  null,
@@ -743,7 +743,7 @@ function test_SBS_SSB_BGB_ClimbRight_FullRTreasure()
 			  ["S", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  endurance: 1},
 			  null,
@@ -767,7 +767,7 @@ function test_SBS_SSB_BGB_ClimbRight_NeedRTreasure()
 			  ["S", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  recovery: 1, endurance: 1},
 			  null,
@@ -792,7 +792,7 @@ function test_SBS_SSB_BGB_ClimbRight_FullETreasure()
 			  ["S", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1},
 			  null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -815,7 +815,7 @@ function test_SBS_SSB_BGB_ClimbRight_NeedETreasure()
 			  ["S", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  endurance: 1},
 			  null,
@@ -840,7 +840,7 @@ function test_SBS_SSB_BGB_ClimbRight_NoHealth()
 			  ["S", "S", "B"],
 			  ["B", "G", "B"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.CLIMB,
+			  status: StatusEnum.CLIMBING,
 			  right: 1,
 			  health: 0},
 			  null,

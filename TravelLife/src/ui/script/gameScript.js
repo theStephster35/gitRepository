@@ -5,21 +5,6 @@ window.addEventListener("keypress", handleKeypress)
 var userInput = document.getElementById("userInput");
 userInput.addEventListener('submit', startEndGame);
 
-function init()
-{
-	if (window.opener != null
-	 && window.opener.user != null)
-		initUser();
-	else // User signed in
-		resetUser();
-
-	endGame();
-	adjustContents();
-	updateAutoConfirm();
-
-	openMenu(MenuEnum.HOME);
-}
-
 function adjustContents()
 {
 	var navMenu = document.getElementById("navMenu");
@@ -73,69 +58,69 @@ function handleKeypress(event)
 			case "Q":
 			case "7":
 				resetAction();
-				if (!document.getElementById(ActionEnum.UP_LEFT).disabled)
-					getAction(ActionEnum.UP_LEFT);
+				if (!document.getElementById(DirectionEnum.UP_LEFT).disabled)
+					getAction(DirectionEnum.UP_LEFT);
 				break;
 			case "w":
 			case "W":
 			case "ArrowUp":
 			case "8":
 				resetAction();
-				if (!document.getElementById(ActionEnum.UP).disabled)
-					getAction(ActionEnum.UP);
+				if (!document.getElementById(DirectionEnum.UP).disabled)
+					getAction(DirectionEnum.UP);
 				break;
 			case "e":
 			case "E":
 			case "9":
 				resetAction();
-				if (!document.getElementById(ActionEnum.UP_RIGHT).disabled)
-					getAction(ActionEnum.UP_RIGHT);
+				if (!document.getElementById(DirectionEnum.UP_RIGHT).disabled)
+					getAction(DirectionEnum.UP_RIGHT);
 				break;
 			case "a":
 			case "A":
 			case "ArrowLeft":
 			case "4":
 				resetAction();
-				if (!document.getElementById(ActionEnum.LEFT).disabled)
-					getAction(ActionEnum.LEFT);
+				if (!document.getElementById(DirectionEnum.LEFT).disabled)
+					getAction(DirectionEnum.LEFT);
 				break;
 			case "r":
 			case "R":
 			case "0":
 			case "5":
 				resetAction();
-				if (!document.getElementById(ActionEnum.CENTER).disabled)
-					getAction(ActionEnum.CENTER);
+				if (!document.getElementById(DirectionEnum.CENTER).disabled)
+					getAction(DirectionEnum.CENTER);
 				break;
 			case "d":
 			case "D":
 			case "ArrowRight":
 			case "6":
 				resetAction();
-				if (!document.getElementById(ActionEnum.RIGHT).disabled)
-					getAction(ActionEnum.RIGHT);
+				if (!document.getElementById(DirectionEnum.RIGHT).disabled)
+					getAction(DirectionEnum.RIGHT);
 				break;
 			case "z":
 			case "Z":
 			case "1":
 				resetAction();
-				if (!document.getElementById(ActionEnum.DOWN_LEFT).disabled)
-					getAction(ActionEnum.DOWN_LEFT);
+				if (!document.getElementById(DirectionEnum.DOWN_LEFT).disabled)
+					getAction(DirectionEnum.DOWN_LEFT);
 				break;
 			case "s":
 			case "S":
 			case "ArrowDown":
 			case "2":
 				resetAction();
-				if (!document.getElementById(ActionEnum.DOWN).disabled)
-					getAction(ActionEnum.DOWN);
+				if (!document.getElementById(DirectionEnum.DOWN).disabled)
+					getAction(DirectionEnum.DOWN);
 				break;
 			case "c":
 			case "C":
 			case "3":
 				resetAction();
-				if (!document.getElementById(ActionEnum.DOWN_RIGHT).disabled)
-					getAction(ActionEnum.DOWN_RIGHT);
+				if (!document.getElementById(DirectionEnum.DOWN_RIGHT).disabled)
+					getAction(DirectionEnum.DOWN_RIGHT);
 				break;
 			case " ":
 			case "Enter":
@@ -148,12 +133,90 @@ function handleKeypress(event)
 	}
 }
 
-function initGame()
+// Server functions
+function saveGame()
 {
+	if (user == null || player == null)
+		return;
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function()
+	{
+		if (this.readyState === 4 && this.status === 200
+		 && player != null)
+			player._id = JSON.parse(this.responseText).playerId;
+	};
+
+	xhttp.open("POST", ConfigEnum.API_ROOT + "/api/saveGame", true);
+	xhttp.setRequestHeader("Content-Type", "application/json");
+
+	var playerData = {userId: user._id,
+					  playerId: player._id,
+					  player: getPlayerDataToSave(),
+					  attributes: getAttributeDataToSave(),
+					  statistics: getStatisticDataToSave()};
+	xhttp.send(JSON.stringify(playerData));
+}
+
+function loadGame(playerId)
+{
+	if (playerId == null)
+		return;
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function()
+	{
+		if (this.readyState === 4 && this.status === 200)
+		{
+			var gameData = JSON.parse(this.responseText);
+
+			initGame(gameData);
+		}
+	};
+
+	xhttp.open("GET", ConfigEnum.API_ROOT + "/api/loadGame/" + playerId, true);
+	xhttp.setRequestHeader("Content-Type", "application/json");
+
+	xhttp.send();
+}
+// Server functions end
+
+// Uses server functions
+function init()
+{
+	if (window.opener != null
+	 && window.opener.user != null)
+		initUser();
+	else // User signed in
+		resetUser();
+
+	endGame();
+	adjustContents();
+	updateAutoConfirm();
+
+	openMenu(MenuEnum.HOME);
+
+	loadActivePlayer();
+}
+
+function initGame(gameData)
+{
+	document.getElementById(MenuEnum.START_MENU).style.display = "none";
+	document.getElementById(MenuEnum.GAME_MENU).style.display = "inline-block";
+
 	gameOn = true;
 
-	initPlayer();
-	initMapTiles();
+	initPlayer(gameData);
+
+	if (gameData == null)
+	{
+		initMapTiles();
+
+		saveGame();
+	}
+	else // Loading game
+		initMapTiles(gameData.player.map);
+
 	initAction();
 }
 
@@ -164,14 +227,14 @@ function takeAction()
 	{
 		actionFunction(true);
 
-		if (confirmAction.label !== ActionEnum.CENTER
-		 && player.status !== ActionEnum.FALL_DOWN)
+		if (confirmAction.label !== DirectionEnum.CENTER
+		 && player.status !== StatusEnum.FALLING)
 			gainSightRecovery();
 	}
 
 	resetAction();
 
-	// Get updated attributes/stats
+	// Get updated attributes/statistics
 	switch (openNavLink.id)
 	{
 		case MenuEnum.HOME:
@@ -189,6 +252,8 @@ function takeAction()
 	// Check if player is alive
 	if (player.attributeMap.get(AttributeEnum.HEALTH) === 0)
 	{
+		player.status = StatusEnum.EXPIRED;
+
 		if (getTileByPosition(player.position.row, player.position.col).type !== TileTypeEnum.WATER
 		 && getTileByPosition((player.position.row+1), player.position.col).solid)
 			updatePlayerIcon("images/Species/" + player.species.type + "/End.png");
@@ -197,15 +262,23 @@ function takeAction()
 
 		alert("The travels of " + player.name + " the " + player.species.type + " have come to an end.\n"
 			+ "\n"
-			+ "You traveled " + player.statsMap.get(StatsEnum.TILES_TRAVELED) + " of the "
-			+ player.statsMap.get(StatsEnum.TILES_EXPOSED) + " tiles you exposed.\n"
+			+ "You traveled " + player.statisticsMap.get(StatsEnum.TILES_TRAVELED) + " of the "
+			+ player.statisticsMap.get(StatsEnum.TILES_EXPOSED) + " tiles you exposed.\n"
 			+ "\n"
 			+ "Thank you for playing!");
 	}
+
+	saveGame();
 }
 
 function endGame()
 {
+	if (player != null)
+	{
+		player.status = StatusEnum.EXPIRED;
+		saveGame();
+	}
+
 	resetTreasures();
 	resetAction();
 	resetPlayer();
@@ -215,3 +288,4 @@ function endGame()
 	getStatistics();
 	document.getElementById(MenuEnum.GAME_STATS).style.display = "none";
 }
+// Uses server functions end

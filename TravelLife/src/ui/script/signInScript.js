@@ -4,6 +4,7 @@ var user;
 var userInput = document.getElementById("userInput");
 userInput.addEventListener('submit', signIn);
 
+// Server functions
 function init()
 {
 	user = null;
@@ -59,3 +60,4 @@ function goToGame()
 
 	window.open(ConfigEnum.API_ROOT + "/TravelLifeGame");
 }
+// Server functions end

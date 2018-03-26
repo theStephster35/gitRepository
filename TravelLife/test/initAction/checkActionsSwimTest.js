@@ -51,7 +51,7 @@ function test_SSS_BWB_WWW_Swim()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM});
+			  status: StatusEnum.SWIMMING});
 
 	initAction();
 
@@ -68,7 +68,7 @@ function test_SSS_BWB_WWW_Swim_NoEndurance()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0});
 
 	initAction();
@@ -85,7 +85,7 @@ function test_SSS_BWB_WWW_Swim_NoRecovery()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  recovery: 0});
 
 	initAction();
@@ -103,7 +103,7 @@ function test_SSS_BWB_WWW_Swim_NoHealth()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: 0});
 
 	initAction();
@@ -120,7 +120,7 @@ function test_SSS_BWB_WWW_Swim_Treasure()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -143,7 +143,7 @@ function test_SSS_BWB_WWW_Swim_FullHTreasure()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -167,7 +167,7 @@ function test_SSS_BWB_WWW_Swim_NeedHTreasure()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: 1, endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -191,7 +191,7 @@ function test_SSS_BWB_WWW_Swim_FullSTreasure()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -215,7 +215,7 @@ function test_SSS_BWB_WWW_Swim_NeedSTreasure()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  sight: 1, endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -239,7 +239,7 @@ function test_SSS_BWB_WWW_Swim_FullRTreasure()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -263,7 +263,7 @@ function test_SSS_BWB_WWW_Swim_NeedRTreasure()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  recovery: 1, endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -287,7 +287,7 @@ function test_SSS_BWB_WWW_Swim_FullETreasure()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM},
+			  status: StatusEnum.SWIMMING},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
 			  row: testRow, col: testCol,
@@ -311,7 +311,7 @@ function test_SSS_BWB_WWW_Swim_NeedETreasure()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -332,7 +332,7 @@ function test_SSS_WWW_WWW_Swim()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM});
+			  status: StatusEnum.SWIMMING});
 
 	initAction();
 
@@ -349,7 +349,7 @@ function test_SSS_WWW_WWW_Swim_NoEndurance()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0});
 
 	initAction();
@@ -368,7 +368,7 @@ function test_SSS_WWW_WWW_Swim_NoRecovery()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  recovery: 0});
 
 	initAction();
@@ -386,7 +386,7 @@ function test_SSS_WWW_WWW_Swim_NoHealth()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: 0});
 
 	initAction();
@@ -400,7 +400,7 @@ function test_BSB_BWB_WBW_Swim()
 			  ["B", "W", "B"],
 			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM});
+			  status: StatusEnum.SWIMMING});
 
 	initAction();
 
@@ -414,7 +414,7 @@ function test_BSB_BWB_WBW_Swim_NoEndurance()
 			  ["B", "W", "B"],
 			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0});
 
 	initAction();
@@ -428,7 +428,7 @@ function test_BSB_BWB_WBW_Swim_NoRecovery()
 			  ["B", "W", "B"],
 			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  recovery: 0});
 
 	initAction();
@@ -443,7 +443,7 @@ function test_BSB_BWB_WBW_Swim_NoHealth()
 			  ["B", "W", "B"],
 			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: 0});
 
 	initAction();
@@ -457,7 +457,7 @@ function test_WBW_WWW_WBW_Swim_NoEndurance()
 			  ["W", "W", "W"],
 			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0});
 
 	initAction();
@@ -476,7 +476,7 @@ function test_WBW_WWW_WBW_Swim_NoHealth()
 			  ["W", "W", "W"],
 			  ["W", "B", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: 0});
 
 	initAction();
@@ -490,7 +490,7 @@ function test_WWW_BWB_WWW_Swim_NoEndurance()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0});
 
 	initAction();
@@ -509,7 +509,7 @@ function test_WWW_BWB_WWW_Swim_NoHealth()
 			  ["B", "W", "B"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: 0});
 
 	initAction();
@@ -523,7 +523,7 @@ function test_WWW_WWW_WWW_Swim_NoEndurance()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0});
 
 	initAction();
@@ -544,7 +544,7 @@ function test_WWW_WWW_WWW_Swim_NoHealth()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: 1, col: 1,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: 0});
 
 	initAction();
@@ -561,7 +561,7 @@ function test_WWW_WWW_WWW_Swim_Treasure()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -589,7 +589,7 @@ function test_WWW_WWW_WWW_Swim_FullHTreasure()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -617,7 +617,7 @@ function test_WWW_WWW_WWW_Swim_NeedHTreasure()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  health: 1, endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -646,7 +646,7 @@ function test_WWW_WWW_WWW_Swim_FullSTreasure()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -674,7 +674,7 @@ function test_WWW_WWW_WWW_Swim_NeedSTreasure()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  sight: 1, endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -703,7 +703,7 @@ function test_WWW_WWW_WWW_Swim_FullRTreasure()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -731,7 +731,7 @@ function test_WWW_WWW_WWW_Swim_NeedRTreasure()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  recovery: 1, endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
@@ -760,7 +760,7 @@ function test_WWW_WWW_WWW_Swim_FullETreasure()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM},
+			  status: StatusEnum.SWIMMING},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,
 			  row: testRow, col: testCol,
@@ -787,7 +787,7 @@ function test_WWW_WWW_WWW_Swim_NeedETreasure()
 			  ["W", "W", "W"],
 			  ["W", "W", "W"]],
 			 {row: testRow, col: testCol,
-			  status: AttributeEnum.SWIM,
+			  status: StatusEnum.SWIMMING,
 			  endurance: 0},
 			 null,
 			 {type: TreasureTypeEnum.SMALL,

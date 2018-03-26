@@ -1,9 +1,10 @@
 class Treasure
 {
-	constructor(count, type, icon, row, col, probabilityMap)
+	constructor(count, type, name, icon, row, col, probabilityMap)
 	{
 		this.count = count;
 		this.type = type;
+		this.name = name;
 		this.icon = icon;
 		this.row = row;
 		this.col = col;
@@ -21,7 +22,7 @@ class SmallTreasure extends Treasure
 		probabilityMap.set(AttributeEnum.RECOVERY,	1);
 		probabilityMap.set(AttributeEnum.ENDURANCE,	2);
 
-		super(count, TreasureTypeEnum.SMALL,
+		super(count, TreasureTypeEnum.SMALL, "Small Treasure",
 				"images/Treasure/SmallTreasure.png",
 				row, col, probabilityMap);
 
@@ -44,7 +45,7 @@ class BigTreasure extends Treasure
 		probabilityMap.set(AttributeEnum.SWIM,		3);
 		probabilityMap.set(AttributeEnum.DIG,		3);
 
-		super(count, TreasureTypeEnum.BIG,
+		super(count, TreasureTypeEnum.BIG, "Big Treasure",
 				"images/Treasure/BigTreasure.png",
 				row, col, probabilityMap);
 	}

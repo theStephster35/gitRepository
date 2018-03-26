@@ -13,7 +13,7 @@ function validateTakeAction(results)
 	validateTakeActionData("image", player.image, "images/Species/" + player.species.type + "/Species.png", results.image);
 	validateTakeActionData("row", player.position.row, -1, results.row);
 	validateTakeActionData("col", player.position.col, -1, results.col);
-	validateTakeActionData("status", player.status, ActionEnum.STOP, results.status);
+	validateTakeActionData("status", player.status, StatusEnum.STOPPED, results.status);
 	validateTakeActionData("up", player.momentum.up, 0, results.up);
 	validateTakeActionData("left", player.momentum.left, 0, results.left);
 	validateTakeActionData("right", player.momentum.right, 0, results.right);
@@ -36,9 +36,9 @@ function validateTakeAction(results)
 			player.species.attributeMap.get(AttributeEnum.SWIM), results.swim);
 	validateTakeActionData("dig", player.attributeMap.get(AttributeEnum.DIG),
 			player.species.attributeMap.get(AttributeEnum.DIG), results.dig);
-	validateTakeActionData("tilesExposed", player.statsMap.get(StatsEnum.TILES_EXPOSED), 0, results.tilesExposed);
-	validateTakeActionData("tilesTraveled", player.statsMap.get(StatsEnum.TILES_TRAVELED), 0, results.tilesTraveled);
-	validateTakeActionData("treasuresCollected", player.statsMap.get(StatsEnum.TREASURES_COLLECTED), 0, results.treasuresCollected);
+	validateTakeActionData("tilesExposed", player.statisticsMap.get(StatsEnum.TILES_EXPOSED), 0, results.tilesExposed);
+	validateTakeActionData("tilesTraveled", player.statisticsMap.get(StatsEnum.TILES_TRAVELED), 0, results.tilesTraveled);
+	validateTakeActionData("treasuresCollected", player.statisticsMap.get(StatsEnum.TREASURES_COLLECTED), 0, results.treasuresCollected);
 }
 
 function validateTakeActionData(dataType, actualData, defaultData, resultData)

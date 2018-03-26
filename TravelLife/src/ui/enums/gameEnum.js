@@ -1,8 +1,3 @@
-var ConfigEnum = 
-{
-	API_ROOT: "http://localhost:8080"
-};
-
 var MenuEnum =
 {
 	HOME: "home",
@@ -44,6 +39,18 @@ var AttributeEnum =
 	DIG: "Dig"
 };
 
+var StatusEnum =
+{
+	CLIMBING: "Climbing",
+	JUMPING: "Jumping",
+	RUNNING: "Running",
+	SWIMMING: "Swimming",
+	DIGGING: "Digging",
+	STOPPED: "Stopped",
+	FALLING: "Falling",
+	EXPIRED: "Expired"
+};
+
 var StatsEnum =
 {
 	TILES_EXPOSED: "Tiles Exposed",
@@ -53,15 +60,15 @@ var StatsEnum =
 
 var TileTypeEnum =
 {
-	BARRIER: "Barrier",
-	DIRT: "Dirt",
-	GROUND: "Ground",
-	SKY: "Sky",
-	WATER: "Water"
+	BARRIER: "B",
+	DIRT: "D",
+	GROUND: "G",
+	SKY: "S",
+	WATER: "W"
 };
 
 var TreasureTypeEnum =
 {
-	SMALL: "Small Treasure",
-	BIG: "Big Treasure"
+	SMALL: "t",
+	BIG: "T"
 };

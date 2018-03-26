@@ -7,20 +7,12 @@ var treasureMap = new Map();
 
 var treasureCount = 0;
 
-function initTreasure(row, col)
+function initTreasure(row, col, treasureType)
 {
-	var treasure;
+	if (treasureType == null)
+		treasureType = getProbableResult(treasureProbabilityMap);
 
-	switch (getProbableResult(treasureProbabilityMap))
-	{
-		case TreasureTypeEnum.SMALL:
-			treasure = new SmallTreasure(++treasureCount, row, col);
-			break;
-		case TreasureTypeEnum.BIG:
-			treasure = new BigTreasure(++treasureCount, row, col);
-			break;
-	}
-
+	var treasure = getTreasureByType(row, col, treasureType);
 	if (treasure != null)
 	{
 		if (!treasureMap.has(treasure.row))
@@ -30,7 +22,7 @@ function initTreasure(row, col)
 		var treasureIcon = document.createElement("img");
 		treasureIcon.id = treasure.count;
 		treasureIcon.src = treasure.icon;
-		treasureIcon.alt = treasure.type;
+		treasureIcon.alt = treasure.name;
 		treasureIcon.type = treasure.type;
 		treasureIcon.style.display = "block";
 		treasureIcon.style.width = (tileWidth*zoom) + "px";
@@ -39,6 +31,23 @@ function initTreasure(row, col)
 
 		map.appendChild(treasureIcon);
 	}
+}
+
+function getTreasureByType(row, col, treasureType)
+{
+	var treasure;
+
+	switch (treasureType)
+	{
+		case TreasureTypeEnum.SMALL:
+			treasure = new SmallTreasure(++treasureCount, row, col);
+			break;
+		case TreasureTypeEnum.BIG:
+			treasure = new BigTreasure(++treasureCount, row, col);
+			break;
+	}
+
+	return treasure;
 }
 
 function placeTreasures()
